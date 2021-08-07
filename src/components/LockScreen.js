@@ -63,46 +63,6 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export default function LockScreen(props) {
-    const theme = useTheme();
-    const widthChange = useMediaQuery(theme.breakpoints.up('md'));
-    const classes = useStyles();
-    return (
-        <Grid className={classes.root}>
-            <CssBaseline />
-            <Grid container direction="row" style={{ flex: 1, flexDirection: (widthChange) ? 'row' : 'column-reverse' }}>
-                <Grid item xs={12} sm={12} md={6} className={classes.image} >
-                    <Typography component={'span'} variant='h6' className={classes.intro}>
-                        <p ><span ><Search /></span> Follow your interests.</p>
-                        <p><span><PeopleAlt /></span> Hear what people are talking about.</p>
-                        <p><span><Chat /></span> Join the conversation.</p>
-                        <p><span><PlayCircleFilled /></span> Create original content.</p>
-                        <p><span><Videocam /></span> Have video meetups.</p>
-
-                    </Typography>
-                </Grid>
-                <Grid item xs={12} sm={12} md={6} elevation={0} square="true">
-                    <div className={classes.paper}>
-                        <Avatar className={classes.avatar} src={pars} />
-                        <Typography component={'span'} variant='h5'>
-                            See what’s going on at our party right now!
-                        </Typography>
-                        <Typography component={'span'} variant="h6" >
-                            Join the information superhighway party NOW!
-                        </Typography>
-                        <Grid container spacing={2} className={classes.forms}>
-
-                            <SignButtons />
-                        </Grid>
-                    </div>
-                </Grid>
-            </Grid>
-            <Footer />
-        </Grid >
-    )
-}
-
-
 const SignButtons = () => {
     const [values, setValues] = React.useState({
         mode: 'none',
@@ -158,3 +118,42 @@ const SignButtons = () => {
     }
     return (component)
 }
+const LockScreen = (props) =>{
+    const theme = useTheme();
+    const widthChange = useMediaQuery(theme.breakpoints.up('md'));
+    const classes = useStyles();
+    return (
+        <Grid className={classes.root}>
+            <CssBaseline />
+            <Grid container direction="row" style={{ flex: 1, flexDirection: (widthChange) ? 'row' : 'column-reverse' }}>
+                <Grid item xs={12} sm={12} md={6} className={classes.image} >
+                    <Typography component={'span'} variant='h6' className={classes.intro}>
+                        <p ><span ><Search /></span> Follow your interests.</p>
+                        <p><span><PeopleAlt /></span> Hear what people are talking about.</p>
+                        <p><span><Chat /></span> Join the conversation.</p>
+                        <p><span><PlayCircleFilled /></span> Create original content.</p>
+                        <p><span><Videocam /></span> Have video meetups.</p>
+
+                    </Typography>
+                </Grid>
+                <Grid item xs={12} sm={12} md={6} elevation={0} square="true">
+                    <div className={classes.paper}>
+                        <Avatar className={classes.avatar} src={pars} />
+                        <Typography component={'span'} variant='h5'>
+                            See what’s going on at our party right now!
+                        </Typography>
+                        <Typography component={'span'} variant="h6" >
+                            Join the information superhighway party NOW!
+                        </Typography>
+                        <Grid container spacing={2} className={classes.forms}>
+
+                            <SignButtons />
+                        </Grid>
+                    </div>
+                </Grid>
+            </Grid>
+            <Footer />
+        </Grid >
+    )
+}
+export default LockScreen
