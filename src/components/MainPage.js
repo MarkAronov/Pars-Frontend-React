@@ -6,12 +6,10 @@ import {
     Grid, CssBaseline, TextField, Fab,
     Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button
 } from '@material-ui/core/';
-import Router from '../containers/Router';
+import Router from './Router';
 import { BrowserRouter } from 'react-router-dom';
 // eslint-disable-next-line
 import CreateIcon from '@material-ui/icons/Create';
-import SimpleBar from 'simplebar-react';
-import 'simplebar/dist/simplebar.min.css';
 
 
 

@@ -2,15 +2,13 @@ import React from 'react';
 // eslint-disable-next-line
 import { Avatar, Container, Button, CssBaseline, Grid, Typography, useMediaQuery } from '@material-ui/core/';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Search, PeopleAlt, Chat, Videocam, PlayCircleFilled } from '@material-ui/icons/';
+import { Search, PeopleAlt, Chat, PlayCircleFilled } from '@material-ui/icons/';
 import pars from '../pars.png';
-import whitePars from '../whitepars.png'
-import blackPars from '../blackpars.png'
 import Footer from './Footer';
 // eslint-disable-next-line
-import SignIn from './SignIn';
+import SignIn from './molecules/SignIn';
 // eslint-disable-next-line
-import SignUp from './SignUp';
+import SignUp from './molecules/SignUp';
 // eslint-disable-next-line
 
 const useStyles = makeStyles(theme => ({
@@ -20,7 +18,6 @@ const useStyles = makeStyles(theme => ({
         height: '100vh',
     },
     image: {
-        backgroundImage: theme.palette.type === 'dark' ? `url(${blackPars})` : `url(${whitePars})`,
         backgroundRepeat: 'no-repeat',
         backgroundColor:
             theme.palette.type === 'dark' ? theme.palette.grey[900] : theme.palette.grey[50],
@@ -98,7 +95,6 @@ const SignButtons = () => {
                             type="button"
                             fullWidth
                             variant="outlined"
-                            color="inherit"
                             onClick={handleClickChnageSign}
                             onMouseDown={handleMouseDownSign}
                         >
@@ -118,6 +114,7 @@ const SignButtons = () => {
     }
     return (component)
 }
+
 const LockScreen = (props) =>{
     const theme = useTheme();
     const widthChange = useMediaQuery(theme.breakpoints.up('md'));
@@ -132,8 +129,6 @@ const LockScreen = (props) =>{
                         <p><span><PeopleAlt /></span> Hear what people are talking about.</p>
                         <p><span><Chat /></span> Join the conversation.</p>
                         <p><span><PlayCircleFilled /></span> Create original content.</p>
-                        <p><span><Videocam /></span> Have video meetups.</p>
-
                     </Typography>
                 </Grid>
                 <Grid item xs={12} sm={12} md={6} elevation={0} square="true">
@@ -146,7 +141,6 @@ const LockScreen = (props) =>{
                             Join the information superhighway party NOW!
                         </Typography>
                         <Grid container spacing={2} className={classes.forms}>
-
                             <SignButtons />
                         </Grid>
                     </div>

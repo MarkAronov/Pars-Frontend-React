@@ -11,7 +11,6 @@ import {
     AccountCircle as AccountCircleIcon, MoreVert as MoreIcon,
     ChevronLeft as ChevronLeftIcon, ChevronRight as ChevronRightIcon,
 } from '@material-ui/icons/'
-import { useCookies } from 'react-cookie';
 import clsx from 'clsx';
 
 const drawerWidth = 240;
@@ -143,7 +142,6 @@ export default function PrimarySearchAppBar() {
         mobileMoreAnchorEl: null,
     });
     // eslint-disable-next-line
-    const [user, setUser, removeUser] = useCookies(['user']);
 
     const [open, setOpen] = React.useState(false);
 
@@ -177,8 +175,7 @@ export default function PrimarySearchAppBar() {
     };
 
     const handleSignOut = () => {
-        removeUser("password")
-        removeUser("username")
+
         window.location.reload();
 
     };
