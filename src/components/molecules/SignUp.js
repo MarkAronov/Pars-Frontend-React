@@ -5,7 +5,7 @@ import {
 } from '@material-ui/core/'
 import { makeStyles, } from '@material-ui/core/styles'
 import { Visibility, VisibilityOff } from '@material-ui/icons/'
-
+import {emailVerifier, passwordVerifier, usernameVerifier} from '../verifiers'
 const useStyles = makeStyles(theme => ({
     form: {
         marginTop: theme.spacing(2),
@@ -27,11 +27,12 @@ const SignUp = (props) => {
     })
     const [disabledSignUp, setdisabledSignUp] = useState(true)
     const [emailRepeatError, setemailRepeatError] = useState(false)
+    const [usernameValidationError, setusernameValidationError] = useState(false)
+    const [emailValidationError, setemailValidationError] = useState(false)
     const [passwordRepeatError, setpasswordRepeatError] = useState(false)
+    const [passwordValidationError, setpasswordValidationError] = useState(false)
     const [showPassword, setshowPassword] = useState(false)
     const [showPasswordRepeat, setshowPasswordRepeat] = useState(false)
-
-    console.log(data)
 
     const handleChange = event  => {
         const {value, id} = event.target
@@ -53,19 +54,48 @@ const SignUp = (props) => {
             data.passwordRepeat, emailRepeatError, 
             passwordRepeatError]
     )
+    /**
+        const timer = setTimeout(() => {
+
+        }, 500)
+        return () => {
+            clearTimeout(timer)
+        }
+    */
 
     useEffect(() => {
-        (data.email !== data.emailRepeat)?
-            setemailRepeatError(true):
-            setemailRepeatError(false)
-       }, [data.email, data.emailRepeat]
+        (data.username !== "" && !usernameVerifier(data.username))?
+            setusernameValidationError(true):
+            setusernameValidationError(false)
+        }, [data.username]
     )
 
     useEffect(() => {
-        (data.password !== data.passwordRepeat)?
+        (data.email !== "" && !emailVerifier(data.email))?
+            setemailValidationError(true):
+            setemailValidationError(false)
+        }, [data.email]
+    )
+
+    useEffect(() => {
+        (data.password !== "" && !passwordVerifier(data.password))?
+            setpasswordValidationError(true):
+            setpasswordValidationError(false)
+        }, [data.password]
+    )
+
+    useEffect(() => {
+            (data.email !== data.emailRepeat && data.emailRepeat !== "")?
+            setemailRepeatError(true):
+            setemailRepeatError(false)
+        }, [data.email, data.emailRepeat]
+    )
+
+    useEffect(() => {
+            (data.password !== data.passwordRepeat && data.passwordRepeat !== "")?
             setpasswordRepeatError(true):
             setpasswordRepeatError(false)
-       }, [data.password, data.passwordRepeat]
+        }, [data.password, data.passwordRepeat]
     )
 
     const handleClickShowPassword = () => {
@@ -81,12 +111,14 @@ const SignUp = (props) => {
     }
 
     const signUpHandle = () => {
-        window.location.reload()
+        console.log(data)
     }
 
     return (
         <form className={classes.form} noValidate>
             <TextField
+                error={usernameValidationError}
+                helperText={usernameValidationError? "Invalid Username." : ""}
                 value={data.username}
                 variant="filled"
                 fullWidth
@@ -95,6 +127,8 @@ const SignUp = (props) => {
                 onChange={handleChange}
             />
             <TextField
+                error={emailValidationError}
+                helperText={emailValidationError? "Invalid Email." : ""}
                 value={data.email}
                 variant="filled"
                 fullWidth
@@ -104,7 +138,7 @@ const SignUp = (props) => {
             />
             <TextField
                 error={emailRepeatError}
-                helperText={emailRepeatError? "Emails don't match" : ""}
+                helperText={emailRepeatError? "Emails don't match." : ""}
                 value={data.emailRepeat}
                 variant="filled"
                 fullWidth
@@ -115,6 +149,7 @@ const SignUp = (props) => {
             <FormControl
                 id="passwordform"
                 fullWidth variant="filled"
+                error={passwordValidationError}
             >
                 <InputLabel htmlFor="password">Password</InputLabel>
                 <FilledInput
@@ -135,6 +170,12 @@ const SignUp = (props) => {
                         </InputAdornment>
                     }
                 />
+                <FormHelperText 
+                        error={passwordValidationError} 
+                        id="component-helper-text"
+                >
+                    {passwordValidationError? "Invalid password." : ""}
+                </FormHelperText>                
             </FormControl>
 
             <FormControl
@@ -144,7 +185,7 @@ const SignUp = (props) => {
             >
                 <InputLabel htmlFor="password">Repeat your password</InputLabel>
                 <FilledInput
-                    helperText={passwordRepeatError? "Passwords don't match" : ""}   
+                    helperText={passwordRepeatError? "Passwords don't match." : ""}   
                     id="passwordRepeat"
                     type={showPasswordRepeat ? 'text' : 'password'}
                     value={data.passwordRepeat}
@@ -160,12 +201,12 @@ const SignUp = (props) => {
                                 {showPasswordRepeat ? <Visibility /> : <VisibilityOff />}
                             </IconButton>
                         </InputAdornment>
-                        }
+                    }
                 />
                 <FormHelperText 
                         error={passwordRepeatError} 
                         id="component-helper-text"
-                    >
+                >
                     {passwordRepeatError? "Passwords don't match" : ""}
                 </FormHelperText>
             </FormControl>

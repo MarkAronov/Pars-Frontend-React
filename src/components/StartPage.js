@@ -36,7 +36,7 @@ const useStyles = makeStyles(theme => ({
     },
     avatar: {
         margin: theme.spacing(5, 1),
-        boxShadow: '0 0 1em rgba(220,0,120,0.4)',
+        boxShadow: '0 0 1em rgba(220,0,120,0.6)',
     },
     title: {
         margin: theme.spacing(0, 4),
