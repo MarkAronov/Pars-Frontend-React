@@ -5,6 +5,7 @@ import {
 } from '@material-ui/core/'
 import { makeStyles, } from '@material-ui/core/styles'
 import { Visibility, VisibilityOff } from '@material-ui/icons/'
+import { Link as RouterLink} from 'react-router-dom'
 
 const useStyles = makeStyles(theme => ({
     form: {
@@ -18,7 +19,6 @@ const useStyles = makeStyles(theme => ({
 
 const SignIn = (props) => {
     const classes = useStyles()
-    const handleSign = props.handleClickChnageSign
     const [data, setData] = useState({
         username: '',
         password: '',
@@ -112,12 +112,12 @@ const SignIn = (props) => {
 
             <Grid container >
                 <Grid item xs>
-                    <Link component="button" color="inherit" variant="body2">
+                    <Link component={RouterLink} color="inherit" variant="body2" to="/">
                         Forgot password?
                     </Link>
                 </Grid>
                 <Grid item >
-                    <Link component="button" color="inherit" id="signUp" onClick={handleSign} variant="body2">
+                    <Link component={RouterLink} color="inherit" variant="body2" to="/signup">
                         New to Pars? Sign Up
                     </Link>
                 </Grid>

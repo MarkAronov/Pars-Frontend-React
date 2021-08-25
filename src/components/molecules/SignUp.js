@@ -6,6 +6,8 @@ import {
 import { makeStyles, } from '@material-ui/core/styles'
 import { Visibility, VisibilityOff } from '@material-ui/icons/'
 import {emailVerifier, passwordVerifier, usernameVerifier} from '../verifiers'
+import { Link as RouterLink} from 'react-router-dom'
+
 const useStyles = makeStyles(theme => ({
     form: {
         marginTop: theme.spacing(2),
@@ -13,11 +15,13 @@ const useStyles = makeStyles(theme => ({
     submit: {
         margin: theme.spacing(3, 0, 2),
     },
+    errorlist : {
+        display: "block"  
+    },
 }))
 
 const SignUp = (props) => {
     const classes = useStyles()
-    const handleSign = props.handleClickChnageSign
     const [data, setData] = useState({
         username: '',
         email: '',
@@ -31,6 +35,7 @@ const SignUp = (props) => {
     const [emailValidationError, setemailValidationError] = useState(false)
     const [passwordRepeatError, setpasswordRepeatError] = useState(false)
     const [passwordValidationError, setpasswordValidationError] = useState(false)
+    const [passwordErrorList, setpasswordErrorList] = useState([])
     const [showPassword, setshowPassword] = useState(false)
     const [showPasswordRepeat, setshowPasswordRepeat] = useState(false)
 
@@ -46,13 +51,17 @@ const SignUp = (props) => {
             data.emailRepeat    !== "" &&
             data.passwordRepeat !== "" &&
             !emailRepeatError     &&
-            !passwordRepeatError)?
+            !emailValidationError &&
+            !passwordRepeatError  &&
+            !passwordValidationError)?
             setdisabledSignUp(false):
             setdisabledSignUp(true)        
-       }, [ data.username,data.password, 
+       }, 
+        [   data.username,data.password, 
             data.email, data.emailRepeat, 
             data.passwordRepeat, emailRepeatError, 
-            passwordRepeatError]
+            emailValidationError,passwordRepeatError,
+            passwordValidationError]
     )
     /**
         const timer = setTimeout(() => {
@@ -64,7 +73,7 @@ const SignUp = (props) => {
     */
 
     useEffect(() => {
-        (data.username !== "" && !usernameVerifier(data.username))?
+        (data.username !== "" && usernameVerifier(data.username))?
             setusernameValidationError(true):
             setusernameValidationError(false)
         }, [data.username]
@@ -78,21 +87,25 @@ const SignUp = (props) => {
     )
 
     useEffect(() => {
-        (data.password !== "" && !passwordVerifier(data.password))?
-            setpasswordValidationError(true):
+        const passwordVerifierResults = passwordVerifier(data.password)
+        if (data.password !== "" && !passwordVerifierResults.passed){
+            setpasswordValidationError(true)
+            setpasswordErrorList(passwordVerifierResults.errorlist)
+        }
+        else {
             setpasswordValidationError(false)
-        }, [data.password]
+        }}, [data.password]
     )
 
     useEffect(() => {
-            (data.email !== data.emailRepeat && data.emailRepeat !== "")?
+        (data.email !== data.emailRepeat && data.emailRepeat !== "")?
             setemailRepeatError(true):
             setemailRepeatError(false)
         }, [data.email, data.emailRepeat]
     )
 
     useEffect(() => {
-            (data.password !== data.passwordRepeat && data.passwordRepeat !== "")?
+        (data.password !== data.passwordRepeat && data.passwordRepeat !== "")?
             setpasswordRepeatError(true):
             setpasswordRepeatError(false)
         }, [data.password, data.passwordRepeat]
@@ -115,6 +128,7 @@ const SignUp = (props) => {
     }
 
     return (
+        <>
         <form className={classes.form} noValidate>
             <TextField
                 error={usernameValidationError}
@@ -170,14 +184,16 @@ const SignUp = (props) => {
                         </InputAdornment>
                     }
                 />
-                <FormHelperText 
-                        error={passwordValidationError} 
+                {passwordValidationError? 
+                    <FormHelperText 
+                        error={true} 
                         id="component-helper-text"
-                >
-                    {passwordValidationError? "Invalid password." : ""}
-                </FormHelperText>                
+                    >
+                        {passwordErrorList.map((error, i) => <span key={i} className={classes.errorlist} >{error}</span>)}
+                    </FormHelperText>:
+                    <></>
+                }
             </FormControl>
-
             <FormControl
                 id="passwordform"
                 fullWidth variant="filled"
@@ -185,7 +201,7 @@ const SignUp = (props) => {
             >
                 <InputLabel htmlFor="password">Repeat your password</InputLabel>
                 <FilledInput
-                    helperText={passwordRepeatError? "Passwords don't match." : ""}   
+                    helpertext={passwordRepeatError? "Passwords don't match." : ""}   
                     id="passwordRepeat"
                     type={showPasswordRepeat ? 'text' : 'password'}
                     value={data.passwordRepeat}
@@ -203,33 +219,38 @@ const SignUp = (props) => {
                         </InputAdornment>
                     }
                 />
-                <FormHelperText 
-                        error={passwordRepeatError} 
+                {passwordRepeatError? 
+                    <FormHelperText 
+                        error={true} 
                         id="component-helper-text"
-                >
-                    {passwordRepeatError? "Passwords don't match" : ""}
-                </FormHelperText>
+                    >
+                        Passwords don't match
+                    </FormHelperText>:
+                    <></>
+                }                
             </FormControl>
             <Button
                 id="signup"
                 disabled={disabledSignUp}
                 fullWidth
-                type="button"
+                type="submit"
                 variant="contained"
-                onClick={signUpHandle}
+                onSubmit={signUpHandle}
                 className={classes.submit}
             >
                 Sign Up
             </Button>
 
-            <Grid container >
-                <Grid item xs>
-                    <Link component="button" color="inherit" id="signIn" onClick={handleSign} variant="body2">
-                        Already have an account? Sign In instead
-                    </Link>
-                </Grid>
+
+        </form >  
+        <Grid container >
+            <Grid item xs>
+                <Link component={RouterLink} color="inherit" variant="body2" to="/signin">
+                    Already have an account? Sign In instead
+                </Link>                    
             </Grid>
-        </form >        
+        </Grid>      
+        </>
     )
 }
 

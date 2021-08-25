@@ -1,14 +1,15 @@
-import React from 'react';
+import React from 'react'
 // eslint-disable-next-line
-import { Avatar, Container, Button, CssBaseline, Grid, Typography, useMediaQuery } from '@material-ui/core/';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Search, PeopleAlt, Chat, PlayCircleFilled } from '@material-ui/icons/';
-import pars from '../pars.png';
-import Footer from './Footer';
+import { Avatar, Button, CssBaseline, Grid, Typography, useMediaQuery } from '@material-ui/core/'
+import { makeStyles, useTheme } from '@material-ui/core/styles'
+import { Search, PeopleAlt, Chat, PlayCircleFilled } from '@material-ui/icons/'
+import { Link } from "react-router-dom"
+import pars from '../pars.png'
+import Footer from './Footer'
 // eslint-disable-next-line
-import SignIn from './molecules/SignIn';
+import SignIn from './molecules/SignIn'
 // eslint-disable-next-line
-import SignUp from './molecules/SignUp';
+import SignUp from './molecules/SignUp'
 // eslint-disable-next-line
 
 const useStyles = makeStyles(theme => ({
@@ -58,67 +59,70 @@ const useStyles = makeStyles(theme => ({
     main: {
         height: '23333px'
     }
-}));
+}))
 
-const SignButtons = () => {
+const SignButtons = (props) => {
     const [values, setValues] = React.useState({
-        mode: 'none',
-    });
+        mode: props.mode,
+    })
     const handleClickChnageSign = event => {
-        setValues({ ...values, mode: event.currentTarget.id });
-    };
+        setValues({ ...values, mode: event.currentTarget.id })
+    }
 
     const handleMouseDownSign = event => {
-        event.preventDefault();
-    };
-
-    let component = null;
+        event.preventDefault()
+    }
+    let component = null
     switch (values.mode) {
         case 'none':
             component =
                 <>
                     <Grid item xs={12} sm={12}>
                         <Button
-                            id='signIn'
+                            id='signin'
                             type="button"
                             fullWidth
                             variant="contained"
                             onClick={handleClickChnageSign}
                             onMouseDown={handleMouseDownSign}
+                            component={Link}
+                            to="/signin"
                         >
                             Sign In
-                            </Button>
+                        </Button>
                     </Grid>
                     <Grid item xs={12} sm={12}>
                         <Button
-                            id='signUp'
+                            id='signup'
                             type="button"
                             fullWidth
                             variant="outlined"
                             onClick={handleClickChnageSign}
                             onMouseDown={handleMouseDownSign}
+                            component={Link}
+                            to="/signup"
                         >
                             Sign Up
-                            </Button>
+                        </Button>
                     </Grid>
-                </>;
-            break;
-        case 'signIn':
-            component = <SignIn handleClickChnageSign={handleClickChnageSign} />;
-            break;
-        case 'signUp':
-            component = <SignUp handleClickChnageSign={handleClickChnageSign} />;
-            break;
+                </>
+            break
+        case 'signin':
+            component = <SignIn handleClickChnageSign={handleClickChnageSign} />
+            break
+        case 'signup':
+            component = <SignUp handleClickChnageSign={handleClickChnageSign} />
+            break
         default:
-            break;
+            break
     }
     return (component)
 }
 
 const LockScreen = (props) =>{
-    const theme = useTheme();
-    const widthChange = useMediaQuery(theme.breakpoints.up('md'));
-    const classes = useStyles();
+    const theme = useTheme()
+    const widthChange = useMediaQuery(theme.breakpoints.up('md'))
+    const classes = useStyles()
     return (
         <Grid className={classes.root}>
             <CssBaseline />
@@ -141,7 +145,7 @@ const LockScreen = (props) =>{
                             Join the information superhighway party NOW!
                         </Typography>
                         <Grid container spacing={2} className={classes.forms}>
-                            <SignButtons />
+                            <SignButtons mode={props.mode}/>
                         </Grid>
                     </div>
                 </Grid>
