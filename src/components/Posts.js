@@ -1,10 +1,10 @@
-import React from 'react';
-import PostCard from './PostCard';
+import React from 'react'
+import PostCard from './PostCard'
 
 
 export default class Posts extends React.Component {
     constructor(props) {
-        super(props);
+        super(props)
         this.state = {
             posts: []
         }
@@ -16,7 +16,7 @@ export default class Posts extends React.Component {
     }
 
     render() {
-        //const [, set] = React.useState();
+        //const [, set] = React.useState()
         const posts = this.state.posts.map((data, index) => <PostCard inputData={data} key={index} />)
         return (
             <>

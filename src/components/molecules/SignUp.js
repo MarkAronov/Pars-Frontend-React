@@ -1,12 +1,12 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import {
     TextField, Grid, Button, Link, InputLabel, FilledInput, FormControl,
     FormHelperText, IconButton, InputAdornment,
 } from '@material-ui/core/'
 import { makeStyles, } from '@material-ui/core/styles'
 import { Visibility, VisibilityOff } from '@material-ui/icons/'
-import {emailVerifier, passwordVerifier, usernameVerifier} from '../verifiers'
-import { Link as RouterLink} from 'react-router-dom'
+import { emailVerifier, passwordVerifier, usernameVerifier } from '../atoms/verifiers'
+import { Link as RouterLink } from 'react-router-dom'
 
 const useStyles = makeStyles(theme => ({
     form: {
@@ -15,12 +15,12 @@ const useStyles = makeStyles(theme => ({
     submit: {
         margin: theme.spacing(3, 0, 2),
     },
-    errorlist : {
-        display: "block"  
+    errorlist: {
+        display: "block"
     },
 }))
 
-const SignUp = (props) => {
+const SignUp = () => {
     const classes = useStyles()
     const [data, setData] = useState({
         username: '',
@@ -39,28 +39,28 @@ const SignUp = (props) => {
     const [showPassword, setshowPassword] = useState(false)
     const [showPasswordRepeat, setshowPasswordRepeat] = useState(false)
 
-    const handleChange = event  => {
-        const {value, id} = event.target
-        setData(data => ({...data, [id]: value}))
+    const handleChange = event => {
+        const { value, id } = event.target
+        setData(data => ({ ...data, [id]: value }))
     }
 
     useEffect(() => {
-        (   data.username       !== "" && 
-            data.password       !== "" && 
-            data.email          !== "" &&
-            data.emailRepeat    !== "" &&
+        (data.username !== "" &&
+            data.password !== "" &&
+            data.email !== "" &&
+            data.emailRepeat !== "" &&
             data.passwordRepeat !== "" &&
-            !emailRepeatError     &&
+            !emailRepeatError &&
             !emailValidationError &&
-            !passwordRepeatError  &&
-            !passwordValidationError)?
-            setdisabledSignUp(false):
-            setdisabledSignUp(true)        
-       }, 
-        [   data.username,data.password, 
-            data.email, data.emailRepeat, 
-            data.passwordRepeat, emailRepeatError, 
-            emailValidationError,passwordRepeatError,
+            !passwordRepeatError &&
+            !passwordValidationError) ?
+            setdisabledSignUp(false) :
+            setdisabledSignUp(true)
+    },
+        [data.username, data.password,
+        data.email, data.emailRepeat,
+        data.passwordRepeat, emailRepeatError,
+            emailValidationError, passwordRepeatError,
             passwordValidationError]
     )
     /**
@@ -73,42 +73,43 @@ const SignUp = (props) => {
     */
 
     useEffect(() => {
-        (data.username !== "" && usernameVerifier(data.username))?
-            setusernameValidationError(true):
+        (data.username !== "" && usernameVerifier(data.username)) ?
+            setusernameValidationError(true) :
             setusernameValidationError(false)
-        }, [data.username]
+    }, [data.username]
     )
 
     useEffect(() => {
-        (data.email !== "" && !emailVerifier(data.email))?
-            setemailValidationError(true):
+        (data.email !== "" && !emailVerifier(data.email)) ?
+            setemailValidationError(true) :
             setemailValidationError(false)
-        }, [data.email]
+    }, [data.email]
     )
 
     useEffect(() => {
         const passwordVerifierResults = passwordVerifier(data.password)
-        if (data.password !== "" && !passwordVerifierResults.passed){
+        if (data.password !== "" && !passwordVerifierResults.passed) {
             setpasswordValidationError(true)
             setpasswordErrorList(passwordVerifierResults.errorlist)
         }
         else {
             setpasswordValidationError(false)
-        }}, [data.password]
+        }
+    }, [data.password]
     )
 
     useEffect(() => {
-        (data.email !== data.emailRepeat && data.emailRepeat !== "")?
-            setemailRepeatError(true):
+        (data.email !== data.emailRepeat && data.emailRepeat !== "") ?
+            setemailRepeatError(true) :
             setemailRepeatError(false)
-        }, [data.email, data.emailRepeat]
+    }, [data.email, data.emailRepeat]
     )
 
     useEffect(() => {
-        (data.password !== data.passwordRepeat && data.passwordRepeat !== "")?
-            setpasswordRepeatError(true):
+        (data.password !== data.passwordRepeat && data.passwordRepeat !== "") ?
+            setpasswordRepeatError(true) :
             setpasswordRepeatError(false)
-        }, [data.password, data.passwordRepeat]
+    }, [data.password, data.passwordRepeat]
     )
 
     const handleClickShowPassword = () => {
@@ -129,127 +130,127 @@ const SignUp = (props) => {
 
     return (
         <>
-        <form className={classes.form} noValidate>
-            <TextField
-                error={usernameValidationError}
-                helperText={usernameValidationError? "Invalid Username." : ""}
-                value={data.username}
-                variant="filled"
-                fullWidth
-                id="username"
-                label="Username"
-                onChange={handleChange}
-            />
-            <TextField
-                error={emailValidationError}
-                helperText={emailValidationError? "Invalid Email." : ""}
-                value={data.email}
-                variant="filled"
-                fullWidth
-                id="email"
-                label="Email Address"
-                onChange={handleChange}
-            />
-            <TextField
-                error={emailRepeatError}
-                helperText={emailRepeatError? "Emails don't match." : ""}
-                value={data.emailRepeat}
-                variant="filled"
-                fullWidth
-                id="emailRepeat"
-                label="Repeat your Email"
-                onChange={handleChange}
-            />
-            <FormControl
-                id="passwordform"
-                fullWidth variant="filled"
-                error={passwordValidationError}
-            >
-                <InputLabel htmlFor="password">Password</InputLabel>
-                <FilledInput
-                    id="password"
-                    type={showPassword ? 'text' : 'password'}
-                    value={data.password}
+            <form className={classes.form} noValidate>
+                <TextField
+                    error={usernameValidationError}
+                    helperText={usernameValidationError ? "Invalid Username." : ""}
+                    value={data.username}
+                    variant="filled"
+                    fullWidth
+                    id="username"
+                    label="Username"
                     onChange={handleChange}
-                    endAdornment={            
-                        <InputAdornment position="end">
-                            <IconButton
-                                aria-label="toggle password visibility"
-                                onClick={handleClickShowPassword}
-                                onMouseDown={handleMouseDownPassword}
-                                edge="end"
-                            >
-                                {showPassword ? <Visibility /> : <VisibilityOff />}
-                            </IconButton>
-                        </InputAdornment>
-                    }
                 />
-                {passwordValidationError? 
-                    <FormHelperText 
-                        error={true} 
-                        id="component-helper-text"
-                    >
-                        {passwordErrorList.map((error, i) => <span key={i} className={classes.errorlist} >{error}</span>)}
-                    </FormHelperText>:
-                    <></>
-                }
-            </FormControl>
-            <FormControl
-                id="passwordform"
-                fullWidth variant="filled"
-                error={passwordRepeatError}
-            >
-                <InputLabel htmlFor="password">Repeat your password</InputLabel>
-                <FilledInput
-                    helpertext={passwordRepeatError? "Passwords don't match." : ""}   
-                    id="passwordRepeat"
-                    type={showPasswordRepeat ? 'text' : 'password'}
-                    value={data.passwordRepeat}
+                <TextField
+                    error={emailValidationError}
+                    helperText={emailValidationError ? "Invalid Email." : ""}
+                    value={data.email}
+                    variant="filled"
+                    fullWidth
+                    id="email"
+                    label="Email Address"
                     onChange={handleChange}
-                    endAdornment={            
-                        <InputAdornment position="end">
-                            <IconButton
-                                aria-label="toggle password visibility"
-                                onClick={handleClickShowPasswordRepeat}
-                                onMouseDown={handleMouseDownPassword}
-                                edge="end"
-                            >
-                                {showPasswordRepeat ? <Visibility /> : <VisibilityOff />}
-                            </IconButton>
-                        </InputAdornment>
-                    }
                 />
-                {passwordRepeatError? 
-                    <FormHelperText 
-                        error={true} 
-                        id="component-helper-text"
-                    >
-                        Passwords don't match
-                    </FormHelperText>:
-                    <></>
-                }                
-            </FormControl>
-            <Button
-                id="signup"
-                disabled={disabledSignUp}
-                fullWidth
-                type="submit"
-                variant="contained"
-                onSubmit={signUpHandle}
-                className={classes.submit}
-            >
-                Sign Up
-            </Button>
+                <TextField
+                    error={emailRepeatError}
+                    helperText={emailRepeatError ? "Emails don't match." : ""}
+                    value={data.emailRepeat}
+                    variant="filled"
+                    fullWidth
+                    id="emailRepeat"
+                    label="Repeat your Email"
+                    onChange={handleChange}
+                />
+                <FormControl
+                    id="passwordform"
+                    fullWidth variant="filled"
+                    error={passwordValidationError}
+                >
+                    <InputLabel htmlFor="password">Password</InputLabel>
+                    <FilledInput
+                        id="password"
+                        type={showPassword ? 'text' : 'password'}
+                        value={data.password}
+                        onChange={handleChange}
+                        endAdornment={
+                            <InputAdornment position="end">
+                                <IconButton
+                                    aria-label="toggle password visibility"
+                                    onClick={handleClickShowPassword}
+                                    onMouseDown={handleMouseDownPassword}
+                                    edge="end"
+                                >
+                                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                                </IconButton>
+                            </InputAdornment>
+                        }
+                    />
+                    {passwordValidationError ?
+                        <FormHelperText
+                            error={true}
+                            id="component-helper-text"
+                        >
+                            {passwordErrorList.map((error, i) => <span key={i} className={classes.errorlist} >{error}</span>)}
+                        </FormHelperText> :
+                        <></>
+                    }
+                </FormControl>
+                <FormControl
+                    id="passwordform"
+                    fullWidth variant="filled"
+                    error={passwordRepeatError}
+                >
+                    <InputLabel htmlFor="password">Repeat your password</InputLabel>
+                    <FilledInput
+                        helpertext={passwordRepeatError ? "Passwords don't match." : ""}
+                        id="passwordRepeat"
+                        type={showPasswordRepeat ? 'text' : 'password'}
+                        value={data.passwordRepeat}
+                        onChange={handleChange}
+                        endAdornment={
+                            <InputAdornment position="end">
+                                <IconButton
+                                    aria-label="toggle password visibility"
+                                    onClick={handleClickShowPasswordRepeat}
+                                    onMouseDown={handleMouseDownPassword}
+                                    edge="end"
+                                >
+                                    {showPasswordRepeat ? <Visibility /> : <VisibilityOff />}
+                                </IconButton>
+                            </InputAdornment>
+                        }
+                    />
+                    {passwordRepeatError ?
+                        <FormHelperText
+                            error={true}
+                            id="component-helper-text"
+                        >
+                            Passwords don't match
+                        </FormHelperText> :
+                        <></>
+                    }
+                </FormControl>
+                <Button
+                    id="signup"
+                    disabled={disabledSignUp}
+                    fullWidth
+                    type="submit"
+                    variant="contained"
+                    onSubmit={signUpHandle}
+                    className={classes.submit}
+                >
+                    Sign Up
+                </Button>
 
 
-        </form >  
-        <Grid container >
-            <Grid item xs>
-                <Link component={RouterLink} color="inherit" variant="body2" to="/signin">
-                    Already have an account? Sign In instead
-                </Link>                    
+            </form >
+            <Grid container >
+                <Grid item xs>
+                    <Link component={RouterLink} color="inherit" variant="body2" to="/signin">
+                        Already have an account? Sign In instead
+                    </Link>
+                </Grid>
             </Grid>
-        </Grid>      
         </>
     )
 }

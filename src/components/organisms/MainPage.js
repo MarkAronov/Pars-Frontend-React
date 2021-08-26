@@ -1,14 +1,11 @@
 import React, { useEffect } from 'react';
-import Header from './Header';
+import Header from '../molecules/Header';
 import { makeStyles } from '@material-ui/core/styles';
-// eslint-disable-next-line
 import {
     Grid, CssBaseline, TextField, Fab,
     Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button
 } from '@material-ui/core/';
-import Router from './Router';
 import { BrowserRouter } from 'react-router-dom';
-// eslint-disable-next-line
 import CreateIcon from '@material-ui/icons/Create';
 
 
@@ -83,7 +80,6 @@ export default function MainPage() {
                     direction="column"
                     alignItems="center">
                     <BrowserRouter>
-                        <Router />
                     </BrowserRouter>
 
 

@@ -6,10 +6,15 @@ import {
     Divider, List, ListItemText, ListItem, ListItemIcon
 } from '@material-ui/core/';
 import {
-    Notifications as NotificationsIcon, Mail as MailIcon,
-    Inbox as InboxIcon, Menu as MenuIcon, Search as SearchIcon,
-    AccountCircle as AccountCircleIcon, MoreVert as MoreIcon,
-    ChevronLeft as ChevronLeftIcon, ChevronRight as ChevronRightIcon,
+    Notifications as NotificationsIcon,
+    Mail as MailIcon,
+    Inbox as InboxIcon,
+    Menu as MenuIcon,
+    Search as SearchIcon,
+    AccountCircle as AccountCircleIcon,
+    MoreVert as MoreIcon,
+    ChevronLeft as ChevronLeftIcon,
+    ChevronRight as ChevronRightIcon,
 } from '@material-ui/icons/'
 import clsx from 'clsx';
 
@@ -176,6 +181,7 @@ export default function PrimarySearchAppBar() {
 
     const handleSignOut = () => {
 
+        localStorage.removeItem("token");
         window.location.reload();
 
     };
@@ -257,7 +263,7 @@ export default function PrimarySearchAppBar() {
                         </IconButton>
                         <Typography className={classes.title} variant="h6" noWrap>
                             Pars!
-                    </Typography>
+                        </Typography>
                         <div className={classes.search} color="inherit"
                         >
                             <div className={classes.searchIcon}>

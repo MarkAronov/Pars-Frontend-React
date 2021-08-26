@@ -4,12 +4,12 @@ import { Avatar, Button, CssBaseline, Grid, Typography, useMediaQuery } from '@m
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import { Search, PeopleAlt, Chat, PlayCircleFilled } from '@material-ui/icons/'
 import { Link } from "react-router-dom"
-import pars from '../pars.png'
-import Footer from './Footer'
+import pars from '../../pars.png'
+import Footer from '../molecules/Footer'
 // eslint-disable-next-line
-import SignIn from './molecules/SignIn'
+import SignIn from '../molecules/SignIn'
 // eslint-disable-next-line
-import SignUp from './molecules/SignUp'
+import SignUp from '../molecules/SignUp'
 // eslint-disable-next-line
 
 const useStyles = makeStyles(theme => ({
@@ -129,7 +129,7 @@ const LockScreen = (props) =>{
             <Grid container direction="row" style={{ flex: 1, flexDirection: (widthChange) ? 'row' : 'column-reverse' }}>
                 <Grid item xs={12} sm={12} md={6} className={classes.image} >
                     <Typography component={'span'} variant='h6' className={classes.intro}>
-                        <p ><span ><Search /></span> Follow your interests.</p>
+                        <p><span><Search /></span> Follow your interests.</p>
                         <p><span><PeopleAlt /></span> Hear what people are talking about.</p>
                         <p><span><Chat /></span> Join the conversation.</p>
                         <p><span><PlayCircleFilled /></span> Create original content.</p>
