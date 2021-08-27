@@ -1,3 +1,4 @@
+
 import React, { useState, useContext, createContext } from "react";
 
 const authContext = createContext();
@@ -12,25 +13,25 @@ export const ProvideAuth = ({ children }) => {
 }
 
 export const useAuth = () => {
+
     return useContext(authContext);
 };
 
 const useProvideAuth = () => {
     const [user, setUser] = useState(null);
 
-    const signin = (func) => {
+    const signin = () => {
         return (() => {
             setUser("user");
+            console.log("done")
             localStorage.setItem("token", "set");
-            func()
         })
     }
 
-    const signout = (func) => {
+    const signout = () => {
         return (() => {
             setUser(null);
             localStorage.removeItem("token");
-            func()
         })
     }
 

@@ -6,6 +6,7 @@ import {
 import { makeStyles, } from '@material-ui/core/styles'
 import { Visibility, VisibilityOff } from '@material-ui/icons/'
 import { Link as RouterLink } from 'react-router-dom'
+import { useAuth } from '../Auth'
 
 const useStyles = makeStyles(theme => ({
     form: {
@@ -19,6 +20,7 @@ const useStyles = makeStyles(theme => ({
 
 const SignIn = () => {
     const classes = useStyles()
+    const auth = useAuth()
     const [data, setData] = useState({
         username: '',
         password: '',
@@ -53,7 +55,7 @@ const SignIn = () => {
         setshowPassword(!showPassword)
     }
 
-    const signInHandle = () => {
+    const handlesignIn = () => {
         localStorage.setItem("token", "set");
     }
 
@@ -63,7 +65,7 @@ const SignIn = () => {
 
     return (
         <>
-            <form className={classes.form} onSubmit={signInHandle} >
+            <form className={classes.form} onSubmit={handlesignIn} >
                 <TextField
                     variant="filled"
                     margin="normal"
