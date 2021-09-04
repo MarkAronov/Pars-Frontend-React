@@ -56,7 +56,7 @@ const SignIn = () => {
     }
 
     const handlesignIn = () => {
-        localStorage.setItem("token", "set");
+        auth.signin()
     }
 
     const handleMouseDownPassword = event => {

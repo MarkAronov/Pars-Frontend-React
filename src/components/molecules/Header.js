@@ -17,6 +17,7 @@ import {
     ChevronRight as ChevronRightIcon,
 } from '@material-ui/icons/'
 import clsx from 'clsx';
+import { useAuth } from '../Auth'
 
 const drawerWidth = 240;
 
@@ -142,6 +143,7 @@ const useStyles = makeStyles(theme => ({
 export default function PrimarySearchAppBar() {
     const classes = useStyles();
     const theme = useTheme();
+    const auth = useAuth()
     const [values, setValues] = React.useState({
         anchorEl: null,
         mobileMoreAnchorEl: null,
@@ -180,10 +182,8 @@ export default function PrimarySearchAppBar() {
     };
 
     const handleSignOut = () => {
-
-        localStorage.removeItem("token");
+        auth.signout()
         window.location.reload();
-
     };
 
     const handleMobileMenuOpen = event => {
