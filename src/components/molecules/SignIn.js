@@ -57,12 +57,13 @@ const SignIn = () => {
 
     const handlesignIn = () => {
         auth.signin()
+        console.log("here!")
     }
 
     const handleMouseDownPassword = event => {
         event.preventDefault()
     }
-
+    
     return (
         <>
             <form className={classes.form} onSubmit={handlesignIn} >

@@ -13,25 +13,23 @@ export const ProvideAuth = ({ children }) => {
 }
 
 export const useAuth = () => {
-
     return useContext(authContext);
 };
 
 const useProvideAuth = () => {
-    const [userToken, setUserToken] = useState();
+    const [userToken, setUserToken] = useState(localStorage.getItem("token"));
 
     const signin = () => {
-        return (() => {
-            setUserToken("user");
-        })
+        setUserToken("set");
+        localStorage.setItem("token", "set");
     }
 
     const signout = () => {
-        return (() => {
-            setUserToken(null);
-        })
+        setUserToken(null);
+        localStorage.removeItem("token");
     }
-
+    useEffect(() => {
+    }, [userToken])
 
     return {
         userToken,
