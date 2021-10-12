@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react'
 import {
     TextField, Grid, Button, Link, InputLabel, FilledInput, FormControl,
@@ -5,7 +6,6 @@ import {
 } from '@material-ui/core/'
 import { makeStyles, } from '@material-ui/core/styles'
 import { Visibility, VisibilityOff } from '@material-ui/icons/'
-import { emailVerifier, passwordVerifier, usernameVerifier } from '../atoms/verifiers'
 import { Link as RouterLink } from 'react-router-dom'
 
 const useStyles = makeStyles(theme => ({
@@ -73,24 +73,22 @@ const SignUp = () => {
     */
 
     useEffect(() => {
-        (data.username !== "" && usernameVerifier(data.username)) ?
+        (data.username !== "" ) ?
             setusernameValidationError(true) :
             setusernameValidationError(false)
     }, [data.username]
     )
 
     useEffect(() => {
-        (data.email !== "" && !emailVerifier(data.email)) ?
+        (data.email !== "") ?
             setemailValidationError(true) :
             setemailValidationError(false)
     }, [data.email]
     )
 
     useEffect(() => {
-        const passwordVerifierResults = passwordVerifier(data.password)
-        if (data.password !== "" && !passwordVerifierResults.passed) {
+        if (data.password !== "") {
             setpasswordValidationError(true)
-            setpasswordErrorList(passwordVerifierResults.errorlist)
         }
         else {
             setpasswordValidationError(false)
