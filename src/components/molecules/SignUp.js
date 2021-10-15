@@ -243,7 +243,7 @@ const SignUp = () => {
 
             </form >
             <Grid container >
-                <Grid item xs>
+                <Grid item>
                     <Link component={RouterLink} color="inherit" variant="body2" to="/signin">
                         Already have an account? Sign In instead
                     </Link>

@@ -1,6 +1,6 @@
 import React from 'react'
 // eslint-disable-next-line
-import { Avatar, Button, CssBaseline, Grid, Typography, useMediaQuery } from '@material-ui/core/'
+import { Avatar, Button, Grid, Typography, useMediaQuery } from '@material-ui/core/'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import { Search, PeopleAlt, Chat, PlayCircleFilled } from '@material-ui/icons/'
 import { Link } from "react-router-dom"
@@ -35,7 +35,7 @@ const useStyles = makeStyles(theme => ({
         alignItems: 'center',
         width: '60%',
     },
-    avatar: {
+    logo: {
         margin: theme.spacing(5, 1),
         boxShadow: '0 0 1em rgba(220,0,120,0.6)',
     },
@@ -77,7 +77,7 @@ const SignButtons = (props) => {
         case 'none':
             component =
                 <>
-                    <Grid item xs={12} sm={12}>
+                    <Grid item xs={12} sm={12} >
                         <Button
                             id='signin'
                             type="button"
@@ -91,7 +91,7 @@ const SignButtons = (props) => {
                             Sign In
                         </Button>
                     </Grid>
-                    <Grid item xs={12} sm={12}>
+                    <Grid item xs={12} sm={12} >
                         <Button
                             id='signup'
                             type="button"
@@ -119,13 +119,12 @@ const SignButtons = (props) => {
     return (component)
 }
 
-const LockScreen = (props) =>{
+const LockScreen = (props) => {
     const theme = useTheme()
     const widthChange = useMediaQuery(theme.breakpoints.up('md'))
     const classes = useStyles()
     return (
         <Grid className={classes.root}>
-            <CssBaseline />
             <Grid container direction="row" style={{ flex: 1, flexDirection: (widthChange) ? 'row' : 'column-reverse' }}>
                 <Grid item xs={12} sm={12} md={6} className={classes.image} >
                     <Typography component={'span'} variant='h6' className={classes.intro}>
@@ -137,15 +136,15 @@ const LockScreen = (props) =>{
                 </Grid>
                 <Grid item xs={12} sm={12} md={6} elevation={0} square="true">
                     <div className={classes.paper}>
-                        <Avatar className={classes.avatar} src={pars} />
+                        <Avatar className={classes.logo} src={pars} />
                         <Typography component={'span'} variant='h5'>
                             See what’s going on at our party right now!
                         </Typography>
                         <Typography component={'span'} variant="h6" >
                             Join the information superhighway party NOW!
                         </Typography>
-                        <Grid container spacing={2} className={classes.forms}>
-                            <SignButtons mode={props.mode}/>
+                        <Grid container spacing={3} className={classes.forms}>
+                            <SignButtons mode={props.mode} />
                         </Grid>
                     </div>
                 </Grid>

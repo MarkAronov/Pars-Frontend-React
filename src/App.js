@@ -1,6 +1,7 @@
 import React from 'react';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
+import { CssBaseline } from '@material-ui/core/'
 import StartPage from './components/organisms/StartPage';
 import { Route, Redirect, BrowserRouter } from "react-router-dom";
 import MainPage from "./components/organisms/MainPage";
@@ -18,10 +19,11 @@ export default function App() {
     }),
     [prefersDarkMode],
   );
-  console.log(auth)
-  console.log(localStorage.getItem("token"))
+
   return (
     <ThemeProvider theme={theme}>
+      <CssBaseline />
+
       <BrowserRouter>
         <Route exact path="/">
           {auth.userToken !== null ?

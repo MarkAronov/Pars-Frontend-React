@@ -2,32 +2,20 @@ import React, { useEffect } from 'react';
 import Header from '../molecules/Header';
 import { makeStyles } from '@material-ui/core/styles';
 import {
-    Grid, CssBaseline, TextField, Fab,
-    Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button
+    TextField, Dialog, DialogActions, DialogContent,
+    DialogContentText, DialogTitle, Button
 } from '@material-ui/core/';
-import { BrowserRouter } from 'react-router-dom';
-import CreateIcon from '@material-ui/icons/Create';
-
 
 
 const useStyles = makeStyles(theme => ({
     header: {
-        position: 'fixed',
-    },
-    contents: {
-        display: 'flex',
-
-    },
-    fab: {
-        position: 'fixed',
-        bottom: theme.spacing(2),
-        left: theme.spacing(2),
+        position: 'sticky',
+        
     },
 }))
 
 export default function MainPage() {
     const classes = useStyles();
-    const [OpenFab, setOpenFab] = React.useState(false);
     const [values, setValues] = React.useState({
         title: '',
         content: '',
@@ -60,36 +48,9 @@ export default function MainPage() {
     const PostHandle = () => {
     };
 
-    const handleOpenFab = () => {
-        setOpenFab(true);
-    };
-
-    const handleCloseFab = () => {
-        setOpenFab(false);
-    };
-
     return (
         <React.Fragment>
-            <CssBaseline />
             <Header className={classes.header} />
-
-            <Grid container style={{
-                marginTop: '100px',
-            }}>
-                <Grid container item xs={12}
-                    direction="column"
-                    alignItems="center">
-                    <BrowserRouter>
-                    </BrowserRouter>
-
-
-                </Grid>
-                <Fab aria-label='Add' className={classes.fab} color='secondary' onClick={handleOpenFab}>
-                    <CreateIcon />
-                </Fab>
-            </Grid>
-
-
 
 
 
@@ -98,8 +59,8 @@ export default function MainPage() {
             <Dialog
                 fullWidth={true}
                 maxWidth={'sm'}
-                open={OpenFab}
-                onClose={handleCloseFab}
+                open={false}
+                onClose={PostHandle}
                 aria-labelledby="max-width-dialog-title"
             >
                 <DialogTitle id="max-width-dialog-title">Create a New Post</DialogTitle>
@@ -126,7 +87,7 @@ export default function MainPage() {
                             rows="2"
                         >
                             Upload File
-                                            <input
+                            <input
                                 type="file"
                                 style={{ display: "none" }}
                             />
@@ -153,7 +114,7 @@ export default function MainPage() {
                         color="primary">
                         Post
                     </Button>
-                    <Button onClick={handleCloseFab} color="primary">
+                    <Button onClick={PostHandle} color="primary">
                         Cancel
                     </Button>
                 </DialogActions>

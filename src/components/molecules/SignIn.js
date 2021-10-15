@@ -1,14 +1,14 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react'
 import {
-    TextField, Grid, Button, Link, InputLabel,
+    TextField, Grid, Button, Link, InputLabel, FormHelperText,
     FilledInput, FormControl, IconButton, InputAdornment
 } from '@material-ui/core/'
 import { makeStyles, } from '@material-ui/core/styles'
 import { Visibility, VisibilityOff } from '@material-ui/icons/'
 import { Link as RouterLink } from 'react-router-dom'
 import { useAuth } from '../Auth'
-import axios from 'axios'
+
 const useStyles = makeStyles(theme => ({
     form: {
         marginTop: theme.spacing(2),
@@ -48,6 +48,9 @@ const SignIn = () => {
     }
 
     useEffect(() => {
+        setErrors(errors => ({
+            errors: false,
+        }));
         (data.email !== "" && data.password !== "" && data.password.length >= 8) ?
             setdisabledSignIn(false) :
             setdisabledSignIn(true)
@@ -58,49 +61,12 @@ const SignIn = () => {
         setshowPassword(!showPassword)
     }
 
-    const handlesignIn = () => {
-
-
-        // axios.post('http://localhost:3000/users/logout',
-        //     {}, {
-        //     headers: {
-        //         'Access-Control-Allow-Origin': '*',
-        //         'Authorization': 'Bearer ' + auth.userToken,
-        //     },
-        // })
-        //     .then(function (res) {
-        //         auth.signout()
-        //     })
-        //     .catch(function (err) {
-        //         console.error(err);
-        //     })
-
-
-
-
-        axios.post('http://localhost:3000/users/login',
-            {
-                email: data.email,
-                password: data.password
-            }, {
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-            },
-        }
-        )
-            .then(function (res) {
-                console.log(res)
-                auth.signin(res.data.token, res.data.user)
-            })
-            .catch(function (err) {
-                if (err.response) {
-                    console.error(err.response.data);
-                    setErrors(errors => ({
-                        ...errors,
-                        [err.response.data.toString()]: true
-                    }))
-                }
-            })
+    const handlesignIn = async () => {
+        const results = await auth.signIn(data.email, data.password)
+        await setErrors(errors => ({
+            ...errors,
+            [results.data.replace('Error: ', '')]: true
+        }))
     }
 
     const handleMouseDownPassword = event => {
@@ -109,7 +75,7 @@ const SignIn = () => {
 
     return (
         <>
-            <form className={classes.form} >
+            <form className={classes.form}>
                 <TextField
                     variant="filled"
                     margin="normal"
@@ -118,10 +84,13 @@ const SignIn = () => {
                     label="email"
                     value={data.email}
                     onChange={handleChange}
+                    error={errors.email}
+                    helperText={errors.email ? "Invalid Email." : ""}
                 />
                 <FormControl
                     id="passwordform"
                     fullWidth variant="filled"
+                    error={errors.password}
                 >
                     <InputLabel htmlFor="password">Password</InputLabel>
                     <FilledInput
@@ -143,6 +112,15 @@ const SignIn = () => {
                             </InputAdornment>
                         }
                     />
+                    {errors.password ?
+                        <FormHelperText
+                            error={true}
+                            id="component-helper-text"
+                        >
+                            Invalid password
+                        </FormHelperText> :
+                        <></>
+                    }
                 </FormControl>
                 <Button
                     id="signin"

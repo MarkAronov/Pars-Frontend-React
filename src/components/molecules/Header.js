@@ -1,8 +1,8 @@
 import React from 'react';
-import { useTheme, fade, makeStyles } from '@material-ui/core/styles';
+import { useTheme, alpha, makeStyles } from '@material-ui/core/styles';
 import {
     Menu, MenuItem, Badge, InputBase,
-    Typography, IconButton, Toolbar, AppBar, Drawer,
+    Avatar, IconButton, Toolbar, AppBar, Drawer,
     Divider, List, ListItemText, ListItem, ListItemIcon
 } from '@material-ui/core/';
 import {
@@ -12,41 +12,34 @@ import {
     Menu as MenuIcon,
     Search as SearchIcon,
     AccountCircle as AccountCircleIcon,
-    MoreVert as MoreIcon,
     ChevronLeft as ChevronLeftIcon,
     ChevronRight as ChevronRightIcon,
 } from '@material-ui/icons/'
-import clsx from 'clsx';
 import { useAuth } from '../Auth'
+import pars from '../../pars.png'
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
     grow: {
         flexGrow: 1,
+        margin: theme.spacing(3, 3),
     },
-
-    title: {
-        display: 'none',
-        [theme.breakpoints.up('sm')]: {
-            display: 'block',
-        },
-        color:
-            theme.palette.type === 'dark' ? theme.palette.grey[50] : theme.palette.grey[700],
+    logo: {
+        boxShadow: '0 0 1em rgba(220,0,120,0.4)',
+        marginRight: 27,
+        width: theme.spacing(4.5),
+        height: theme.spacing(4.5),
     },
     search: {
         position: 'relative',
         borderRadius: theme.shape.borderRadius,
         backgroundColor:
-            theme.palette.type === 'dark' ? fade(theme.palette.common.white, 0.15) : fade(theme.palette.common.black, 0.25),
+            theme.palette.type === 'dark' ? alpha(theme.palette.common.white, 0.15) : alpha(theme.palette.common.black, 0.25),
         '&:hover': {
-            backgroundColor: theme.palette.type === 'dark' ? fade(theme.palette.common.white, 0.25) : fade(theme.palette.common.black, 0.35),
+            backgroundColor: theme.palette.type === 'dark' ? alpha(theme.palette.common.white, 0.25) : alpha(theme.palette.common.black, 0.35),
         },
-        marginRight: theme.spacing(2),
-        marginLeft: 0,
-        width: '100%',
         [theme.breakpoints.up('sm')]: {
-            marginLeft: theme.spacing(3),
             width: 'auto',
         },
     },
@@ -72,23 +65,7 @@ const useStyles = makeStyles(theme => ({
         },
     },
     sectionDesktop: {
-        display: 'none',
-        [theme.breakpoints.up('md')]: {
-            display: 'flex',
-        },
-    },
-    sectionMobile: {
         display: 'flex',
-        [theme.breakpoints.up('md')]: {
-            display: 'none',
-        },
-    },
-    appBar: {
-        zIndex: theme.zIndex.drawer + 1,
-        transition: theme.transitions.create(['width', 'margin'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
     },
     appBarShift: {
         marginLeft: drawerWidth,
@@ -99,33 +76,12 @@ const useStyles = makeStyles(theme => ({
         }),
     },
     menuButton: {
-        marginRight: 36,
-    },
-    hide: {
-        display: 'none',
+        marginRight: 15,
     },
     drawer: {
         width: drawerWidth,
         flexShrink: 0,
         whiteSpace: 'nowrap',
-    },
-    drawerOpen: {
-        width: drawerWidth,
-        transition: theme.transitions.create('width', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-    },
-    drawerClose: {
-        transition: theme.transitions.create('width', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-        overflowX: 'hidden',
-        width: theme.spacing(7) + 1,
-        [theme.breakpoints.up('sm')]: {
-            width: theme.spacing(9) + 1,
-        },
     },
     toolbar: {
         display: 'flex',
@@ -148,46 +104,26 @@ export default function PrimarySearchAppBar() {
         anchorEl: null,
         mobileMoreAnchorEl: null,
     });
-    // eslint-disable-next-line
 
-    const [open, setOpen] = React.useState(false);
+    const [drawerState, setdrawerState] = React.useState(false);
 
-    const handleDrawerOpen = () => {
-        setOpen(true);
+    const handleDrawer = () => {
+        setdrawerState(!drawerState)
     };
-
-    const handleDrawerClose = () => {
-        setOpen(false);
-    };
-
 
     const isMenuOpen = Boolean(values.anchorEl);
-    const isMobileMenuOpen = Boolean(values.mobileMoreAnchorEl);
-
-    // eslint-disable-next-line
-    const HandleChange = prop => event => {
-        setValues({ ...values, [prop]: event.target.value });
-    };
 
     const handleProfileMenuOpen = event => {
         setValues({ ...values, anchorEl: event.currentTarget, });
-    };
-
-    const handleMobileMenuClose = () => {
-        setValues({ ...values, mobileMoreAnchorEl: null, });
     };
 
     const handleMenuClose = () => {
         setValues({ ...values, anchorEl: null, mobileMoreAnchorEl: null, });
     };
 
-    const handleSignOut = () => {
-        auth.signout()
-        window.location.reload();
-    };
-
-    const handleMobileMenuOpen = event => {
-        setValues({ ...values, mobileMoreAnchorEl: event.currentTarget, });
+    const handleSignOut = async () => {
+        const result = await auth.signOut()
+        console.log(result);
     };
 
     const menuId = 'primary-search-account-menu';
@@ -206,153 +142,99 @@ export default function PrimarySearchAppBar() {
             <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
         </Menu>
     );
-
-    const mobileMenuId = 'primary-search-account-menu-mobile';
-    const renderMobileMenu = (
-        <Menu
-            anchorEl={values.mobileMoreAnchorEl}
-            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-            id={mobileMenuId}
-            keepMounted
-            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-            open={isMobileMenuOpen}
-            onClose={handleMobileMenuClose}
+    const renderDrawer = (
+        <Drawer
+            className={classes.drawer}
+            anchor="left"
+            open={drawerState}
+            classes={{
+                paper: classes.drawerPaper,
+            }}
+            onClose={handleDrawer}
         >
-            <MenuItem>
-                <IconButton aria-label="show new mails" >
-                    <Badge badgeContent={0} color="secondary">
-                        <MailIcon />
-                    </Badge>
+            <div className={classes.drawerHeader}>
+                <IconButton onClick={handleDrawer}>
+                    {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
                 </IconButton>
-                <p>Messages</p>
-            </MenuItem>
-            <MenuItem>
-                <IconButton aria-label="show new notifications" >
-                    <Badge badgeContent={0} color="secondary">
-                        <NotificationsIcon />
-                    </Badge>
-                </IconButton>
-                <p>Notifications</p>
-            </MenuItem>
-            <MenuItem onClick={handleProfileMenuOpen}>
-                <IconButton
-                    aria-label="account of current user"
-                    aria-controls="primary-search-account-menu"
-                    aria-haspopup="true"
-
-                >
-                    <AccountCircleIcon />
-                </IconButton>
-                <p>Profile</p>
-            </MenuItem>
-        </Menu>
-    );
-
-    return (
-        <>
-            <div className={classes.grow}>
-                <AppBar className={classes.appbar}>
-                    <Toolbar >
-                        <IconButton
-                            edge="start"
-                            className={classes.menuButton}
-                            aria-label="open drawer"
-                            onClick={handleDrawerOpen}
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                        <Typography className={classes.title} variant="h6" noWrap>
-                            Pars!
-                        </Typography>
-                        <div className={classes.search} color="inherit"
-                        >
-                            <div className={classes.searchIcon}>
-                                <SearchIcon />
-                            </div>
-                            <InputBase
-                                placeholder="Search…"
-                                classes={{
-                                    root: classes.inputRoot,
-                                    input: classes.inputInput,
-                                }}
-                                inputProps={{ 'aria-label': 'search' }}
-                            />
-                        </div>
-                        <div className={classes.grow} />
-                        <div className={classes.sectionDesktop}>
-                            <IconButton aria-label="show new mails">
-                                <Badge badgeContent={0} color="secondary">
-                                    <MailIcon />
-                                </Badge>
-                            </IconButton>
-                            <IconButton aria-label="show new notifications">
-                                <Badge badgeContent={0} color="secondary">
-                                    <NotificationsIcon />
-                                </Badge>
-                            </IconButton>
-                            <IconButton
-                                edge="end"
-                                aria-label="account of current user"
-                                aria-controls={menuId}
-                                aria-haspopup="true"
-                                onClick={handleProfileMenuOpen}
-                            >
-                                <AccountCircleIcon />
-                            </IconButton>
-                        </div>
-                        <div className={classes.sectionMobile}>
-                            <IconButton
-                                aria-label="show more"
-                                aria-controls={mobileMenuId}
-                                aria-haspopup="true"
-                                onClick={handleMobileMenuOpen}
-                            >
-                                <MoreIcon />
-                            </IconButton>
-                        </div>
-                    </Toolbar>
-                </AppBar>
-
-                {renderMobileMenu}
-                {renderMenu}
             </div>
-            <Drawer
-                variant="permanent"
-                className={clsx(classes.drawer, {
-                    [classes.drawerOpen]: open,
-                    [classes.drawerClose]: !open,
-                })}
-                classes={{
-                    paper: clsx({
-                        [classes.drawerOpen]: open,
-                        [classes.drawerClose]: !open,
-                    }),
-                }}
-            >
-                <div className={classes.toolbar}>
-                    <IconButton onClick={handleDrawerClose}>
-                        {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+            <Divider />
+            <List>
+                {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+                    <ListItem button key={text}>
+                        <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                        <ListItemText primary={text} />
+                    </ListItem>
+                ))}
+            </List>
+            <Divider />
+            <List>
+                {['All mail', 'Trash', 'Spam'].map((text, index) => (
+                    <ListItem button key={text}>
+                        <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                        <ListItemText primary={text} />
+                    </ListItem>
+                ))}
+            </List>
+        </Drawer>
+    );
+    return (
+        <div className={classes.grow}>
+            <AppBar className={classes.appbar} variant='regular'>
+                <Toolbar >
+                    <IconButton
+                        edge="start"
+                        className={classes.menuButton}
+                        aria-label="open drawer"
+                        onClick={handleDrawer}
+                    >
+                        <MenuIcon />
                     </IconButton>
-                </div>
-                <Divider />
-                <List>
-                    {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                        <ListItem button key={text}>
-                            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                            <ListItemText primary={text} />
-                        </ListItem>
-                    ))}
-                </List>
-                <Divider />
-                <List>
-                    {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                        <ListItem button key={text}>
-                            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                            <ListItemText primary={text} />
-                        </ListItem>
-                    ))}
-                </List>
-            </Drawer>
-        </>
+                    <Avatar className={classes.logo} src={pars} />
+                    <div className={classes.grow} />
+
+                    <div
+                        className={classes.search}
+                    >
+                        <div className={classes.searchIcon}>
+                            <SearchIcon />
+                        </div>
+                        <InputBase
+                            placeholder="Search"
+                            classes={{
+                                root: classes.inputRoot,
+                                input: classes.inputInput,
+                            }}
+                            inputProps={{ 'aria-label': 'search' }}
+                        />
+                    </div>
+                    <div className={classes.grow} />
+
+
+                    <div className={classes.sectionDesktop}>
+                        <IconButton aria-label="show new mails">
+                            <Badge badgeContent={0} color="secondary">
+                                <MailIcon />
+                            </Badge>
+                        </IconButton>
+                        <IconButton aria-label="show new notifications">
+                            <Badge badgeContent={0} color="secondary">
+                                <NotificationsIcon />
+                            </Badge>
+                        </IconButton>
+                        <IconButton
+                            edge="end"
+                            aria-label="account of current user"
+                            aria-controls={menuId}
+                            aria-haspopup="true"
+                            onClick={handleProfileMenuOpen}
+                        >
+                            <AccountCircleIcon />
+                        </IconButton>
+                    </div>
+                </Toolbar>
+            </AppBar>
+            {renderDrawer}
+            {renderMenu}
+        </div>
     );
 }
