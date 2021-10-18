@@ -1,30 +1,44 @@
 import React from 'react'
-import { Link, Container, Typography } from '@material-ui/core/'
-import { makeStyles } from '@material-ui/core/styles'
-
-const useStyles = makeStyles(theme => ({
-    footer: {
-        padding: theme.spacing(2, 1),
-        marginTop: 'auto',
-        textAlign: 'center',
-        backgroundColor:
-            theme.palette.type === 'dark' ? theme.palette.grey[800] : theme.palette.grey[200],
-    },
-}))
+import { Box, Link, Container, Typography } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 
 export default function Footer() {
-    const classes = useStyles()
+    const theme = useTheme()
     return (
-        <footer className={classes.footer}>
+        <Box
+            component="footer"
+            align="center"
+            sx={{
+                py: 2,
+                px: 2,
+                mt: 'auto',
+                textAlign: 'center',
+                backgroundColor:
+                    theme.palette.mode === 'dark' ? theme.palette.grey[800] : theme.palette.grey[200],
+            }}
+        >
             <Container maxWidth="sm">
-                <Typography variant='body2' color='textSecondary' className={classes.text}>
-                    <Link color='inherit' to="/about">
-                        {'About Us '}
+                <Typography variant='body2' color='textSecondary'>
+                    <Link color='inherit'>
+                        {'About Us'}
                     </Link>
-                    {' '}
+                    {'  '}
                     {`© ${new Date().getFullYear()} Pars`}
                 </Typography>
             </Container>
-        </footer>
+        </Box>
+        // <footer
+        //     sx={{
+        //         py: 3,
+        //         px: 2,
+        //         mt: 'auto',
+        //         backgroundColor:
+        //             theme.palette.mode === 'dark' ? theme.palette.grey[800] : theme.palette.grey[200],
+        //     }}
+        // >
+        //     <Container maxWidth="sm">
+        //        
+        //     </Container>
+        // </footer>
     )
 }

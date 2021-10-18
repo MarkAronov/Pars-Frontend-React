@@ -1,65 +1,18 @@
 import React from 'react'
-// eslint-disable-next-line
-import { Avatar, Button, Grid, Typography, useMediaQuery } from '@material-ui/core/'
-import { makeStyles, useTheme } from '@material-ui/core/styles'
-import { Search, PeopleAlt, Chat, PlayCircleFilled } from '@material-ui/icons/'
+import { Avatar, Button, Grid, Box, Paper, Typography, useMediaQuery } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
+import {
+    Search as SearchIcon,
+    People as PeopleIcon,
+    Chat as ChatIcon,
+    PlayCircle as PlayCircleIcon
+} from '@mui/icons-material/'
 import { Link } from "react-router-dom"
 import pars from '../../pars.png'
 import Footer from '../molecules/Footer'
-// eslint-disable-next-line
 import SignIn from '../molecules/SignIn'
-// eslint-disable-next-line
 import SignUp from '../molecules/SignUp'
-// eslint-disable-next-line
 
-const useStyles = makeStyles(theme => ({
-    root: {
-        display: 'flex',
-        flexDirection: 'column',
-        height: '100vh',
-    },
-    image: {
-        backgroundRepeat: 'no-repeat',
-        backgroundColor:
-            theme.palette.type === 'dark' ? theme.palette.grey[900] : theme.palette.grey[50],
-        backgroundSize: 'cover',
-        alignItems: 'center',
-        display: 'flex',
-        justifyContent: 'center',
-    },
-    paper: {
-        marginLeft: 'auto',
-        marginRight: 'auto',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        width: '60%',
-    },
-    logo: {
-        margin: theme.spacing(5, 1),
-        boxShadow: '0 0 1em rgba(220,0,120,0.6)',
-    },
-    title: {
-        margin: theme.spacing(0, 4),
-        alignItems: 'left',
-    },
-    forms: {
-        margin: theme.spacing(2, 0, 8),
-    },
-    paragraph: {
-        display: 'flex',
-        flexDirection: 'column '
-    },
-    intro: {
-        margin: theme.spacing(4, 3),
-        flexDirection: 'column',
-        verticalAlign: 'middle',
-        display: 'block',
-    },
-    main: {
-        height: '23333px'
-    }
-}))
 
 const SignButtons = (props) => {
     const [values, setValues] = React.useState({
@@ -72,6 +25,7 @@ const SignButtons = (props) => {
     const handleMouseDownSign = event => {
         event.preventDefault()
     }
+
     let component = null
     switch (values.mode) {
         case 'none':
@@ -119,38 +73,130 @@ const SignButtons = (props) => {
     return (component)
 }
 
-const LockScreen = (props) => {
+export default function LockScreen(props) {
     const theme = useTheme()
     const widthChange = useMediaQuery(theme.breakpoints.up('md'))
-    const classes = useStyles()
     return (
-        <Grid className={classes.root}>
-            <Grid container direction="row" style={{ flex: 1, flexDirection: (widthChange) ? 'row' : 'column-reverse' }}>
-                <Grid item xs={12} sm={12} md={6} className={classes.image} >
-                    <Typography component={'span'} variant='h6' className={classes.intro}>
-                        <p><span><Search /></span> Follow your interests.</p>
-                        <p><span><PeopleAlt /></span> Hear what people are talking about.</p>
-                        <p><span><Chat /></span> Join the conversation.</p>
-                        <p><span><PlayCircleFilled /></span> Create original content.</p>
-                    </Typography>
+        <Grid
+            sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                height: '100vh',
+            }}
+        >
+            <Grid
+                container
+                direction="row"
+                sx={{
+                    flex: 1,
+                    flexDirection: (widthChange) ? 'row' : 'column-reverse'
+                }}
+            >
+                <Grid
+                    xs={12}
+                    sm={12}
+                    md={6}
+                    sx={{
+                        backgroundRepeat: 'no-repeat',
+                        backgroundColor:
+                            theme.palette.mode === 'dark' ? theme.palette.grey[900] : theme.palette.grey[50],
+                        backgroundSize: 'cover',
+                        alignItems: 'center',
+                        display: 'flex',
+                        justifyContent: 'center',
+                    }}
+                >
+                    <Grid
+                        component={'span'}
+                        sx={{
+                            margin: theme.spacing(4, 3),
+                            flexDirection: 'column',
+                            verticalAlign: 'middle',
+                            display: 'block',
+                        }}
+                    >
+                        {
+                            [[<SearchIcon />, <>Follow your interests</>],
+                            [<PeopleIcon />, <>Make some friends</>],
+                            [<ChatIcon />, <>Join the conversation</>],
+                            [<PlayCircleIcon />, <>Create original content</>]
+                            ].map((value) => (
+                                <Grid
+                                    container
+                                    direction="row"
+                                    alignItems="center"
+                                    spacing={1}
+                                    sx={{
+                                        py: 1.5,
+                                        px: 1.5,
+                                    }}
+                                >
+                                    <Grid item >
+                                        {value[0]}
+                                    </Grid>
+                                    <Grid item >
+                                        <Typography variant='h6'>
+                                            {value[1]}
+                                        </Typography>
+                                    </Grid>
+                                </Grid >
+                            ))
+                        }
+                    </Grid>
                 </Grid>
-                <Grid item xs={12} sm={12} md={6} elevation={0} square="true">
-                    <div className={classes.paper}>
-                        <Avatar className={classes.logo} src={pars} />
-                        <Typography component={'span'} variant='h5'>
+                <Grid
+                    item
+                    xs={12}
+                    sm={12}
+                    md={6}
+                    elevation={6}
+                    square
+                    component={Paper}
+                >
+                    <Box
+                        sx={{
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                            width: {
+                                xs: '70%',
+                                sm: '60%',
+                                md: '60%',
+                                lg: '55%',
+                            },
+                            my: 6,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <Avatar
+                            sx={{
+                                margin: theme.spacing(5, 1),
+                                boxShadow: '0 0 1em rgba(220,0,120,0.6)',
+                            }}
+                            src={pars}
+                        />
+
+                        <Typography component="h1" variant="h5">
                             See what’s going on at our party right now!
                         </Typography>
-                        <Typography component={'span'} variant="h6" >
+
+                        <Typography component="h1" variant="h6" >
                             Join the information superhighway party NOW!
                         </Typography>
-                        <Grid container spacing={3} className={classes.forms}>
+
+                        <Grid container
+                            spacing={3}
+                            sx={{
+                                margin: theme.spacing(2, 0, 8),
+                            }}
+                        >
                             <SignButtons mode={props.mode} />
                         </Grid>
-                    </div>
+                    </Box>
                 </Grid>
             </Grid>
             <Footer />
         </Grid >
     )
 }
-export default LockScreen

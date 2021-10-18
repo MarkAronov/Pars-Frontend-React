@@ -39,7 +39,14 @@ const useProvideAuth = () => {
         }
         catch (err) {
             if (err.response) {
-                return (err.response)
+                console.log(err.response.data);
+                if (err.response.status === 401) {
+                    setUserToken(null);
+                    setUser(null);
+                    localStorage.removeItem("token");
+                    localStorage.removeItem("user");
+                }
+                else return (err.response)
             }
         }
     }
@@ -57,7 +64,14 @@ const useProvideAuth = () => {
             localStorage.removeItem("token");
             localStorage.removeItem("user");
         }).catch(function (err) {
-            console.log(err)
+            if (err.response) {
+                if (err.response.status === 401) {
+                    setUserToken(null);
+                    setUser(null);
+                    localStorage.removeItem("token");
+                    localStorage.removeItem("user");
+                }
+            }
         })
     }
 

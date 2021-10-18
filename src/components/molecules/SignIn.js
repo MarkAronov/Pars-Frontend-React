@@ -3,23 +3,17 @@ import React, { useState, useEffect } from 'react'
 import {
     TextField, Grid, Button, Link, InputLabel, FormHelperText,
     FilledInput, FormControl, IconButton, InputAdornment
-} from '@material-ui/core/'
-import { makeStyles, } from '@material-ui/core/styles'
-import { Visibility, VisibilityOff } from '@material-ui/icons/'
+} from '@mui/material'
+import { useTheme } from '@mui/material/styles'
+import {
+    Visibility as VisibilityIcon,
+    VisibilityOff as VisibilityOffIcon
+} from '@mui/icons-material/'
 import { Link as RouterLink } from 'react-router-dom'
 import { useAuth } from '../Auth'
 
-const useStyles = makeStyles(theme => ({
-    form: {
-        marginTop: theme.spacing(2),
-    },
-    submit: {
-        margin: theme.spacing(3, 0, 2),
-    },
-}))
-
-const SignIn = () => {
-    const classes = useStyles()
+export default function SignIn() {
+    const theme = useTheme()
     const auth = useAuth()
     const [data, setData] = useState({
         email: 'test2@testing.com',
@@ -74,82 +68,80 @@ const SignIn = () => {
     }
 
     return (
-        <>
-            <form className={classes.form}>
-                <TextField
-                    variant="filled"
-                    margin="normal"
-                    fullWidth
-                    id="email"
-                    label="email"
-                    value={data.email}
+        <form sx={{ marginTop: theme.spacing(2), }}>
+            <TextField
+                variant="filled"
+                margin="normal"
+                fullWidth
+                id="email"
+                label="email"
+                value={data.email}
+                onChange={handleChange}
+                error={errors.email}
+                helperText={errors.email ? "Invalid Email." : ""}
+            />
+            <FormControl
+                id="passwordform"
+                fullWidth variant="filled"
+                error={errors.password}
+            >
+                <InputLabel htmlFor="password">Password</InputLabel>
+                <FilledInput
+                    id="password"
+                    type={showPassword ? 'text' : 'password'}
+                    value={data.password}
                     onChange={handleChange}
-                    error={errors.email}
-                    helperText={errors.email ? "Invalid Email." : ""}
-                />
-                <FormControl
-                    id="passwordform"
-                    fullWidth variant="filled"
-                    error={errors.password}
-                >
-                    <InputLabel htmlFor="password">Password</InputLabel>
-                    <FilledInput
-                        id="password"
-                        type={showPassword ? 'text' : 'password'}
-                        value={data.password}
-                        onChange={handleChange}
-                        endAdornment={
-                            <InputAdornment position="end">
-                                <IconButton
-                                    aria-label="toggle password visibility"
-                                    id="showPassword"
-                                    onClick={handleClickShowPassword}
-                                    onMouseDown={handleMouseDownPassword}
-                                    edge="end"
-                                >
-                                    {showPassword ? <Visibility /> : <VisibilityOff />}
-                                </IconButton>
-                            </InputAdornment>
-                        }
-                    />
-                    {errors.password ?
-                        <FormHelperText
-                            error={true}
-                            id="component-helper-text"
-                        >
-                            Invalid password
-                        </FormHelperText> :
-                        <></>
+                    endAdornment={
+                        <InputAdornment position="end">
+                            <IconButton
+                                aria-label="toggle password visibility"
+                                id="showPassword"
+                                onClick={handleClickShowPassword}
+                                onMouseDown={handleMouseDownPassword}
+                                edge="end"
+                            >
+                                {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                            </IconButton>
+                        </InputAdornment>
                     }
-                </FormControl>
-                <Button
-                    id="signin"
-                    disabled={disabledSignIn}
-                    fullWidth
-                    //type="submit"
-                    variant="contained"
-                    onClick={handlesignIn}
-                    className={classes.submit}
-                >
-                    Sign In
-                </Button>
+                />
+                {errors.password ?
+                    <FormHelperText
+                        error={true}
+                        id="component-helper-text"
+                    >
+                        Invalid password
+                    </FormHelperText> :
+                    <></>
+                }
+            </FormControl>
+            <Button
+                id="signin"
+                disabled={disabledSignIn}
+                fullWidth
+                //type="submit"
+                variant="contained"
+                onClick={handlesignIn}
+                sx={{
+                    margin: theme.spacing(3, 0, 2),
+                }}
+            >
+                Sign In
+            </Button>
 
-                <Grid container >
-                    <Grid item xs>
-                        <Link component={RouterLink} color="inherit" variant="body2" to="/">
-                            Forgot password?
-                        </Link>
-                    </Grid>
-                    <Grid item >
-                        <Link component={RouterLink} color="inherit" variant="body2" to="/signup">
-                            New to Pars? Sign Up
-                        </Link>
-                    </Grid>
-
+            <Grid container >
+                <Grid item xs>
+                    <Link component={RouterLink} color="inherit" variant="body2" to="/">
+                        Forgot password?
+                    </Link>
                 </Grid>
-            </form >
-        </>
+                <Grid item >
+                    <Link component={RouterLink} color="inherit" variant="body2" to="/signup">
+                        New to Pars? Sign Up
+                    </Link>
+                </Grid>
+
+            </Grid>
+        </form >
     )
 }
-
-export default SignIn

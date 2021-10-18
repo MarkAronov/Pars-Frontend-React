@@ -3,25 +3,17 @@ import React, { useState, useEffect } from 'react'
 import {
     TextField, Grid, Button, Link, InputLabel, FilledInput, FormControl,
     FormHelperText, IconButton, InputAdornment,
-} from '@material-ui/core/'
-import { makeStyles, } from '@material-ui/core/styles'
-import { Visibility, VisibilityOff } from '@material-ui/icons/'
+} from '@mui/material'
+import { useTheme } from '@mui/material/styles'
+import {
+    Visibility as VisibilityIcon,
+    VisibilityOff as VisibilityOffIcon
+} from '@mui/icons-material/'
 import { Link as RouterLink } from 'react-router-dom'
 
-const useStyles = makeStyles(theme => ({
-    form: {
-        marginTop: theme.spacing(2),
-    },
-    submit: {
-        margin: theme.spacing(3, 0, 2),
-    },
-    errorlist: {
-        display: "block"
-    },
-}))
 
-const SignUp = () => {
-    const classes = useStyles()
+export default function SignUp() {
+    const theme = useTheme()
     const [data, setData] = useState({
         username: '',
         email: '',
@@ -73,7 +65,7 @@ const SignUp = () => {
     */
 
     useEffect(() => {
-        (data.username !== "" ) ?
+        (data.username !== "") ?
             setusernameValidationError(true) :
             setusernameValidationError(false)
     }, [data.username]
@@ -128,7 +120,7 @@ const SignUp = () => {
 
     return (
         <>
-            <form className={classes.form} noValidate>
+            <form sx={{ marginTop: theme.spacing(2), }} noValidate>
                 <TextField
                     error={usernameValidationError}
                     helperText={usernameValidationError ? "Invalid Username." : ""}
@@ -178,7 +170,7 @@ const SignUp = () => {
                                     onMouseDown={handleMouseDownPassword}
                                     edge="end"
                                 >
-                                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                                    {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
                                 </IconButton>
                             </InputAdornment>
                         }
@@ -188,7 +180,7 @@ const SignUp = () => {
                             error={true}
                             id="component-helper-text"
                         >
-                            {passwordErrorList.map((error, i) => <span key={i} className={classes.errorlist} >{error}</span>)}
+                            {passwordErrorList.map((error, i) => <span key={i} sx={{ display: "block" }} >{error}</span>)}
                         </FormHelperText> :
                         <></>
                     }
@@ -213,7 +205,7 @@ const SignUp = () => {
                                     onMouseDown={handleMouseDownPassword}
                                     edge="end"
                                 >
-                                    {showPasswordRepeat ? <Visibility /> : <VisibilityOff />}
+                                    {showPasswordRepeat ? <VisibilityIcon /> : <VisibilityOffIcon />}
                                 </IconButton>
                             </InputAdornment>
                         }
@@ -235,7 +227,7 @@ const SignUp = () => {
                     type="submit"
                     variant="contained"
                     onSubmit={signUpHandle}
-                    className={classes.submit}
+                    sx={{ margin: theme.spacing(3, 0, 2), }}
                 >
                     Sign Up
                 </Button>
@@ -252,5 +244,3 @@ const SignUp = () => {
         </>
     )
 }
-
-export default SignUp

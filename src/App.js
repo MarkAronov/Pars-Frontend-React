@@ -1,7 +1,7 @@
 import React from 'react';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { createTheme, ThemeProvider } from '@material-ui/core/styles';
-import { CssBaseline } from '@material-ui/core/'
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 import StartPage from './components/organisms/StartPage';
 import { Route, Redirect, BrowserRouter } from "react-router-dom";
 import MainPage from "./components/organisms/MainPage";
@@ -11,14 +11,17 @@ import { useAuth } from './components/Auth';
 export default function App() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)', { noSsr: true });
   const auth = useAuth()
+
   const theme = React.useMemo(
-    () => createTheme({
-      palette: {
-        type: prefersDarkMode ? 'dark' : 'light',
-      },
-    }),
+    () =>
+      createTheme({
+        palette: {
+          mode: prefersDarkMode ? 'dark' : 'light',
+        },
+      }),
     [prefersDarkMode],
   );
+
 
   return (
     <ThemeProvider theme={theme}>
