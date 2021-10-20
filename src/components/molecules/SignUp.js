@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react'
 import {
-    TextField, Grid, Button, Link, InputLabel, FilledInput, FormControl,
+    Box,TextField, Grid, Button, Link, InputLabel, FilledInput, FormControl,
     FormHelperText, IconButton, InputAdornment,
 } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
@@ -120,7 +120,8 @@ export default function SignUp() {
 
     return (
         <>
-            <form sx={{ marginTop: theme.spacing(2), }} noValidate>
+            <Box
+                component="form">
                 <TextField
                     error={usernameValidationError}
                     helperText={usernameValidationError ? "Invalid Username." : ""}
@@ -153,7 +154,8 @@ export default function SignUp() {
                 />
                 <FormControl
                     id="passwordform"
-                    fullWidth variant="filled"
+                    fullWidth
+                    variant="filled"
                     error={passwordValidationError}
                 >
                     <InputLabel htmlFor="password">Password</InputLabel>
@@ -187,12 +189,12 @@ export default function SignUp() {
                 </FormControl>
                 <FormControl
                     id="passwordform"
-                    fullWidth variant="filled"
+                    fullWidth
+                    variant="filled"
                     error={passwordRepeatError}
                 >
                     <InputLabel htmlFor="password">Repeat your password</InputLabel>
                     <FilledInput
-                        helpertext={passwordRepeatError ? "Passwords don't match." : ""}
                         id="passwordRepeat"
                         type={showPasswordRepeat ? 'text' : 'password'}
                         value={data.passwordRepeat}
@@ -230,10 +232,8 @@ export default function SignUp() {
                     sx={{ margin: theme.spacing(3, 0, 2), }}
                 >
                     Sign Up
-                </Button>
-
-
-            </form >
+            </Button>
+        </Box>
             <Grid container >
                 <Grid item>
                     <Link component={RouterLink} color="inherit" variant="body2" to="/signin">

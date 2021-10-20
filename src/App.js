@@ -1,7 +1,7 @@
 import React from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
+import { CssBaseline } from '@mui/material';
 import StartPage from './components/organisms/StartPage';
 import { Route, Redirect, BrowserRouter } from "react-router-dom";
 import MainPage from "./components/organisms/MainPage";

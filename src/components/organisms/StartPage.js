@@ -145,10 +145,18 @@ export default function LockScreen(props) {
                     </Grid>
                 </Grid>
                 <Grid
-                    item
                     xs={12}
                     sm={12}
                     md={6}
+                    sx={{
+                        backgroundRepeat: 'no-repeat',
+                        backgroundColor:
+                            theme.palette.mode === 'dark' ? theme.palette.grey[900] : theme.palette.grey[50],
+                        backgroundSize: 'cover',
+                        alignItems: 'center',
+                        display: 'flex',
+                        justifyContent: 'center',
+                    }}
                     elevation={6}
                     square
                     component={Paper}

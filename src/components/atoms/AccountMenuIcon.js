@@ -1,7 +1,10 @@
 import React from 'react';
 import {
-    Menu, MenuItem, Avatar, Divider, ListItemIcon, IconButton, Tooltip
+    Menu, MenuItem, Avatar, Divider, ListItemIcon,
+    IconButton, Tooltip, Typography
 } from '@mui/material';
+import { alpha } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles'
 import {
     PersonAdd as PersonAddIcon,
     Settings as SettingsIcon,
@@ -10,6 +13,7 @@ import {
 import { useAuth } from '../Auth'
 
 export default function AccountMenuIcon() {
+    const theme = useTheme()
     const auth = useAuth()
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -26,8 +30,24 @@ export default function AccountMenuIcon() {
     return (
         <>
             <Tooltip title="Account settings">
-                <IconButton onClick={handleClick} size="small" >
-                    <Avatar sx={{ width: 32, height: 32 }}>{(auth.user) ? auth.user.name[0] : ''}</Avatar>
+                <IconButton onClick={handleClick}  >
+                    <Avatar sx={{
+                        width: 32,
+                        height: 32,
+                        bgcolor: alpha(theme.palette.common.white, 1)
+                        // bgcolor: theme.palette.mode === 'dark' ?
+                        //     alpha(theme.palette.common.white, 1) :
+                        //     alpha(theme.palette.common.white, 0.5),
+                    }}
+                    >
+                        <Typography
+                            sx={{
+                                color: alpha(theme.palette.common.black, 1)
+                            }}
+                        >
+                            {(auth.user) ? auth.user.name[0] : ''}
+                        </Typography>
+                    </Avatar>
                 </IconButton>
             </Tooltip>
             <Menu
