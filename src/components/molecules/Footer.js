@@ -14,7 +14,7 @@ export default function Footer() {
                 mt: 'auto',
                 textAlign: 'center',
                 backgroundColor:
-                    theme.palette.mode === 'dark' ? theme.palette.grey[800] : theme.palette.grey[200],
+                    theme.palette.mode === 'dark' ? theme.palette.grey[800] : theme.palette.grey[50],
             }}
         >
             <Container maxWidth="sm">
@@ -27,18 +27,5 @@ export default function Footer() {
                 </Typography>
             </Container>
         </Box>
-        // <footer
-        //     sx={{
-        //         py: 3,
-        //         px: 2,
-        //         mt: 'auto',
-        //         backgroundColor:
-        //             theme.palette.mode === 'dark' ? theme.palette.grey[800] : theme.palette.grey[200],
-        //     }}
-        // >
-        //     <Container maxWidth="sm">
-        //        
-        //     </Container>
-        // </footer>
     )
 }

@@ -12,7 +12,7 @@ import {
 } from '@mui/icons-material'
 import { useAuth } from '../Auth'
 
-export default function AccountMenuIcon() {
+export default function MenuAppbar() {
     const theme = useTheme()
     const auth = useAuth()
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -24,8 +24,7 @@ export default function AccountMenuIcon() {
         setAnchorEl(null);
     };
     const handleSignOut = async () => {
-        const result = await auth.signOut()
-        console.log(result);
+        await auth.signOut()
     };
     return (
         <>
@@ -51,6 +50,7 @@ export default function AccountMenuIcon() {
                 </IconButton>
             </Tooltip>
             <Menu
+                id="long-menu"
                 anchorEl={anchorEl}
                 open={open}
                 onClose={handleClose}
@@ -58,7 +58,6 @@ export default function AccountMenuIcon() {
                 PaperProps={{
                     elevation: 0,
                     sx: {
-                        overflow: 'visible',
                         filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
                         mt: 1.5,
                         '& .MuiAvatar-root': {
@@ -85,10 +84,10 @@ export default function AccountMenuIcon() {
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
                 <MenuItem>
-                    <Avatar /> Profile
-                </MenuItem>
-                <MenuItem>
-                    <Avatar /> My account
+                    <Avatar>
+                        {(auth.user) ? auth.user.name[0] : ''}
+                    </Avatar>
+                    {(auth.user) ? auth.user.name : ''}
                 </MenuItem>
                 <Divider />
                 <MenuItem>

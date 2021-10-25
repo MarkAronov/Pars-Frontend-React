@@ -1,13 +1,11 @@
-
-
-
 import React from 'react';
-import { styled, alpha } from '@mui/material/styles';
+import { styled, alpha, useTheme } from '@mui/material/styles';
 import {
-    InputBase, Button
+    Tooltip, IconButton, Box, InputBase, Button
 } from '@mui/material/';
 import {
     Search as SearchIcon,
+    ArrowBack as ArrowBackIcon,
 } from '@mui/icons-material/'
 
 const Search = styled('div')(({ theme }) => ({
@@ -15,7 +13,6 @@ const Search = styled('div')(({ theme }) => ({
     borderRadius: '3px',
     backgroundColor: alpha(theme.palette.common.white, 0.15),
     width: '100%',
-
     [theme.breakpoints.up('sm')]: {
         marginLeft: theme.spacing(3),
         width: '35%',
@@ -61,16 +58,58 @@ const SearchButton = styled(Button)(({ theme }) => ({
     },
 }));
 
-export default function SearchBar() {
+export default function SearchBar(props) {
+    const theme = useTheme()
+
+    const handleMobileSearch = () => {
+        props.setMoblieSearchBar(!props.moblieSearchBar)
+    };
+    
     return (
-        <Search>
-            <StyledInputBase
-                placeholder="Search"
-                inputProps={{ 'aria-label': 'search' }}
-            />
-            <SearchButton >
-                <SearchIcon />
-            </SearchButton>
-        </Search>
+        <>
+            <Box sx={{
+                flex: 1,
+                display: (props.moblieSearchBar) ? 'flex' : 'none',
+                [theme.breakpoints.up('sm')]: {
+                    display: { xs: 'flex', sm: 'none' }
+                }
+            }}>
+                <IconButton
+                    size="large"
+                    onClick={handleMobileSearch}
+                    color="inherit"
+                >
+                    <ArrowBackIcon />
+                </IconButton>
+            </Box>
+            <Search
+                sx={{
+                    display: {
+                        xs: (props.moblieSearchBar) ? 'initial' : 'none',
+                        sm: 'initial'
+                    }
+                }}
+            >
+                <StyledInputBase
+                    placeholder="Search"
+                />
+                <Tooltip title="Search">
+                    <SearchButton >
+                        <SearchIcon />
+                    </SearchButton>
+                </Tooltip>
+            </Search>
+            <Box sx={{ display: { xs: (props.moblieSearchBar) ? 'none' : 'flex', sm: 'none' } }}>
+                <Tooltip title="Search">
+                    <IconButton
+                        size="large"
+                        onClick={handleMobileSearch}
+                        color="inherit"
+                    >
+                        <SearchIcon />
+                    </IconButton>
+                </Tooltip>
+            </Box>
+        </>
     );
 }

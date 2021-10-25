@@ -69,10 +69,7 @@ export default function SignIn() {
 
     return (
         <>
-            <Box
-                component="form"
-                sx={{ width: "100" }}
-            >
+            <form >
                 <TextField
                     error={errors.email}
                     helperText={errors.email ? "Invalid Email." : ""}
@@ -97,7 +94,6 @@ export default function SignIn() {
                         endAdornment={
                             <InputAdornment position="end">
                                 <IconButton
-                                    aria-label="toggle password visibility"
                                     id="showPassword"
                                     onClick={handleClickShowPassword}
                                     onMouseDown={handleMouseDownPassword}
@@ -129,7 +125,8 @@ export default function SignIn() {
                 >
                     Sign In
                 </Button>
-            </Box>
+
+            </form>
             <Grid
                 container
                 direction="row"

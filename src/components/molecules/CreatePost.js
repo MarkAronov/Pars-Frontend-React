@@ -32,7 +32,6 @@ export default function MainPage() {
             maxWidth={'sm'}
             open={false}
             onClose={PostHandle}
-            aria-labelledby="max-width-dialog-title"
         >
             <DialogTitle id="max-width-dialog-title">Create a New Post</DialogTitle>
             <DialogContent>

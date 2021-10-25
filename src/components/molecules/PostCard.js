@@ -56,10 +56,10 @@ export default function PostCard(props) {
         <Card className={classes.card}>
             <CardHeader
                 avatar={
-                    <Avatar aria-label='recipe' className={classes.avatar} src={(data.Avatar)} />
+                    <Avatar className={classes.avatar} src={(data.Avatar)} />
                 }
                 action={
-                    <IconButton aria-label='settings'>
+                    <IconButton>
                         <MoreVertIcon />
                     </IconButton>
                 }
@@ -85,11 +85,11 @@ export default function PostCard(props) {
 
             <CardActions disableSpacing>
 
-                <IconButton aria-label='add to favorites'>
+                <IconButton >
                     <FavoriteIcon />
                 </IconButton>
 
-                <IconButton aria-label='share'>
+                <IconButton >
                     <ShareIcon />
                 </IconButton>
 

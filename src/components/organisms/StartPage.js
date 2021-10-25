@@ -73,7 +73,7 @@ const SignButtons = (props) => {
     return (component)
 }
 
-export default function LockScreen(props) {
+export default function StartPage(props) {
     const theme = useTheme()
     const widthChange = useMediaQuery(theme.breakpoints.up('md'))
     return (
@@ -93,14 +93,13 @@ export default function LockScreen(props) {
                 }}
             >
                 <Grid
+                    item
                     xs={12}
                     sm={12}
                     md={6}
                     sx={{
-                        backgroundRepeat: 'no-repeat',
                         backgroundColor:
                             theme.palette.mode === 'dark' ? theme.palette.grey[900] : theme.palette.grey[50],
-                        backgroundSize: 'cover',
                         alignItems: 'center',
                         display: 'flex',
                         justifyContent: 'center',
@@ -120,8 +119,9 @@ export default function LockScreen(props) {
                             [<PeopleIcon />, <>Make some friends</>],
                             [<ChatIcon />, <>Join the conversation</>],
                             [<PlayCircleIcon />, <>Create original content</>]
-                            ].map((value) => (
+                            ].map((value, index) => (
                                 <Grid
+                                    key={index}
                                     container
                                     direction="row"
                                     alignItems="center"
@@ -145,16 +145,15 @@ export default function LockScreen(props) {
                     </Grid>
                 </Grid>
                 <Grid
+                    item
                     xs={12}
                     sm={12}
                     md={6}
                     sx={{
-                        backgroundRepeat: 'no-repeat',
                         backgroundColor:
                             theme.palette.mode === 'dark' ? theme.palette.grey[900] : theme.palette.grey[50],
-                        backgroundSize: 'cover',
                         alignItems: 'center',
-                        display: 'flex',
+                        display: (widthChange) ? 'flex' : '',
                         justifyContent: 'center',
                     }}
                     elevation={6}
