@@ -3,9 +3,7 @@ import {
     Menu, MenuItem, Divider,
     IconButton, Tooltip, Typography, Badge,
 } from '@mui/material';
-import {
-    Notifications as NotificationsIcon,
-} from '@mui/icons-material'
+import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
 
 export default function NotificationsAppbar() {
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -26,7 +24,7 @@ export default function NotificationsAppbar() {
                     onClick={handleClick}
                 >
                     <Badge badgeContent={0} color="error">
-                        <NotificationsIcon />
+                        <NotificationsNoneOutlinedIcon />
                     </Badge>
                 </IconButton>
             </Tooltip>
@@ -55,12 +53,12 @@ export default function NotificationsAppbar() {
                         },
                     },
                 }}
-                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                transformOrigin={{ horizontal: 'center', vertical: 'top' }}
+                anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
             >
                 <MenuItem>
                     <Typography>
-                        You have no new messages.
+                        You have no new notifications.
                     </Typography>
                 </MenuItem>
                 <Divider />

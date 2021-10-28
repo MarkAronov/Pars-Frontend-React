@@ -1,5 +1,5 @@
 import React from 'react'
-import { Avatar, Button, Grid, Box, Paper, Typography, useMediaQuery } from '@mui/material'
+import { Button, Grid, Box, Paper, Typography, useMediaQuery } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import {
     Search as SearchIcon,
@@ -8,11 +8,10 @@ import {
     PlayCircle as PlayCircleIcon
 } from '@mui/icons-material/'
 import { Link } from "react-router-dom"
-import pars from '../../pars.png'
 import Footer from '../molecules/Footer'
 import SignIn from '../molecules/SignIn'
 import SignUp from '../molecules/SignUp'
-
+import ParsLogo from '../atoms/ParsLogo'
 
 const SignButtons = (props) => {
     const [values, setValues] = React.useState({
@@ -176,14 +175,11 @@ export default function StartPage(props) {
                             alignItems: 'center',
                         }}
                     >
-                        <Avatar
+                        <ParsLogo
                             sx={{
                                 margin: theme.spacing(5, 1),
-                                boxShadow: '0 0 1em rgba(220,0,120,0.6)',
                             }}
-                            src={pars}
                         />
-
                         <Typography component="h1" variant="h5">
                             See what’s going on at our party right now!
                         </Typography>

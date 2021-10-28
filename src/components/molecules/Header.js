@@ -1,27 +1,19 @@
 import React, { useEffect } from 'react';
-import { useTheme, } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 import {
-    useMediaQuery, Avatar, IconButton, Toolbar, AppBar, Box
+    useMediaQuery, IconButton, Toolbar, AppBar, Box
 } from '@mui/material/';
-import {
-    Menu as MenuIcon,
-} from '@mui/icons-material/'
+import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
 import SearchBar from '../atoms/SearchBar'
 import MenuAppbar from '../atoms/MenuAppbar'
 import MessagesAppbar from '../atoms/MessagesAppbar'
 import NotificationsAppbar from '../atoms/NotificationsAppbar'
-import pars from '../../pars.png'
-import Drawers from '../atoms/Drawers';
+import ParsLogo from '../atoms/ParsLogo'
 
-export default function Header() {
+export default function Header(props) {
     const theme = useTheme();
-    const [drawerState, setdrawerState] = React.useState(false);
     const [moblieSearchBar, setMoblieSearchBar] = React.useState(false);
     const widthChange = useMediaQuery(theme.breakpoints.down('sm'))
-
-    const handleDrawer = () => {
-        setdrawerState(!drawerState)
-    };
 
     useEffect(() => {
         if (!widthChange && moblieSearchBar) {
@@ -40,26 +32,18 @@ export default function Header() {
                     size="large"
                     edge="start"
                     color="inherit"
-                    onClick={handleDrawer}
+                    onClick={props.handleDrawer}
                 >
-                    <MenuIcon />
+                    <MenuOutlinedIcon />
                 </IconButton>
-                <IconButton
-                    size="small"
+                <ParsLogo
                     sx={{
                         mx: 3,
                         [theme.breakpoints.down('sm')]: {
                             mx: 1,
                         },
                     }}
-                >
-                    <Avatar
-                        sx={{
-                            boxShadow: '0 0 1em rgba(220,0,120,0.4)',
-                        }}
-                        src={pars}
-                    />
-                </IconButton>
+                />
             </Box>
             <Box
                 sx={{
@@ -87,18 +71,23 @@ export default function Header() {
     )
 
     return (
-        <Box >
-            <AppBar sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
-                <Toolbar >
-                    {leftSection}
-                    <SearchBar
-                        moblieSearchBar={moblieSearchBar}
-                        setMoblieSearchBar={setMoblieSearchBar}
-                    />
-                    {rightSection}
-                </Toolbar>
-            </AppBar>
-            <Drawers drawerState={drawerState} setdrawerState={setdrawerState} />
-        </Box>
+        <AppBar sx={{
+            justifyContent: 'space-between',
+            overflowX: 'auto',
+            zIndex: (theme) => { return theme.zIndex.drawer },
+            backgroundColor:
+                theme.palette.mode === 'dark' ?
+                    theme.palette.grey[1100] :
+                    theme.palette.grey[100],
+        }}>
+            <Toolbar >
+                {leftSection}
+                <SearchBar
+                    moblieSearchBar={moblieSearchBar}
+                    setMoblieSearchBar={setMoblieSearchBar}
+                />
+                {rightSection}
+            </Toolbar>
+        </AppBar>
     );
 }

@@ -6,11 +6,12 @@ import {
 import { alpha } from '@mui/material/styles';
 import { useTheme } from '@mui/material/styles'
 import {
-    PersonAdd as PersonAddIcon,
-    Settings as SettingsIcon,
-    Logout as LogoutIcon,
+    PersonAddOutlined as PersonAddOutlinedIcon,
+    SettingsOutlined as SettingsOutlinedIcon,
+    LogoutOutlined as LogoutOutlinedIcon,
 } from '@mui/icons-material'
 import { useAuth } from '../Auth'
+import { Link as RouterLink } from 'react-router-dom';
 
 export default function MenuAppbar() {
     const theme = useTheme()
@@ -26,6 +27,25 @@ export default function MenuAppbar() {
     const handleSignOut = async () => {
         await auth.signOut()
     };
+    const MenuItemLink = (props) => {
+        const { icon, text, to } = props;
+
+        const renderLink = React.useMemo(
+            () =>
+                React.forwardRef(function Link(itemProps, ref) {
+                    return <RouterLink to={to} ref={ref} {...itemProps} role={undefined} />;
+                }),
+            [to],
+        );
+
+        return (
+            <MenuItem component={renderLink}>
+                {icon ? <ListItemIcon>{icon}</ListItemIcon> : null}
+                {text}
+            </MenuItem>
+        );
+    }
+
     return (
         <>
             <Tooltip title="Account settings">
@@ -83,28 +103,31 @@ export default function MenuAppbar() {
                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
-                <MenuItem>
-                    <Avatar>
-                        {(auth.user) ? auth.user.name[0] : ''}
-                    </Avatar>
-                    {(auth.user) ? auth.user.name : ''}
-                </MenuItem>
+                <MenuItemLink
+                    to={(auth.user) ? `/user/${auth.user.name}` : ''}
+                    icon={
+                        <Avatar >
+                            {(auth.user) ? auth.user.name[0] : ''}
+                        </Avatar>
+                    }
+                    text={(auth.user) ? auth.user.name : ''}
+                />
                 <Divider />
                 <MenuItem>
                     <ListItemIcon>
-                        <PersonAddIcon fontSize="small" />
+                        <PersonAddOutlinedIcon fontSize="small" />
                     </ListItemIcon>
                     Add another account
                 </MenuItem>
                 <MenuItem>
                     <ListItemIcon>
-                        <SettingsIcon fontSize="small" />
+                        <SettingsOutlinedIcon fontSize="small" />
                     </ListItemIcon>
                     Settings
                 </MenuItem>
                 <MenuItem onClick={handleSignOut}>
                     <ListItemIcon>
-                        <LogoutIcon fontSize="small" />
+                        <LogoutOutlinedIcon fontSize="small" />
                     </ListItemIcon>
                     Logout
                 </MenuItem>

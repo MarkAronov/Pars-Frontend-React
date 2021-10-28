@@ -3,9 +3,7 @@ import {
     Menu, MenuItem, Divider,
     IconButton, Tooltip, Typography, Badge,
 } from '@mui/material';
-import {
-    Mail as MailIcon,
-} from '@mui/icons-material'
+import MessageOutlinedIcon from '@mui/icons-material/MessageOutlined';
 
 export default function MessagesAppbar() {
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -26,7 +24,7 @@ export default function MessagesAppbar() {
                     onClick={handleClick}
                 >
                     <Badge badgeContent={0} color="error">
-                        <MailIcon />
+                        <MessageOutlinedIcon />
                     </Badge>
                 </IconButton>
             </Tooltip>
@@ -55,10 +53,10 @@ export default function MessagesAppbar() {
                         },
                     },
                 }}
-                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                transformOrigin={{ horizontal: 'left', vertical: 'top' }}
+                anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
             >
-                <MenuItem>
+                <MenuItem >
                     <Typography>
                         You have no new messages.
                     </Typography>
