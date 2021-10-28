@@ -11,7 +11,7 @@ export default function UserPage(props) {
                 position: 'relative',
                 backgroundColor: 'grey.800',
                 color: '#fff',
-                mt: 12,
+                mt: 4,
                 mb: 4,
                 backgroundSize: 'cover',
                 backgroundRepeat: 'no-repeat',

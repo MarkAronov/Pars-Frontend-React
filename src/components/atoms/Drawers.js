@@ -142,20 +142,19 @@ export default function Drawers(props) {
                 onClose={toggleDrawer(false)}
                 onOpen={toggleDrawer(true)}
             >
-                < Toolbar >
+                < Toolbar sx={{ ml: 1, }}>
                     <IconButton
                         size="large"
                         edge="start"
                         color="inherit"
                         onClick={props.handleDrawer}
+                        sx={{
+                            mr: 1,
+                        }}
                     >
                         <MenuOutlinedIcon />
                     </IconButton>
-                    <ParsLogo
-                        sx={{
-                            ml: 10,
-                        }}
-                    />
+                    <ParsLogo />
                 </Toolbar>
                 <Divider />
                 {drawerContent}

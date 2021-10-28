@@ -33,6 +33,9 @@ export default function Header(props) {
                     edge="start"
                     color="inherit"
                     onClick={props.handleDrawer}
+                    sx={{
+                        mr: 1,
+                    }}
                 >
                     <MenuOutlinedIcon />
                 </IconButton>

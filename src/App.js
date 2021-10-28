@@ -25,13 +25,7 @@ export default function App() {
         <ThemeProvider theme={theme}>
             <CssBaseline />
             <BrowserRouter>
-                <Route exact path="/">
-                    {auth.userToken !== null ?
-                        <Redirect to="/home" /> :
-                        <StartPage mode="none" />
-                    }
-                </Route>
-                <Route path="/:path">
+                <Route path="/">
                     {auth.userToken !== null ?
                         <ContainerPage /> :
                         <StartPage mode="none" />
