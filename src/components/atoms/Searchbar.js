@@ -10,6 +10,12 @@ import {
 
 const Search = styled('div')(({ theme }) => ({
     borderRadius: '25px',
+    borderStyle: 'solid',
+    borderWidth: '1px',
+    borderColor:
+        theme.palette.mode === 'dark' ?
+            alpha(theme.palette.common.white, 0.1) :
+            alpha(theme.palette.common.white, 0.5),
     position: 'relative',
     backgroundColor:
         theme.palette.mode === 'dark' ?

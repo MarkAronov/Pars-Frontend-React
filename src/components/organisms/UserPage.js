@@ -9,7 +9,10 @@ export default function UserPage(props) {
         <Paper
             sx={{
                 position: 'relative',
-                backgroundColor: 'grey.800',
+                backgroundColor: (theme) =>
+                    theme.palette.mode === 'dark' ?
+                        theme.palette.grey[800] :
+                        theme.palette.grey[200],
                 color: '#fff',
                 mt: 4,
                 mb: 4,

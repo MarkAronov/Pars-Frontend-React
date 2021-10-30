@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Grid, Box, Paper, Typography, useMediaQuery } from '@mui/material'
+import { Grid, Box, Paper, Typography, useMediaQuery } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import {
     Search as SearchIcon,
@@ -7,70 +7,8 @@ import {
     Chat as ChatIcon,
     PlayCircle as PlayCircleIcon
 } from '@mui/icons-material/'
-import { Link } from "react-router-dom"
 import Footer from '../molecules/Footer'
-import SignIn from '../molecules/SignIn'
-import SignUp from '../molecules/SignUp'
 import ParsLogo from '../atoms/ParsLogo'
-
-const SignButtons = (props) => {
-    const [values, setValues] = React.useState({
-        mode: props.mode,
-    })
-    const handleClickChnageSign = event => {
-        setValues({ ...values, mode: event.currentTarget.id })
-    }
-
-    const handleMouseDownSign = event => {
-        event.preventDefault()
-    }
-
-    let component = null
-    switch (values.mode) {
-        case 'none':
-            component =
-                <>
-                    <Grid item xs={12} sm={12} >
-                        <Button
-                            id='signin'
-                            type="button"
-                            fullWidth
-                            variant="contained"
-                            onClick={handleClickChnageSign}
-                            onMouseDown={handleMouseDownSign}
-                            component={Link}
-                            to="/signin"
-                        >
-                            Sign In
-                        </Button>
-                    </Grid>
-                    <Grid item xs={12} sm={12} >
-                        <Button
-                            id='signup'
-                            type="button"
-                            fullWidth
-                            variant="outlined"
-                            onClick={handleClickChnageSign}
-                            onMouseDown={handleMouseDownSign}
-                            component={Link}
-                            to="/signup"
-                        >
-                            Sign Up
-                        </Button>
-                    </Grid>
-                </>
-            break
-        case 'signin':
-            component = <SignIn handleClickChnageSign={handleClickChnageSign} />
-            break
-        case 'signup':
-            component = <SignUp handleClickChnageSign={handleClickChnageSign} />
-            break
-        default:
-            break
-    }
-    return (component)
-}
 
 export default function StartPage(props) {
     const theme = useTheme()
@@ -194,7 +132,7 @@ export default function StartPage(props) {
                                 margin: theme.spacing(2, 0, 8),
                             }}
                         >
-                            <SignButtons mode={props.mode} />
+                            {props.page}
                         </Grid>
                     </Box>
                 </Grid>
