@@ -25,6 +25,12 @@ export default function PageRouter() {
     return (
         <BrowserRouter>
             <Switch>
+                <Route exact path="/">
+                    {auth.userToken !== null ?
+                        <Redirect to="/home" /> :
+                        <Redirect to="/start" />
+                    }
+                </Route>
                 <Route path="/home">
                     {auth.userToken !== null ?
                         <ContainerPage page={<HomePage />} /> :
