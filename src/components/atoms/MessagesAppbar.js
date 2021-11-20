@@ -19,9 +19,9 @@ export default function MessagesAppbar() {
         <>
             <Tooltip title="Messages">
                 <IconButton
-                    size="large"
                     color="inherit"
                     onClick={handleClick}
+                    size="large"
                 >
                     <Badge badgeContent={0} color="error">
                         <MessageOutlinedIcon />

@@ -19,9 +19,9 @@ export default function NotificationsAppbar() {
         <>
             <Tooltip title="Notifications">
                 <IconButton
-                    size="large"
                     color="inherit"
                     onClick={handleClick}
+                    size="large"
                 >
                     <Badge badgeContent={0} color="error">
                         <NotificationsNoneOutlinedIcon />

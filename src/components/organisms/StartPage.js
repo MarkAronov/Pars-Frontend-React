@@ -23,7 +23,7 @@ export default function StartPage(props) {
         >
             <Grid
                 container
-                direction="row"
+                direction='row'
                 sx={{
                     flex: 1,
                     flexDirection: (widthChange) ? 'row-reverse' : 'column'
@@ -65,12 +65,13 @@ export default function StartPage(props) {
                             sx={{
                                 margin: theme.spacing(5, 1),
                             }}
+                            size={44}
                         />
-                        <Typography component="h1" variant="h5">
+                        <Typography component='h1' variant='h5'>
                             See what’s going on at our party right now!
                         </Typography>
 
-                        <Typography component="h1" variant="h6" >
+                        <Typography component='h1' variant='h6' >
                             Join the information superhighway party NOW!
                         </Typography>
 
@@ -115,8 +116,8 @@ export default function StartPage(props) {
                                 <Grid
                                     key={index}
                                     container
-                                    direction="row"
-                                    alignItems="center"
+                                    direction='row'
+                                    alignItems='center'
                                     spacing={1}
                                     sx={{
                                         py: 1.5,

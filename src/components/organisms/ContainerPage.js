@@ -31,7 +31,7 @@ export default function ContainerPage(props) {
                 }}
             >
                 <Toolbar />
-                <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+                <Container width='200' sx={{ my: 4 }}>
                     {props.page}
                 </Container>
             </Box>

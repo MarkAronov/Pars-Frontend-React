@@ -11,12 +11,13 @@ import {
 } from '@mui/icons-material/'
 import { Link as RouterLink } from 'react-router-dom'
 import { useAuth } from '../Auth'
+import { useAsync } from '../Async'
 
 export default function SignIn() {
     const theme = useTheme()
     const auth = useAuth()
     const [data, setData] = useState({
-        email: 'test2@testing.com',
+        email: 'test-2@testing.com',
         password: 'Password12345678',
     })
     const [showPassword, setshowPassword] = useState(false)
@@ -55,12 +56,14 @@ export default function SignIn() {
         setshowPassword(!showPassword)
     }
 
-    const handlesignIn = async () => {
+    const handleSignIn = async () => {
         const results = await auth.signIn(data.email, data.password)
-        await setErrors(errors => ({
-            ...errors,
-            [results.data.replace('Error: ', '')]: true
-        }))
+        if (results !== undefined) {
+            setErrors(errors => ({
+                ...errors,
+                [results.data.replace('Error: ', '')]: true
+            }))
+        }
     }
 
     const handleMouseDownPassword = event => {
@@ -120,7 +123,7 @@ export default function SignIn() {
                     fullWidth
                     //type="submit"
                     variant="contained"
-                    onClick={handlesignIn}
+                    onClick={handleSignIn}
                     sx={{ margin: theme.spacing(3, 0, 2), }}
                 >
                     Sign In

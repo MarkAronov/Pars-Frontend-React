@@ -1,10 +1,8 @@
 import React from 'react';
 import {
-    Menu, MenuItem, Avatar, Divider, ListItemIcon,
-    IconButton, Tooltip, Typography
+    Menu, MenuItem, Divider, ListItemIcon,
+    IconButton
 } from '@mui/material';
-import { alpha } from '@mui/material/styles';
-import { useTheme } from '@mui/material/styles'
 import {
     PersonAddOutlined as PersonAddOutlinedIcon,
     SettingsOutlined as SettingsOutlinedIcon,
@@ -12,9 +10,9 @@ import {
 } from '@mui/icons-material'
 import { useAuth } from '../Auth'
 import { Link as RouterLink } from 'react-router-dom';
+import UserProfileIcon from './UserProfileIcon'
 
 export default function MenuAppbar() {
-    const theme = useTheme()
     const auth = useAuth()
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -48,29 +46,17 @@ export default function MenuAppbar() {
 
     return (
         <>
-            <Tooltip title="Account settings">
-                <IconButton onClick={handleClick}  >
-                    <Avatar sx={{
-                        width: 32,
-                        height: 32,
-                        bgcolor: alpha(theme.palette.common.white, 1)
-                        // bgcolor: theme.palette.mode === 'dark' ?
-                        //     alpha(theme.palette.common.white, 1) :
-                        //     alpha(theme.palette.common.white, 0.5),
-                    }}
-                    >
-                        <Typography
-                            sx={{
-                                color: alpha(theme.palette.common.black, 1)
-                            }}
-                        >
-                            {(auth.user) ? auth.user.name[0] : ''}
-                        </Typography>
-                    </Avatar>
-                </IconButton>
-            </Tooltip>
+            <IconButton onClick={handleClick}
+                sx={{
+                    height: '48px',
+                    width: '48px',
+                    padding: '12px',
+                }}
+            >
+                <UserProfileIcon />
+            </IconButton>
             <Menu
-                id="long-menu"
+                id='long-menu'
                 anchorEl={anchorEl}
                 open={open}
                 onClose={handleClose}
@@ -87,7 +73,7 @@ export default function MenuAppbar() {
                             mr: 1,
                         },
                         '&:before': {
-                            content: '""',
+                            content: "''",
                             display: 'block',
                             position: 'absolute',
                             top: 0,
@@ -105,29 +91,25 @@ export default function MenuAppbar() {
             >
                 <MenuItemLink
                     to={(auth.user) ? `/user/${auth.user.name}` : ''}
-                    icon={
-                        <Avatar >
-                            {(auth.user) ? auth.user.name[0] : ''}
-                        </Avatar>
-                    }
+                    icon={<UserProfileIcon />}
                     text={(auth.user) ? auth.user.name : ''}
                 />
                 <Divider />
                 <MenuItem>
                     <ListItemIcon>
-                        <PersonAddOutlinedIcon fontSize="small" />
+                        <PersonAddOutlinedIcon fontSize='small' />
                     </ListItemIcon>
                     Add another account
                 </MenuItem>
                 <MenuItem>
                     <ListItemIcon>
-                        <SettingsOutlinedIcon fontSize="small" />
+                        <SettingsOutlinedIcon fontSize='small' />
                     </ListItemIcon>
                     Settings
                 </MenuItem>
                 <MenuItem onClick={handleSignOut}>
                     <ListItemIcon>
-                        <LogoutOutlinedIcon fontSize="small" />
+                        <LogoutOutlinedIcon fontSize='small' />
                     </ListItemIcon>
                     Logout
                 </MenuItem>

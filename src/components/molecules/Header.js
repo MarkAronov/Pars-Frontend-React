@@ -21,57 +21,60 @@ export default function Header(props) {
         }
     }, [widthChange, moblieSearchBar]
     )
-    const leftSection = (
-        <>
-            <Box
-                sx={{
-                    display: (moblieSearchBar && widthChange) ? 'none' : 'flex'
-                }}
-            >
-                <IconButton
-                    size="large"
-                    edge="start"
-                    color="inherit"
-                    onClick={props.handleDrawer}
+    const LeftSection = () => {
+        return (
+            <>
+                <Box sx={{ display: (moblieSearchBar && widthChange) ? 'none' : 'flex', }}>
+                    <IconButton
+                        size="large"
+                        edge="start"
+                        color="inherit"
+                        onClick={props.handleDrawer}
+                        sx={{
+                            mr: 1,
+                        }}
+                    >
+                        <MenuOutlinedIcon />
+                    </IconButton>
+                    <IconButton>
+                        <ParsLogo
+                            sx={{
+                                mx: 3,
+                                [theme.breakpoints.down('sm')]: {
+                                    mx: 1,
+                                },
+                            }}
+                            size={32}
+                        />
+                    </IconButton>
+                </Box>
+                <Box
                     sx={{
-                        mr: 1,
-                    }}
-                >
-                    <MenuOutlinedIcon />
-                </IconButton>
-                <ParsLogo
-                    sx={{
-                        mx: 3,
-                        [theme.breakpoints.down('sm')]: {
-                            mx: 1,
-                        },
+                        flexGrow: (moblieSearchBar && widthChange) ? 0 : 1
                     }}
                 />
-            </Box>
-            <Box
-                sx={{
-                    flexGrow: (moblieSearchBar && widthChange) ? 0 : 1
-                }}
-            />
-        </>
-    )
+            </>
+        )
+    }
 
-    const rightSection = (
-        <>
-            <Box sx={{
-                display: (moblieSearchBar && widthChange) ? 'none' : 'flex',
-                flexGrow: 1,
-                [theme.breakpoints.down('sm')]: {
-                    flexGrow: 0
-                },
-            }} />
-            <Box sx={{ display: (moblieSearchBar && widthChange) ? 'none' : 'flex', }}>
-                <MessagesAppbar />
-                <NotificationsAppbar />
-                <MenuAppbar />
-            </Box>
-        </>
-    )
+    const RightSection = () => {
+        return (
+            <>
+                <Box sx={{
+                    display: (moblieSearchBar && widthChange) ? 'none' : 'flex',
+                    flexGrow: 1,
+                    [theme.breakpoints.down('sm')]: {
+                        flexGrow: 0
+                    },
+                }} />
+                <Box sx={{ display: (moblieSearchBar && widthChange) ? 'none' : 'flex', }}>
+                    <MessagesAppbar />
+                    <NotificationsAppbar />
+                    <MenuAppbar />
+                </Box>
+            </>
+        )
+    }
 
     return (
         <AppBar sx={{
@@ -84,12 +87,12 @@ export default function Header(props) {
                     theme.palette.grey[100],
         }}>
             <Toolbar >
-                {leftSection}
+                <LeftSection />
                 <SearchBar
                     moblieSearchBar={moblieSearchBar}
                     setMoblieSearchBar={setMoblieSearchBar}
                 />
-                {rightSection}
+                <RightSection />
             </Toolbar>
         </AppBar>
     );
