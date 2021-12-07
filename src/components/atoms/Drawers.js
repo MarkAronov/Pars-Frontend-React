@@ -10,8 +10,8 @@ import {
     HomeOutlined as HomeOutlinedIcon,
     Explore as ExploreIcon,
     ExploreOutlined as ExploreOutlinedIcon,
-    StarOutline as StarOutlineIcon,
-    StarOutlineOutlined as StarOutlineOutlinedIcon,
+    Interests as InterestsIcon,
+    InterestsOutlined as InterestsOutlinedIcon,
     FavoriteBorder as FavoriteBorderIcon,
     FavoriteBorderOutlined as FavoriteBorderOutlinedIcon,
 } from '@mui/icons-material/';
@@ -108,7 +108,7 @@ export default function Drawers(props) {
                 {
                     [[<HomeOutlinedIcon />, <HomeIcon />, 'Home', '/home'],
                     [<ExploreOutlinedIcon />, <ExploreIcon />, 'Explore', '/explore'],
-                    [<StarOutlineOutlinedIcon />, <StarOutlineIcon />, 'Interests', '/interests'],
+                    [<InterestsOutlinedIcon />, <InterestsIcon />, 'Interests', '/interests'],
                     ].map((value, index) => (
                         <ListItem sx={{ pl: 3 }} button key={value[2]}>
                             <ListItemIcon>

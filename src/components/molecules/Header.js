@@ -84,7 +84,7 @@ export default function Header(props) {
             backgroundColor:
                 theme.palette.mode === 'dark' ?
                     theme.palette.grey[1100] :
-                    theme.palette.grey[100],
+                    theme.palette.grey[50],
         }}>
             <Toolbar >
                 <LeftSection />

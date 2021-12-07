@@ -9,9 +9,11 @@ import {
 } from '@mui/icons-material/'
 
 const Search = styled('div')(({ theme }) => ({
-    borderRadius: '25px',
+    borderRadius: '5px',
     borderStyle: 'solid',
     borderWidth: '1px',
+    px: '1px',
+    py: '1px',
     borderColor:
         theme.palette.mode === 'dark' ?
             alpha(theme.palette.common.white, 0.1) :
@@ -27,7 +29,7 @@ const Search = styled('div')(({ theme }) => ({
         width: '35%',
     },
     '&:focus-within': {
-        borderRadius: '25px',
+        borderRadius: '5px',
         borderStyle: 'solid',
         borderWidth: '1px',
         borderColor: 'white',
@@ -35,7 +37,7 @@ const Search = styled('div')(({ theme }) => ({
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    borderRadius: '25px 0px 0px 25px ',
+    borderRadius: '5px 0px 0px 5px ',
     transition: '0.3s',
     '&:hover': {
         backgroundColor:
@@ -52,7 +54,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const SearchButton = styled(Button)(({ theme }) => ({
-    borderRadius: ' 0px 25px 25px 0px',
+    borderRadius: ' 0px 5px 5px 0px',
     width: '70px',
     height: '100%',
     position: 'absolute',
