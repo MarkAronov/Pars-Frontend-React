@@ -53,7 +53,7 @@ export default function MenuAppbar() {
                     padding: '12px',
                 }}
             >
-                <UserProfileIcon />
+                <UserProfileIcon sizeChange={false} user={auth.user}/>
             </IconButton>
             <Menu
                 id='long-menu'
@@ -91,7 +91,7 @@ export default function MenuAppbar() {
             >
                 <MenuItemLink
                     to={(auth.user) ? `/user/${auth.user.name}` : ''}
-                    icon={<UserProfileIcon />}
+                    icon={<UserProfileIcon sizeChange={false} user={auth.user}/>}
                     text={(auth.user) ? auth.user.name : ''}
                 />
                 <Divider />

@@ -3,7 +3,6 @@ import { Button, Grid } from '@mui/material'
 import { Link } from "react-router-dom"
 
 export default function SignButtons() {
-
     return (
         <>
             <Grid item xs={12} sm={12} >

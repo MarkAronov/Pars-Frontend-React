@@ -14,10 +14,10 @@ export default function PageRouter() {
     const auth = useAuth()
 
     const UserRoute = () => {
-        const { name } = useParams()
-        const userdetails = (auth.user.name === name) ? auth.user : auth.findUser(name).result
+        const { username } = useParams()
+
         if (auth.userToken !== null) {
-            return <UserPage user={userdetails} />
+            return <UserPage username={username} />
         }
         return <Redirect to="/start" />
     }
@@ -37,7 +37,7 @@ export default function PageRouter() {
                         <Redirect to="/start" />
                     }
                 </Route>
-                <Route path="/user/:name">
+                <Route path="/user/:username">
                     {auth.userToken !== null ?
                         <ContainerPage page={<UserRoute />} /> :
                         <Redirect to="/start" />

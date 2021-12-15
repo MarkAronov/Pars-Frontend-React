@@ -2,15 +2,24 @@ import React from 'react';
 import { Avatar } from '@mui/material'
 import { alpha } from '@mui/material/styles';
 import { useTheme } from '@mui/material/styles'
-import { useAuth } from '../Auth'
 
 export default function UserProfileIcon(props) {
-    const auth = useAuth()
+    const { user } = props
     const theme = useTheme()
 
+    let userNameLetter = '', userAvatar = ''
+    if (user) {
+        if (user.avatar) {
+            userAvatar = `data:image/jpeg;base64,${user.avatar}`
+        }
+        else if (user.name) {
+            userNameLetter = user.name[0]
+        }
+    }
     return (
+
         <Avatar
-            src={''}
+            src={userAvatar}
             sx={{
                 height: (props.sizeChange) ? '100%' : 'default',
                 width: (props.sizeChange) ? '100%' : 'default',
@@ -18,14 +27,9 @@ export default function UserProfileIcon(props) {
                 bgcolor: theme.palette.mode === 'dark' ?
                     alpha(theme.palette.common.white, 0.9) :
                     alpha(theme.palette.common.white, 0.5),
-                
             }}
         >
-            {
-                (false) ?
-                    '' :
-                    (auth.user) ? auth.user.name[0] : ''
-            }
+            {userNameLetter}
         </Avatar>
     )
 }
