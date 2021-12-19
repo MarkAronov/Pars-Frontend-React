@@ -33,10 +33,10 @@ const useProvideAuth = () => {
         }
     }
 
-    const getAvatar = async (token, username) => {
-        let avatarRequest
+    const getUserProfileMedia = async (token, username, mediaType) => {
+        let userMedia
         try {
-            avatarRequest = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/users/${username}/avatar`, {
+            userMedia = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/users/${username}/${mediaType}`, {
                 responseType: 'arraybuffer',
                 headers: {
                     'Access-Control-Allow-Origin': '*',
@@ -51,13 +51,64 @@ const useProvideAuth = () => {
                     return (null)
                 }
                 else if (err.response.status === 404) {
-                    avatarRequest = null
-                    return avatarRequest
+                    userMedia = null
+                    return userMedia
                 }
                 else return (err.response)
             }
         }
-        return Buffer.from(avatarRequest.data).toString('base64');
+        return Buffer.from(userMedia.data).toString('base64');
+    }
+
+
+    const deleteUserProfileMedia = async (mediaType) => {
+        try {
+            await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/users/me/${mediaType}`,
+                {
+                    headers: {
+                        'Access-Control-Allow-Origin': '*',
+                        'Authorization': 'Bearer ' + userToken,
+                    },
+                })
+            if (mediaType === "avatar") user.avatar = null
+            if (mediaType === "backgroundImage") user.backgroundImage = null
+        }
+        catch (err) {
+            if (err.response) {
+                console.log(err.response.data);
+                if (err.response.status === 401) {
+                    await setData(null, null)
+                }
+                else return (err.response)
+            }
+        }
+    }
+
+    const setUserProfileMedia = async (mediaType, mediaFile) => {
+        try {
+            let formData = new FormData();
+            formData.append(mediaType,mediaFile)
+
+            await axios.post(`${process.env.REACT_APP_BACKEND_URL}/users/me/${mediaType}`,
+                {
+                    mediaType: formData
+                },
+                {
+                    headers: {
+                        'Access-Control-Allow-Origin': '*',
+                        'Authorization': 'Bearer ' + userToken,
+                    },
+                })
+        }
+        catch (err) {
+            if (err.response) {
+                console.log(err.response.data);
+                if (err.response.status === 401) {
+                    await setData(null, null)
+                }
+                else return (err.response)
+            }
+        }
     }
 
     const signIn = async (userEmail, userPassword) => {
@@ -71,7 +122,9 @@ const useProvideAuth = () => {
                     'Access-Control-Allow-Origin': '*',
                 },
             })
-            data.user.avatar = await getAvatar(data.token, data.user.name)
+            data.user.avatar = await getUserProfileMedia(data.token, data.user.name, "avatar")
+            //data.user.backgroundImage = await getUserProfileMedia(data.token, data.user.name, "backgroundImage")
+            console.log(data.user)
             await setData(data.user, data.token)
         }
         catch (err) {
@@ -141,9 +194,10 @@ const useProvideAuth = () => {
                         'Authorization': 'Bearer ' + userToken,
                     },
                 })
-            result.data.user.avatar = URL.createObjectURL(
-                await getAvatar(result.data.token, result.data.user.name)
-            )
+            result.data.user.avatar =
+                await getUserProfileMedia(result.data.token, result.data.user.name, "avatar")
+            result.data.user.backgroundImage =
+                await getUserProfileMedia(result.data.token, result.data.user.name, "backgroundImage")
         }
         catch (err) {
             if (err.response) {
@@ -163,6 +217,9 @@ const useProvideAuth = () => {
     return {
         userToken,
         user,
+        getUserProfileMedia,
+        setUserProfileMedia,
+        deleteUserProfileMedia,
         signIn,
         signUp,
         signOut,

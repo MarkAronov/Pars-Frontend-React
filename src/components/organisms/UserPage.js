@@ -1,6 +1,5 @@
-/* eslint-disable no-unused-vars */
-import React, { useLayoutEffect, useState, useRef, useEffect } from 'react';
-import { Grid, Box, Paper, Typography, Container, Button, Skeleton } from '@mui/material'
+import React, { useState, useEffect } from 'react';
+import { Grid, Box, Paper, Typography, Container, Button, Skeleton, Tooltip } from '@mui/material'
 import { useTheme, alpha } from '@mui/material/styles'
 import { useAuth } from '../Auth'
 import { useAsync } from '../Async'
@@ -12,8 +11,8 @@ import {
 } from '@mui/icons-material/';
 import LoadingButton from '@mui/lab/LoadingButton';
 import PostCardGroup from '../molecules/PostCardGroup'
-import back from '../../back.jpg'
 import ViewMediaDialog from '../atoms/ViewMediaDialog'
+import DynamicTypography from '../atoms/DynamicTypography'
 
 export default function UserPage(props) {
     const auth = useAuth()
@@ -21,31 +20,10 @@ export default function UserPage(props) {
     const [user, setUser] = useState(null)
     const [tabValue, setTabValue] = useState(0);
     const [showMediaDialog, setShowMediaDialog] = useState(false)
-    const [expandInfo, setExpandInfo] = useState(false);
-    const [showButton, setShowButton] = useState(false);
     const [isUserInsterested, setIsUserInsterested] = useState(false);
     const [updatingInterest, setUpdatingInterest] = useState(false);
-    const { execute, status, value, error } = useAsync(auth.findUser, username, false);
+    const { execute, status, value } = useAsync(auth.findUser, username, false);
     const theme = useTheme()
-    const ref = useRef(null);
-    const themeBreakpoint = theme.breakpoints.down('sm')
-    useLayoutEffect(() => {
-        const lineNumber =
-            Math.floor(
-                parseInt(ref.current.offsetHeight) /
-                (parseInt(ref.current.style.fontSize) * ref.current.style.lineHeight))
-        if (lineNumber > 2) {
-            setShowButton(true);
-        }
-    }, [ref]);
-
-    const handleMoreBio = () => {
-        setExpandInfo(!expandInfo)
-    }
-
-    const handleAvatarDialog = () => {
-        setShowMediaDialog(!showMediaDialog)
-    }
 
     useEffect(() => {
         if (user === null || username !== user.name) {
@@ -59,6 +37,10 @@ export default function UserPage(props) {
         }
     }, [user, username, auth, execute, value, status])
 
+    const handleAvatarDialog = () => {
+        setShowMediaDialog(!showMediaDialog)
+    }
+
     const handleInterest = async () => {
         setUpdatingInterest(true)
         await new Promise(resolve => {
@@ -67,46 +49,6 @@ export default function UserPage(props) {
         setUpdatingInterest(false)
         setIsUserInsterested(!isUserInsterested)
 
-    }
-    const BioText = () => {
-        return (
-            <div>
-                <Typography component="div">
-                    <Box
-                        ref={ref}
-                        style={{
-                            fontSize: '16px',
-                            lineHeight: '1.5'
-                        }}
-                        sx={{
-                            display: (expandInfo || !showButton) ? '' : '-webkit-box',
-                            WebkitBoxOrient: (expandInfo || !showButton) ? '' : 'vertical',
-                            WebkitLineClamp: (expandInfo || !showButton) ? '' : 2,
-                            overflow: (expandInfo || !showButton) ? '' : 'hidden',
-                            textOverflow: (expandInfo || !showButton) ? '' : 'ellipsis',
-                        }}
-                    >
-                        {/* {(user.bio && status==="idle")?user.bio: `There's no bio for this user`} */}
-                    </Box>
-                </Typography>
-                {showButton && (
-                    <Box
-                        component='div'
-                        sx={{
-                            my: 2,
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            display: 'flex',
-                            justifyContent: 'center',
-                        }}
-                    >
-                        <Button onClick={handleMoreBio}>
-                            {(expandInfo) ? 'Show less' : 'Show more'}
-                        </Button>
-                    </Box>
-                )}
-            </div>
-        )
     }
 
     return (
@@ -117,17 +59,14 @@ export default function UserPage(props) {
                     display: 'flex',
                     flexDirection: 'column',
                     borderRadius: '5px',
-                    [theme.breakpoints.down('sm')]: {
-                        borderRadius: '0px',
-                    },
                     position: 'relative',
                     backgroundColor:
                         theme.palette.mode === 'dark' ? theme.palette.grey[900] : theme.palette.grey[50],
-
                 }}
                 component={Paper}
             >
                 <Grid item sx={{
+                    width: '100%',
                     height: '120px',
                     [theme.breakpoints.down('sm')]: {
                         height: '90px',
@@ -135,16 +74,12 @@ export default function UserPage(props) {
                 }}>
                     <img
                         style={{
-                            
-                            objectFit: 'fit',
+                            objectFit: 'fill',
                             borderRadius: '5px 5px 0px 0px',
-                            [themeBreakpoint]: {
-                                borderRadius: '0px',
-                            },
                             height: '100%',
                             width: '100%',
                         }}
-                        src={back}
+                        src={(user && user.backgroundImage) ? `data:image/jpeg;base64,${user.backgroundImage}` : ''}
                         alt={''}
                     />
                 </Grid>
@@ -154,9 +89,7 @@ export default function UserPage(props) {
                         backgroundColor:
                             alpha(theme.palette.mode === 'dark' ? theme.palette.grey[900] : theme.palette.grey[50], 0.3),
                         borderRadius: '0px 0px 5px 5px ',
-                        [theme.breakpoints.down('sm')]: {
-                            borderRadius: '0px',
-                        },
+                        width: '100%',
                         height: '60%',
                     }}
                     square
@@ -190,7 +123,6 @@ export default function UserPage(props) {
                                 width: '70px', height: '70px',
                                 [theme.breakpoints.down('md')]: {
                                     mr: 1,
-                                    width: '55px', height: '55px',
                                 },
                                 verticalAlign: 'middle',
                                 alignItems: 'center',
@@ -214,15 +146,17 @@ export default function UserPage(props) {
                             display: 'flex',
                             flexGrow: 1,
                         }} />
-                        <LoadingButton
-                            onClick={handleInterest}
-                            endIcon={(isUserInsterested) ? <CheckOutlinedIcon /> : <InterestsOutlinedIcon />}
-                            loading={updatingInterest}
-                            loadingPosition="end"
-                            variant={(isUserInsterested) ? "outlined" : "contained"}
-                        >
-                            {(isUserInsterested) ? 'Interested' : 'Interest'}
-                        </LoadingButton>
+                        <Tooltip title={(isUserInsterested) ? 'Interested' : 'Interest'}>
+                            <LoadingButton
+                                onClick={handleInterest}
+                                endIcon={(isUserInsterested) ? <CheckOutlinedIcon /> : <InterestsOutlinedIcon />}
+                                loading={updatingInterest}
+                                loadingPosition="end"
+                                variant={(isUserInsterested) ? "outlined" : "contained"}
+                            >
+                                {(isUserInsterested) ? 'Interested' : 'Interest'}
+                            </LoadingButton>
+                        </Tooltip>
                     </Box>
                     <Box
                         component='div'
@@ -232,7 +166,7 @@ export default function UserPage(props) {
                             minHeight: '48px',
                         }}
                     >
-                        <BioText />
+                        <DynamicTypography type={'bio'} user={user} />
                     </Box>
                     <Box
                         sx={{
@@ -257,7 +191,7 @@ export default function UserPage(props) {
                 </Grid>
             </Grid >
             <PostCardGroup />
-            <ViewMediaDialog open={showMediaDialog} handleClose={handleAvatarDialog} />
+            <ViewMediaDialog open={showMediaDialog} handleClose={handleAvatarDialog} user={user} />
         </Container>
     );
 }

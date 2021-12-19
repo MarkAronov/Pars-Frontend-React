@@ -5,18 +5,21 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+import { useAuth } from '../Auth'
 
 export default function ViewMediaDialog(props) {
-    const { open, handleClose } = props
+    const auth = useAuth()
+    const { open, handleClose, user } = props
+    let isUserSelf
+    if (user) isUserSelf = (auth.user.name === user.name)
     return (
-
         <Dialog
             fullWidth={true}
             maxWidth="sm"
             open={open}
             onClose={handleClose}
         >
-            <DialogTitle>Your Avatar</DialogTitle>
+            <DialogTitle>{isUserSelf ? 'Your Avatar' : (user) ? `${user.name}'s Avatar` : ''}</DialogTitle>
             <DialogContent>
                 <Box
                     noValidate
@@ -28,10 +31,26 @@ export default function ViewMediaDialog(props) {
                         width: 'fit-content',
                     }}
                 >
-
+                    <img
+                        style={{
+                            objectFit: 'fit',
+                            height: '100%',
+                            width: '100%',
+                        }}
+                        src={(user && user.avatar)? `data:image/jpeg;base64,${user.avatar}` : ''}
+                        alt={''}
+                    />
                 </Box>
             </DialogContent>
             <DialogActions>
+                {(isUserSelf) ?
+                    <>
+                        <Button onClick={null}>Edit</Button>
+                        <Button onClick={null}>Remove</Button>
+                        <Button onClick={null}>Change</Button>
+                    </> :
+                    <></>
+                }
                 <Button onClick={handleClose}>Close</Button>
             </DialogActions>
         </Dialog>
