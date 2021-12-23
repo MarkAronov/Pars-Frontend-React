@@ -1,6 +1,6 @@
 import React from 'react';
-import { Avatar } from '@mui/material'
-import pars from '../../pars.png'
+
+import { Avatar } from '@mui/material';
 
 export default function ParsLogo() {
     return (
@@ -11,8 +11,8 @@ export default function ParsLogo() {
                 boxShadow: '0 0 1em rgba(220,0,120,0.4)',
                 borderRadius: '50%'
             }}
-            src={pars}
-            size="large"
+            src='/pars.png'
+            size='large'
         />
     )
 }

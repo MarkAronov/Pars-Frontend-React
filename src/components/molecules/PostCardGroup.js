@@ -1,5 +1,7 @@
 import * as React from 'react';
+
 import { Grid } from '@mui/material/';
+
 import PostCard from '../atoms/PostCard';
 
 const cards = [1, 2, 3,];

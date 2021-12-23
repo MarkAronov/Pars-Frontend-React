@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { Grid, Box, Paper, Typography, Container, Button, Skeleton, Tooltip } from '@mui/material'
-import { useTheme, alpha } from '@mui/material/styles'
-import { useAuth } from '../Auth'
-import { useAsync } from '../Async'
-import ParsTabs from '../atoms/UserTabs'
-import UserProfileIcon from '../atoms/UserProfileIcon'
+
+import { Grid, Box, Paper, Typography, Container, Button, Skeleton, Tooltip } from '@mui/material';
+import LoadingButton from '@mui/lab/LoadingButton';
 import {
     CheckOutlined as CheckOutlinedIcon,
     InterestsOutlined as InterestsOutlinedIcon
 } from '@mui/icons-material/';
-import LoadingButton from '@mui/lab/LoadingButton';
-import PostCardGroup from '../molecules/PostCardGroup'
-import ViewMediaDialog from '../atoms/ViewMediaDialog'
-import DynamicTypography from '../atoms/DynamicTypography'
+import { useTheme, alpha } from '@mui/material/styles';
+
+import ParsTabs from '../../atoms/UserTabs';
+import UserProfileIcon from '../../atoms/CustomIcons/UserProfileIcon';
+import ViewMediaDialog from '../../atoms/Dialogs/ViewMediaDialog';
+import DynamicTypography from '../../atoms/DynamicTypography';
+import PostCardGroup from '../../molecules/PostCardGroup';
+
+import { useAuth } from '../../../hooks/useAuth';
+import { useAsync } from '../../../hooks/useAsync';
 
 export default function UserPage(props) {
     const auth = useAuth()
@@ -133,7 +136,11 @@ export default function UserPage(props) {
                                 backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[800] : theme.palette.grey[100],
                             }}
                         >
-                            <UserProfileIcon sizeChange={true} user={user} />
+                            {
+                                (user && (status === "success" || status === "idle")) ?
+                                    <UserProfileIcon sizeChange={true} user={user} /> :
+                                    <Skeleton variant="circular" width="100%" height="100%" />
+                            }
                         </Box>
                         {
                             (user && (status === "success" || status === "idle")) ?
@@ -195,5 +202,3 @@ export default function UserPage(props) {
         </Container>
     );
 }
-
-

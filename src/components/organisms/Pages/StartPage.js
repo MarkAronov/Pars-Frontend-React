@@ -1,14 +1,16 @@
-import React from 'react'
-import { Grid, Box, Paper, Typography, useMediaQuery } from '@mui/material'
-import { useTheme } from '@mui/material/styles'
+import React from 'react';
+
+import { Grid, Box, Paper, Typography, useMediaQuery } from '@mui/material';
 import {
     Search as SearchIcon,
     People as PeopleIcon,
     Chat as ChatIcon,
     PlayCircle as PlayCircleIcon
-} from '@mui/icons-material/'
-import Footer from '../molecules/Footer'
-import ParsLogo from '../atoms/ParsLogo'
+} from '@mui/icons-material/';
+import { useTheme } from '@mui/material/styles';
+
+import Footer from '../../molecules/Footer';
+import ParsLogo from '../../atoms/CustomIcons/ParsLogo';
 
 export default function StartPage(props) {
     const theme = useTheme()

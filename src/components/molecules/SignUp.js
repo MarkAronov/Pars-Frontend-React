@@ -1,15 +1,16 @@
-/* eslint-disable no-unused-vars */
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
+
 import {
     Box, TextField, Grid, Button, Link, InputLabel, FilledInput, FormControl,
     FormHelperText, IconButton, InputAdornment,
-} from '@mui/material'
-import { useTheme } from '@mui/material/styles'
+} from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import {
     Visibility as VisibilityIcon,
     VisibilityOff as VisibilityOffIcon
-} from '@mui/icons-material/'
-import { Link as RouterLink } from 'react-router-dom'
+} from '@mui/icons-material/';
+
+import { Link as RouterLink } from 'react-router-dom';
 
 
 export default function SignUp() {

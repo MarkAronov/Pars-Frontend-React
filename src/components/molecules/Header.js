@@ -1,14 +1,16 @@
 import React, { useEffect } from 'react';
-import { useTheme } from '@mui/material/styles';
+
 import {
     useMediaQuery, IconButton, Toolbar, AppBar, Box
 } from '@mui/material/';
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
-import SearchBar from '../atoms/SearchBar'
-import MenuAppbar from '../atoms/MenuAppbar'
-import MessagesAppbar from '../atoms/MessagesAppbar'
-import NotificationsAppbar from '../atoms/NotificationsAppbar'
-import ParsLogo from '../atoms/ParsLogo'
+import { useTheme } from '@mui/material/styles';
+
+import SearchBar from '../atoms/SearchBar';
+import NotificationsAppbar from '../atoms/AppbarItems/NotificationsAppbar';
+import MessagesAppbar from '../atoms/AppbarItems/MessagesAppbar';
+import MenuAppbar from '../atoms/AppbarItems/MenuAppbar';
+import ParsLogo from '../atoms/CustomIcons/ParsLogo';
 
 export default function Header(props) {
     const theme = useTheme();

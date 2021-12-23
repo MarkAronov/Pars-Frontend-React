@@ -1,16 +1,12 @@
-import * as React from 'react';
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import { useTheme } from '@mui/material/styles'
-import CardMedia from '@mui/material/CardMedia';
-import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
-import Avatar from '@mui/material/Avatar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
+import React from 'react';
+
+import {
+    Card, CardHeader, CardMedia, CardContent,
+    CardActions, Avatar, IconButton, Typography
+} from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-
 
 export default function RecipeReviewCard(props) {
     const theme = useTheme()

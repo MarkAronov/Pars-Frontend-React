@@ -1,22 +1,31 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import { useAuth } from '../Auth'
+import React, { useEffect, useState } from 'react';
+
+import {
+    Box, Button, Dialog, DialogActions,
+    DialogContent, DialogTitle
+} from '@mui/material';
+
+import { useAuth } from '../../../hooks/useAuth';
 
 export default function ViewMediaDialog(props) {
     const auth = useAuth()
     const { open, handleClose, user } = props
-    let isUserSelf
-    if (user) isUserSelf = (auth.user.name === user.name)
+    const [isUserSelf, setIsUserSelf] = useState(false)
+    const [doesUserHaveAvatar, setDoesUserHaveAvatar] = useState(false)
+
+    useEffect(() => {
+        if (user) setIsUserSelf(auth.user.name === user.name)
+    }, [user, isUserSelf, auth])
+    
+    useEffect(() => {
+        if (user && user.avatar) setDoesUserHaveAvatar(true)
+    }, [user, doesUserHaveAvatar])
+    
     return (
         <Dialog
             fullWidth={true}
             maxWidth="sm"
-            open={open}
+            open={open && doesUserHaveAvatar}
             onClose={handleClose}
         >
             <DialogTitle>{isUserSelf ? 'Your Avatar' : (user) ? `${user.name}'s Avatar` : ''}</DialogTitle>
@@ -37,7 +46,7 @@ export default function ViewMediaDialog(props) {
                             height: '100%',
                             width: '100%',
                         }}
-                        src={(user && user.avatar)? `data:image/jpeg;base64,${user.avatar}` : ''}
+                        src={(user && user.avatar) ? `data:image/jpeg;base64,${user.avatar}` : ''}
                         alt={''}
                     />
                 </Box>
@@ -45,9 +54,8 @@ export default function ViewMediaDialog(props) {
             <DialogActions>
                 {(isUserSelf) ?
                     <>
-                        <Button onClick={null}>Edit</Button>
                         <Button onClick={null}>Remove</Button>
-                        <Button onClick={null}>Change</Button>
+                        <Button onClick={null}>Upload</Button>
                     </> :
                     <></>
                 }

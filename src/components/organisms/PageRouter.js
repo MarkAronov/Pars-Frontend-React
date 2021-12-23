@@ -1,14 +1,19 @@
 import React from 'react';
+
 import { Route, Redirect, BrowserRouter, useParams, Switch } from "react-router-dom";
-import { useAuth } from './Auth';
-import StartPage from './organisms/StartPage';
-import ContainerPage from './organisms/ContainerPage'
-import ErrorPage from './organisms/ErrorPage'
-import HomePage from './organisms/HomePage'
-import UserPage from './organisms/UserPage'
-import SignUp from './molecules/SignUp'
-import SignButtons from './molecules/SignButtons'
-import SignIn from './molecules/SignIn'
+
+import ContainerPage from './ContainerPage';
+
+import StartPage from './Pages/StartPage';
+import ErrorPage from './Pages/ErrorPage';
+import HomePage from './Pages/HomePage';
+import UserPage from './Pages/UserPage';
+
+import SignButtons from '../molecules/SignButtons';
+import SignUp from '../molecules/SignUp';
+import SignIn from '../molecules/SignIn';
+
+import { useAuth } from '../../hooks/useAuth';
 
 export default function PageRouter() {
     const auth = useAuth()
@@ -32,6 +37,24 @@ export default function PageRouter() {
                     }
                 </Route>
                 <Route path="/home">
+                    {auth.userToken !== null ?
+                        <ContainerPage page={<HomePage />} /> :
+                        <Redirect to="/start" />
+                    }
+                </Route>
+                <Route path="/explore">
+                    {auth.userToken !== null ?
+                        <ContainerPage page={<HomePage />} /> :
+                        <Redirect to="/start" />
+                    }
+                </Route>
+                <Route path="/interests">
+                    {auth.userToken !== null ?
+                        <ContainerPage page={<HomePage />} /> :
+                        <Redirect to="/start" />
+                    }
+                </Route>
+                <Route path="/favorites">
                     {auth.userToken !== null ?
                         <ContainerPage page={<HomePage />} /> :
                         <Redirect to="/start" />

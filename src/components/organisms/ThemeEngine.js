@@ -1,8 +1,9 @@
 import React from 'react';
-import useMediaQuery from '@mui/material/useMediaQuery';
+
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { CssBaseline } from '@mui/material';
-import PageRouter from './PageRouter'
+import { CssBaseline, useMediaQuery } from '@mui/material';
+
+import PageRouter from './PageRouter';
 
 export default function ThemeEngine() {
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)', { noSsr: true });

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Avatar } from '@mui/material'
-import { alpha } from '@mui/material/styles';
-import { useTheme } from '@mui/material/styles'
+
+import { Avatar } from '@mui/material';
+import { alpha, useTheme } from '@mui/material/styles';
 
 export default function UserProfileIcon(props) {
     const { user } = props

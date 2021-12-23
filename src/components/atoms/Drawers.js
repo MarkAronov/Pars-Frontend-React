@@ -1,7 +1,8 @@
 import * as React from 'react';
+
 import {
-    SwipeableDrawer as MuiSwipeableDrawer, Drawer as MuiDrawer, Toolbar, List,
-    Divider, ListItem, ListItemIcon, ListItemText, useMediaQuery, IconButton
+    SwipeableDrawer as MuiSwipeableDrawer, Drawer as MuiDrawer, Toolbar, Link, List,
+    Divider, ListItemButton, ListItemIcon, ListItemText, useMediaQuery, IconButton
 } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
 import {
@@ -15,8 +16,10 @@ import {
     FavoriteBorder as FavoriteBorderIcon,
     FavoriteBorderOutlined as FavoriteBorderOutlinedIcon,
 } from '@mui/icons-material/';
+
 import { useLocation } from 'react-router-dom';
-import ParsLogo from '../atoms/ParsLogo'
+
+import ParsLogo from './CustomIcons/ParsLogo';
 
 const drawerWidth = 180;
 
@@ -102,37 +105,36 @@ export default function Drawers(props) {
         props.setdrawerState(open)
     }
 
+    const drawerItemComponent = (props) => {
+        return (
+            <List>
+                {
+                    props.map((value, index) => (
+                        <ListItemButton sx={{ pl: 3 }} component={Link} href={value[3]} key={value[2]}>
+                            <ListItemIcon>
+                                {(location.pathname === value[3]) ? value[1] : value[0]}
+                            </ListItemIcon>
+                            <ListItemText primary={value[2]} />
+                        </ListItemButton>
+                    ))
+                }
+            </List>
+        )
+    }
+
     const drawerContent =
         (<>
-            <List>
-                {
-                    [[<HomeOutlinedIcon />, <HomeIcon />, 'Home', '/home'],
-                    [<ExploreOutlinedIcon />, <ExploreIcon />, 'Explore', '/explore'],
-                    [<InterestsOutlinedIcon />, <InterestsIcon />, 'Interests', '/interests'],
-                    ].map((value, index) => (
-                        <ListItem sx={{ pl: 3 }} button key={value[2]}>
-                            <ListItemIcon>
-                                {(location.pathname === value[3]) ? value[1] : value[0]}
-                            </ListItemIcon>
-                            <ListItemText primary={value[2]} />
-                        </ListItem>
-                    ))
-                }
-            </List>
+            {drawerItemComponent(
+                [[<HomeOutlinedIcon />, <HomeIcon />, 'Home', '/home'],
+                [<ExploreOutlinedIcon />, <ExploreIcon />, 'Explore', '/explore'],
+                [<InterestsOutlinedIcon />, <InterestsIcon />, 'Interests', '/interests'],
+                ])
+            }
             <Divider />
-            <List>
-                {
-                    [[<FavoriteBorderOutlinedIcon />, <FavoriteBorderIcon />, 'Favorites', '/favorites'],
-                    ].map((value, index) => (
-                        <ListItem sx={{ pl: 3 }} button key={value[2]}>
-                            <ListItemIcon>
-                                {(location.pathname === value[3]) ? value[1] : value[0]}
-                            </ListItemIcon>
-                            <ListItemText primary={value[2]} />
-                        </ListItem>
-                    ))
-                }
-            </List>
+            {drawerItemComponent(
+                [[<FavoriteBorderOutlinedIcon />, <FavoriteBorderIcon />, 'Favorites', '/favorites'],
+                ])
+            }
         </>)
 
     return (

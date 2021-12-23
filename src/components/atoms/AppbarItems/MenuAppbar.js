@@ -1,4 +1,5 @@
 import React from 'react';
+
 import {
     Menu, MenuItem, Divider, ListItemIcon,
     IconButton
@@ -7,10 +8,11 @@ import {
     PersonAddOutlined as PersonAddOutlinedIcon,
     SettingsOutlined as SettingsOutlinedIcon,
     LogoutOutlined as LogoutOutlinedIcon,
-} from '@mui/icons-material'
-import { useAuth } from '../Auth'
+} from '@mui/icons-material';
 import { Link as RouterLink } from 'react-router-dom';
-import UserProfileIcon from './UserProfileIcon'
+
+import { useAuth } from '../../../hooks/useAuth';
+import UserProfileIcon from '../CustomIcons/UserProfileIcon';
 
 export default function MenuAppbar() {
     const auth = useAuth()

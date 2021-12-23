@@ -1,11 +1,12 @@
 import React from 'react';
+
 import {
     Menu, MenuItem, Divider,
     IconButton, Tooltip, Typography, Badge,
 } from '@mui/material';
-import MessageOutlinedIcon from '@mui/icons-material/MessageOutlined';
+import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
 
-export default function MessagesAppbar() {
+export default function NotificationsAppbar() {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -17,14 +18,14 @@ export default function MessagesAppbar() {
 
     return (
         <>
-            <Tooltip title="Messages">
+            <Tooltip title="Notifications">
                 <IconButton
                     color="inherit"
                     onClick={handleClick}
                     size="large"
                 >
                     <Badge badgeContent={0} color="error">
-                        <MessageOutlinedIcon />
+                        <NotificationsNoneOutlinedIcon />
                     </Badge>
                 </IconButton>
             </Tooltip>
@@ -53,12 +54,12 @@ export default function MessagesAppbar() {
                         },
                     },
                 }}
-                transformOrigin={{ horizontal: 'left', vertical: 'top' }}
-                anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+                transformOrigin={{ horizontal: 'center', vertical: 'top' }}
+                anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
             >
-                <MenuItem >
+                <MenuItem>
                     <Typography>
-                        You have no new messages.
+                        You have no new notifications.
                     </Typography>
                 </MenuItem>
                 <Divider />

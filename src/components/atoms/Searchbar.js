@@ -1,12 +1,12 @@
 import React from 'react';
-import { styled, alpha, useTheme } from '@mui/material/styles';
 import {
     Tooltip, IconButton, Box, InputBase, Button
 } from '@mui/material/';
 import {
     SearchOutlined as SearchOutlinedIcon,
     ArrowBackOutlined as ArrowBackOutlinedIcon,
-} from '@mui/icons-material/'
+} from '@mui/icons-material/';
+import { styled, alpha, useTheme } from '@mui/material/styles';
 
 const Search = styled('div')(({ theme }) => ({
     borderRadius: '5px',

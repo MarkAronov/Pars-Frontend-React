@@ -1,5 +1,6 @@
 import React, { useLayoutEffect, useEffect, useState, useRef } from 'react';
-import { Box, Typography, Button } from '@mui/material'
+
+import { Box, Typography, Button } from '@mui/material';
 
 export default function DynamicTypography(props) {
     const { type, user } = props
@@ -11,13 +12,18 @@ export default function DynamicTypography(props) {
     useEffect(() => {
         if (type === 'bio') setNumberOfLines(2)
         else if (type === "post") setNumberOfLines(4)
-    }, [type])
+    }, [type, numberOfLines])
 
     useLayoutEffect(() => {
         const lineNumber =
             Math.floor(
                 parseInt(ref.current.scrollHeight) /
                 (parseInt(ref.current.style.fontSize) * ref.current.style.lineHeight))
+        console.log(lineNumber)
+        console.log(numberOfLines)
+        console.log(ref.current.scrollHeight)
+        console.log(ref.current.style.fontSize)
+        console.log(ref.current.style.lineHeight)
         if (lineNumber > numberOfLines) {
             setShowButton(true);
         }
