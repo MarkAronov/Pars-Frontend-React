@@ -16,17 +16,17 @@ import SignIn from '../molecules/SignIn';
 import { useAuth } from '../../hooks/useAuth';
 
 export default function PageRouter() {
-    const auth = useAuth()
+    const auth = useAuth();
 
     const UserRoute = () => {
-        const { username } = useParams()
+        const { username } = useParams();
 
         if (auth.userToken !== null) {
-            return <UserPage username={username} />
+            return( <UserPage username={username} />);
         }
-        return <Redirect to="/start" />
-    }
-
+        return <Redirect to="/start" />;
+    };
+    
     return (
         <BrowserRouter>
             <Switch>

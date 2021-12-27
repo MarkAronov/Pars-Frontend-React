@@ -4,16 +4,16 @@ import { Avatar } from '@mui/material';
 import { alpha, useTheme } from '@mui/material/styles';
 
 export default function UserProfileIcon(props) {
-    const { user } = props
-    const theme = useTheme()
+    const { user } = props;
+    const theme = useTheme();
 
-    let userNameLetter = '', userAvatar = ''
+    let userNameLetter = '', userAvatar = '';
     if (user) {
         if (user.avatar) {
-            userAvatar = `data:image/jpeg;base64,${user.avatar}`
+            userAvatar = `data:image/jpeg;base64,${user.avatar}`;
         }
         else if (user.name) {
-            userNameLetter = user.name[0]
+            userNameLetter = user.name[0];
         }
     }
     return (
@@ -31,5 +31,5 @@ export default function UserProfileIcon(props) {
         >
             {userNameLetter}
         </Avatar>
-    )
+    );
 }

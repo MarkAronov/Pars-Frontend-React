@@ -13,8 +13,8 @@ import Footer from '../../molecules/Footer';
 import ParsLogo from '../../atoms/CustomIcons/ParsLogo';
 
 export default function StartPage(props) {
-    const theme = useTheme()
-    const widthChange = useMediaQuery(theme.breakpoints.up('xs'))
+    const theme = useTheme();
+    const widthChange = useMediaQuery(theme.breakpoints.up('xs'));
     return (
         <Grid
             sx={{
@@ -67,7 +67,6 @@ export default function StartPage(props) {
                             sx={{
                                 margin: theme.spacing(5, 1),
                             }}
-                            size={44}
                         />
                         <Typography component='h1' variant='h5'>
                             See what’s going on at our party right now!
@@ -142,5 +141,5 @@ export default function StartPage(props) {
             </Grid>
             <Footer />
         </Grid >
-    )
+    );
 }

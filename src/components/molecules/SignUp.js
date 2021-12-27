@@ -14,28 +14,29 @@ import { Link as RouterLink } from 'react-router-dom';
 
 
 export default function SignUp() {
-    const theme = useTheme()
+    const theme = useTheme();
     const [data, setData] = useState({
         username: '',
         email: '',
         emailRepeat: '',
         password: '',
         passwordRepeat: '',
-    })
-    const [disabledSignUp, setdisabledSignUp] = useState(true)
-    const [usernameValidationError, setusernameValidationError] = useState(false)
-    const [emailValidationError, setemailValidationError] = useState(false)
-    const [emailRepeatError, setemailRepeatError] = useState(false)
-    const [passwordRepeatError, setpasswordRepeatError] = useState(false)
-    const [passwordValidationError, setpasswordValidationError] = useState(false)
-    const [passwordErrorList, setpasswordErrorList] = useState([])
-    const [showPassword, setshowPassword] = useState(false)
-    const [showPasswordRepeat, setshowPasswordRepeat] = useState(false)
+    });
+    const [disabledSignUp, setdisabledSignUp] = useState(true);
+    const [usernameValidationError, setusernameValidationError] = useState(false);
+    const [emailValidationError, setemailValidationError] = useState(false);
+    const [emailRepeatError, setemailRepeatError] = useState(false);
+    const [passwordRepeatError, setpasswordRepeatError] = useState(false);
+    const [passwordValidationError, setpasswordValidationError] = useState(false);
+    // eslint-disable-next-line no-unused-vars
+    const [passwordErrorList, setpasswordErrorList] = useState([]);
+    const [showPassword, setshowPassword] = useState(false);
+    const [showPasswordRepeat, setshowPasswordRepeat] = useState(false);
 
     const handleChange = event => {
-        const { value, id } = event.target
-        setData(data => ({ ...data, [id]: value }))
-    }
+        const { value, id } = event.target;
+        setData(data => ({ ...data, [id]: value }));
+    };
 
     useEffect(() => {
         (data.username !== "" &&
@@ -46,16 +47,14 @@ export default function SignUp() {
             !emailRepeatError &&
             !emailValidationError &&
             !passwordRepeatError &&
-            !passwordValidationError) ?
-            setdisabledSignUp(false) :
-            setdisabledSignUp(true)
+            !passwordValidationError) ? setdisabledSignUp(false) : setdisabledSignUp(true);
     },
         [data.username, data.password,
         data.email, data.emailRepeat,
         data.passwordRepeat, emailRepeatError,
             emailValidationError, passwordRepeatError,
             passwordValidationError]
-    )
+    );
     /**
         const timer = setTimeout(() => {
 
@@ -68,56 +67,56 @@ export default function SignUp() {
     useEffect(() => {
         (data.username !== "") ?
             setusernameValidationError(true) :
-            setusernameValidationError(false)
+            setusernameValidationError(false);
     }, [data.username]
-    )
+    );
 
     useEffect(() => {
         (data.email !== "") ?
             setemailValidationError(true) :
-            setemailValidationError(false)
+            setemailValidationError(false);
     }, [data.email]
-    )
+    );
 
     useEffect(() => {
         if (data.password !== "") {
-            setpasswordValidationError(true)
+            setpasswordValidationError(true);
         }
         else {
-            setpasswordValidationError(false)
+            setpasswordValidationError(false);
         }
     }, [data.password]
-    )
+    );
 
     useEffect(() => {
         (data.email !== data.emailRepeat && data.emailRepeat !== "") ?
             setemailRepeatError(true) :
-            setemailRepeatError(false)
+            setemailRepeatError(false);
     }, [data.email, data.emailRepeat]
-    )
+    );
 
     useEffect(() => {
         (data.password !== data.passwordRepeat && data.passwordRepeat !== "") ?
             setpasswordRepeatError(true) :
-            setpasswordRepeatError(false)
+            setpasswordRepeatError(false);
     }, [data.password, data.passwordRepeat]
-    )
+    );
 
     const handleClickShowPassword = () => {
-        setshowPassword(!showPassword)
-    }
+        setshowPassword(!showPassword);
+    };
 
     const handleClickShowPasswordRepeat = () => {
-        setshowPasswordRepeat(!showPasswordRepeat)
-    }
+        setshowPasswordRepeat(!showPasswordRepeat);
+    };
 
     const handleMouseDownPassword = event => {
-        event.preventDefault()
-    }
+        event.preventDefault();
+    };
 
     const signUpHandle = () => {
-        console.log(data)
-    }
+        console.log(data);
+    };
 
     return (
         <Box
@@ -240,5 +239,5 @@ export default function SignUp() {
                 </Grid>
             </Grid>
         </Box>
-    )
+    );
 }

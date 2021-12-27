@@ -9,7 +9,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 export default function RecipeReviewCard(props) {
-    const theme = useTheme()
+    const theme = useTheme();
 
     return (
         <Card sx={{

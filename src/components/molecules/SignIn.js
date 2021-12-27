@@ -16,33 +16,33 @@ import { Link as RouterLink } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 
 export default function SignIn() {
-    const theme = useTheme()
-    const auth = useAuth()
+    const theme = useTheme();
+    const auth = useAuth();
     const [data, setData] = useState({
-        email: 'test-2@testing.com',
+        email: 'test2@testing.com',
         password: 'Password12345678',
-    })
-    const [showPassword, setshowPassword] = useState(false)
-    const [disabledSignIn, setdisabledSignIn] = useState(true)
+    });
+    const [showPassword, setshowPassword] = useState(false);
+    const [disabledSignIn, setdisabledSignIn] = useState(true);
     const [errors, setErrors] = useState({
         email: false,
         password: false
-    })
+    });
     const handleChange = event => {
-        const { value, id } = event.target
+        const { value, id } = event.target;
         if (id !== "showPassword") {
             setData(data => ({
                 ...data,
                 [id]: value
-            }))
+            }));
         }
         else {
             setData(data => ({
                 ...data,
                 [id]: !value
-            }))
+            }));
         }
-    }
+    };
 
     useEffect(() => {
         setErrors(errors => ({
@@ -50,27 +50,29 @@ export default function SignIn() {
         }));
         (data.email !== "" && data.password !== "" && data.password.length >= 8) ?
             setdisabledSignIn(false) :
-            setdisabledSignIn(true)
+            setdisabledSignIn(true);
     }, [data.email, data.password]
-    )
+    );
 
     const handleClickShowPassword = () => {
-        setshowPassword(!showPassword)
-    }
+        setshowPassword(!showPassword);
+    };
 
     const handleSignIn = async () => {
-        const results = await auth.signIn(data.email, data.password)
+        const results = await auth.signIn(data.email, data.password);
+        console.log(results)
+
         if (results !== undefined) {
             setErrors(errors => ({
                 ...errors,
                 [results.data.replace('Error: ', '')]: true
-            }))
+            }));
         }
-    }
+    };
 
     const handleMouseDownPassword = event => {
-        event.preventDefault()
-    }
+        event.preventDefault();
+    };
 
     return (
         <>
@@ -149,5 +151,5 @@ export default function SignIn() {
                 </Grid>
             </Grid>
         </>
-    )
+    );
 }

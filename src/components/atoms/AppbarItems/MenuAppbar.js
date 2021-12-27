@@ -15,25 +15,31 @@ import { useAuth } from '../../../hooks/useAuth';
 import UserProfileIcon from '../CustomIcons/UserProfileIcon';
 
 export default function MenuAppbar() {
-    const auth = useAuth()
+    const auth = useAuth();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
+
+
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
+
     const handleClose = () => {
         setAnchorEl(null);
     };
+
     const handleSignOut = async () => {
-        await auth.signOut()
+        await auth.signOut();
     };
+
+
     const MenuItemLink = (props) => {
         const { icon, text, to } = props;
 
         const renderLink = React.useMemo(
             () =>
                 React.forwardRef(function Link(itemProps, ref) {
-                    return <RouterLink to={to} ref={ref} {...itemProps} role={undefined} />;
+                    return (<RouterLink to={to} ref={ref} {...itemProps} role={undefined} />);
                 }),
             [to],
         );
@@ -44,7 +50,7 @@ export default function MenuAppbar() {
                 {text}
             </MenuItem>
         );
-    }
+    };
 
     return (
         <>

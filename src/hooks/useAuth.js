@@ -10,7 +10,7 @@ export const ProvideAuth = ({ children }) => {
             {children}
         </authContext.Provider>
     );
-}
+};
 
 export const useAuth = () => {
     return useContext(authContext);
@@ -22,19 +22,19 @@ const useProvideAuth = () => {
 
     const setData = async (user, token) => {
         setUserToken(token);
-        setUser(user)
+        setUser(user);
         if (user && token) {
             localStorage.setItem("token", token);
-            localStorage.setItem("user", JSON.stringify(user))
+            localStorage.setItem("user", JSON.stringify(user));
         }
         else {
             localStorage.removeItem("token");
             localStorage.removeItem("user");
         }
-    }
+    };
 
     const getUserProfileMedia = async (token, username, mediaType) => {
-        let userMedia
+        let userMedia;
         try {
             userMedia = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/users/${username}/${mediaType}`, {
                 responseType: 'arraybuffer',
@@ -42,23 +42,23 @@ const useProvideAuth = () => {
                     'Access-Control-Allow-Origin': '*',
                     'Authorization': 'Bearer ' + token,
                 },
-            })
+            });
         } catch (err) {
             if (err.response) {
-                console.log(err.response)
+                console.log(err.response);
                 if (err.response.status === 401) {
-                    await setData(null, null)
-                    return (null)
+                    await setData(null, null);
+                    return (null);
                 }
                 else if (err.response.status === 404) {
-                    userMedia = null
-                    return userMedia
+                    userMedia = null;
+                    return userMedia;
                 }
-                else return (err.response)
+                else return (err.response);
             }
         }
         return Buffer.from(userMedia.data).toString('base64');
-    }
+    };
 
 
     const deleteUserProfileMedia = async (mediaType) => {
@@ -69,25 +69,25 @@ const useProvideAuth = () => {
                         'Access-Control-Allow-Origin': '*',
                         'Authorization': 'Bearer ' + userToken,
                     },
-                })
-            if (mediaType === "avatar") user.avatar = null
-            if (mediaType === "backgroundImage") user.backgroundImage = null
+                });
+            if (mediaType === "avatar") user.avatar = null;
+            if (mediaType === "backgroundImage") user.backgroundImage = null;
         }
         catch (err) {
             if (err.response) {
-                console.log(err.response.data);
+                console.log(err.response);
                 if (err.response.status === 401) {
-                    await setData(null, null)
+                    await setData(null, null);
                 }
-                else return (err.response)
+                else return (err.response);
             }
         }
-    }
+    };
 
     const setUserProfileMedia = async (mediaType, mediaFile) => {
         try {
             let formData = new FormData();
-            formData.append(mediaType,mediaFile)
+            formData.append(mediaType,mediaFile);
 
             await axios.post(`${process.env.REACT_APP_BACKEND_URL}/users/me/${mediaType}`,
                 {
@@ -98,21 +98,22 @@ const useProvideAuth = () => {
                         'Access-Control-Allow-Origin': '*',
                         'Authorization': 'Bearer ' + userToken,
                     },
-                })
+                });
         }
         catch (err) {
             if (err.response) {
-                console.log(err.response.data);
+                console.log(err.response);
                 if (err.response.status === 401) {
-                    await setData(null, null)
+                    await setData(null, null);
                 }
-                else return (err.response)
+                else return (err.response);
             }
         }
-    }
+    };
 
     const signIn = async (userEmail, userPassword) => {
         try {
+            console.log("here")
             const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/users/login`,
                 {
                     email: userEmail,
@@ -121,22 +122,25 @@ const useProvideAuth = () => {
                 headers: {
                     'Access-Control-Allow-Origin': '*',
                 },
-            })
-            data.user.avatar = await getUserProfileMedia(data.token, data.user.name, "avatar")
+            });
+            console.log(data.user);
+
+            data.user.avatar = await getUserProfileMedia(data.token, data.user.name, "avatar");
             //data.user.backgroundImage = await getUserProfileMedia(data.token, data.user.name, "backgroundImage")
-            console.log(data.user)
-            await setData(data.user, data.token)
+            console.log(data.user);
+            await setData(data.user, data.token);
         }
         catch (err) {
+            console.log(err)
             if (err.response) {
-                console.log(err.response.data);
+                console.log(err.response);
                 if (err.response.status === 401) {
-                    await setData(null, null)
+                    await setData(null, null);
                 }
-                else return (err.response)
+                else return (err.response);
             }
         }
-    }
+    };
 
     const signUp = async (userName, userEmail, userPassword) => {
         try {
@@ -149,19 +153,19 @@ const useProvideAuth = () => {
                 headers: {
                     'Access-Control-Allow-Origin': '*',
                 },
-            })
-            await setData(data.user, data.token)
+            });
+            await setData(data.user, data.token);
         }
         catch (err) {
             if (err.response) {
-                console.log(err.response.data);
+                console.log(err.response);
                 if (err.response.status === 401) {
-                    await setData(null, null)
+                    await setData(null, null);
                 }
-                else return (err.response)
+                else return (err.response);
             }
         }
-    }
+    };
 
     const signOut = async () => {
         try {
@@ -171,21 +175,21 @@ const useProvideAuth = () => {
                     'Access-Control-Allow-Origin': '*',
                     'Authorization': 'Bearer ' + userToken,
                 },
-            })
-            await setData(null, null)
+            });
+            await setData(null, null);
         }
         catch (err) {
             if (err.response) {
-                console.log(err.response.data);
+                console.log(err.response);
                 if (err.response.status === 401) {
-                    await setData(null, null)
+                    await setData(null, null);
                 }
             }
         }
-    }
+    };
 
     const findUser = async (userName) => {
-        let result
+        let result;
         try {
             result = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/users/${userName}`,
                 {
@@ -193,26 +197,26 @@ const useProvideAuth = () => {
                         'Access-Control-Allow-Origin': '*',
                         'Authorization': 'Bearer ' + userToken,
                     },
-                })
+                });
             result.data.user.avatar =
-                await getUserProfileMedia(result.data.token, result.data.user.name, "avatar")
+                await getUserProfileMedia(result.data.token, result.data.user.name, "avatar");
             result.data.user.backgroundImage =
-                await getUserProfileMedia(result.data.token, result.data.user.name, "backgroundImage")
+                await getUserProfileMedia(result.data.token, result.data.user.name, "backgroundImage");
         }
         catch (err) {
             if (err.response) {
-                console.log(err.response.data);
+                console.log(err.response);
                 if (err.response.status === 401) {
-                    await setData(null, null)
+                    await setData(null, null);
                 }
                 else if (err.response.status === 404) {
-                    return null
+                    return null;
                 }
-                else return (err.response)
+                else return (err.response);
             }
         }
-        return (result.data)
-    }
+        return (result.data);
+    };
 
     return {
         userToken,
@@ -224,5 +228,5 @@ const useProvideAuth = () => {
         signUp,
         signOut,
         findUser,
-    }
-}
+    };
+};

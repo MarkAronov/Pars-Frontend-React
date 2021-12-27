@@ -8,18 +8,18 @@ import {
 import { useAuth } from '../../../hooks/useAuth';
 
 export default function ViewMediaDialog(props) {
-    const auth = useAuth()
-    const { open, handleClose, user } = props
-    const [isUserSelf, setIsUserSelf] = useState(false)
-    const [doesUserHaveAvatar, setDoesUserHaveAvatar] = useState(false)
+    const auth = useAuth();
+    const { open, handleClose, user } = props;
+    const [isUserSelf, setIsUserSelf] = useState(false);
+    const [doesUserHaveAvatar, setDoesUserHaveAvatar] = useState(false);
 
     useEffect(() => {
-        if (user) setIsUserSelf(auth.user.name === user.name)
-    }, [user, isUserSelf, auth])
+        if (user) setIsUserSelf(auth.user.name === user.name);
+    }, [user, isUserSelf, auth]);
     
     useEffect(() => {
-        if (user && user.avatar) setDoesUserHaveAvatar(true)
-    }, [user, doesUserHaveAvatar])
+        if (user && user.avatar) setDoesUserHaveAvatar(true);
+    }, [user, doesUserHaveAvatar]);
     
     return (
         <Dialog

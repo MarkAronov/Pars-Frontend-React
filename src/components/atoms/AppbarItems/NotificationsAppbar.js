@@ -9,6 +9,8 @@ import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNone
 export default function NotificationsAppbar() {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
+
+    
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };

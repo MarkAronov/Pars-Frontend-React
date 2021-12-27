@@ -15,14 +15,14 @@ import ParsLogo from '../atoms/CustomIcons/ParsLogo';
 export default function Header(props) {
     const theme = useTheme();
     const [moblieSearchBar, setMoblieSearchBar] = React.useState(false);
-    const widthChange = useMediaQuery(theme.breakpoints.down('sm'))
+    const widthChange = useMediaQuery(theme.breakpoints.down('sm'));
 
     useEffect(() => {
         if (!widthChange && moblieSearchBar) {
-            setMoblieSearchBar(!moblieSearchBar)
+            setMoblieSearchBar(!moblieSearchBar);
         }
     }, [widthChange, moblieSearchBar]
-    )
+    );
     const LeftSection = () => {
         return (
             <>
@@ -56,8 +56,8 @@ export default function Header(props) {
                     }}
                 />
             </>
-        )
-    }
+        );
+    };
 
     const RightSection = () => {
         return (
@@ -75,14 +75,14 @@ export default function Header(props) {
                     <MenuAppbar />
                 </Box>
             </>
-        )
-    }
+        );
+    };
 
     return (
         <AppBar sx={{
             justifyContent: 'space-between',
             overflowX: 'auto',
-            zIndex: (theme) => { return theme.zIndex.drawer },
+            zIndex: (theme) => (theme.zIndex.drawer),
             backgroundColor:
                 theme.palette.mode === 'dark' ?
                     theme.palette.grey[1100] :

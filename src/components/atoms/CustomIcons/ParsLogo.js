@@ -11,8 +11,8 @@ export default function ParsLogo() {
                 boxShadow: '0 0 1em rgba(220,0,120,0.4)',
                 borderRadius: '50%'
             }}
-            src='/pars.png'
+            src='/logo512.png'
             size='large'
         />
-    )
+    );
 }

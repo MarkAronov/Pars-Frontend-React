@@ -55,7 +55,7 @@ export default function UserTabs(props) {
             {tabList.map(value => {
                 return (
                     <StyledTab label={value} key={value} />
-                )
+                );
             })}
         </StyledTabs>
     );

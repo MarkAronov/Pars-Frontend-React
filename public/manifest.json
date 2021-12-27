@@ -3,9 +3,9 @@
   "name": "Pars Social Media",
   "icons": [
     {
-      "src": "pars.png",
-      "type": "image/png",
-      "sizes": "250x250"
+      "src": "favicon.ico",
+      "type": "image/ico",
+      "sizes": "192x192"
     }
   ],
   "start_url": ".",

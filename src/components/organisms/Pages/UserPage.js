@@ -18,41 +18,43 @@ import { useAuth } from '../../../hooks/useAuth';
 import { useAsync } from '../../../hooks/useAsync';
 
 export default function UserPage(props) {
-    const auth = useAuth()
-    const { username } = props
-    const [user, setUser] = useState(null)
+    const auth = useAuth();
+    const { username } = props;
+    const [user, setUser] = useState(null);
     const [tabValue, setTabValue] = useState(0);
-    const [showMediaDialog, setShowMediaDialog] = useState(false)
+    const [showMediaDialog, setShowMediaDialog] = useState(false);
     const [isUserInsterested, setIsUserInsterested] = useState(false);
     const [updatingInterest, setUpdatingInterest] = useState(false);
     const { execute, status, value } = useAsync(auth.findUser, username, false);
-    const theme = useTheme()
+    const theme = useTheme();
+
+    const IsDataLoading = ((status === "success" || status === "idle"));
 
     useEffect(() => {
         if (user === null || username !== user.name) {
             if (username === auth.user.name) {
-                setUser(auth.user)
+                setUser(auth.user);
             }
             else {
-                if (status === "idle") execute()
-                else if (status === "success") setUser(value)
+                if (status === "idle") execute();
+                else if (status === "success") setUser(value);
             }
         }
-    }, [user, username, auth, execute, value, status])
+    }, [user, username, auth, execute, value, status]);
 
     const handleAvatarDialog = () => {
-        setShowMediaDialog(!showMediaDialog)
-    }
+        setShowMediaDialog(!showMediaDialog);
+    };
 
     const handleInterest = async () => {
-        setUpdatingInterest(true)
+        setUpdatingInterest(true);
         await new Promise(resolve => {
-            setTimeout(resolve, 2000)
-        })
-        setUpdatingInterest(false)
-        setIsUserInsterested(!isUserInsterested)
+            setTimeout(resolve, 2000);
+        });
+        setUpdatingInterest(false);
+        setIsUserInsterested(!isUserInsterested);
 
-    }
+    };
 
     return (
         <Container>
@@ -137,13 +139,13 @@ export default function UserPage(props) {
                             }}
                         >
                             {
-                                (user && (status === "success" || status === "idle")) ?
+                                (IsDataLoading) ?
                                     <UserProfileIcon sizeChange={true} user={user} /> :
                                     <Skeleton variant="circular" width="100%" height="100%" />
                             }
                         </Box>
                         {
-                            (user && (status === "success" || status === "idle")) ?
+                            (IsDataLoading) ?
                                 <Typography variant={theme.breakpoints.down('md') ? 'h6' : 'h5'} color='inherit'>
                                     {(user) ? user.name : 'No user with such name'}
                                 </Typography> :
@@ -173,7 +175,11 @@ export default function UserPage(props) {
                             minHeight: '48px',
                         }}
                     >
-                        <DynamicTypography type={'bio'} user={user} />
+                        {
+                            (IsDataLoading) ?
+                                <DynamicTypography type={'bio'} user={user} /> :
+                                <Skeleton width="20%" height="10%" />
+                        }
                     </Box>
                     <Box
                         sx={{

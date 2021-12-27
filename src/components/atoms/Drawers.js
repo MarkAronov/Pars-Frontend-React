@@ -91,9 +91,9 @@ const SwipeableDrawer = styled(MuiSwipeableDrawer)(
 );
 
 export default function Drawers(props) {
-    const theme = useTheme()
-    const location = useLocation()
-    const widthChange = useMediaQuery(theme.breakpoints.down('sm'))
+    const theme = useTheme();
+    const location = useLocation();
+    const widthChange = useMediaQuery(theme.breakpoints.down('sm'));
     const toggleDrawer = (open) => (event) => {
         if (
             event &&
@@ -102,8 +102,8 @@ export default function Drawers(props) {
         ) {
             return;
         }
-        props.setdrawerState(open)
-    }
+        props.setdrawerState(open);
+    };
 
     const drawerItemComponent = (props) => {
         return (
@@ -119,23 +119,25 @@ export default function Drawers(props) {
                     ))
                 }
             </List>
-        )
-    }
+        );
+    };
 
     const drawerContent =
-        (<>
-            {drawerItemComponent(
-                [[<HomeOutlinedIcon />, <HomeIcon />, 'Home', '/home'],
-                [<ExploreOutlinedIcon />, <ExploreIcon />, 'Explore', '/explore'],
-                [<InterestsOutlinedIcon />, <InterestsIcon />, 'Interests', '/interests'],
-                ])
-            }
-            <Divider />
-            {drawerItemComponent(
-                [[<FavoriteBorderOutlinedIcon />, <FavoriteBorderIcon />, 'Favorites', '/favorites'],
-                ])
-            }
-        </>)
+        (
+            <>
+                {drawerItemComponent(
+                    [[<HomeOutlinedIcon />, <HomeIcon />, 'Home', '/home'],
+                    [<ExploreOutlinedIcon />, <ExploreIcon />, 'Explore', '/explore'],
+                    [<InterestsOutlinedIcon />, <InterestsIcon />, 'Interests', '/interests'],
+                    ])
+                }
+                <Divider />
+                {drawerItemComponent(
+                    [[<FavoriteBorderOutlinedIcon />, <FavoriteBorderIcon />, 'Favorites', '/favorites'],
+                    ])
+                }
+            </>
+        );
 
     return (
         (widthChange) ?

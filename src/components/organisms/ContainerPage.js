@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Container, Box, Toolbar } from '@mui/material'
+import { Container, Box, Toolbar } from '@mui/material';
 
 import Header from '../molecules/Header';
 import Drawers from '../atoms/Drawers';
@@ -9,7 +9,7 @@ export default function ContainerPage(props) {
     const [drawerState, setdrawerState] = useState(false);
 
     const handleDrawer = () => {
-        setdrawerState(!drawerState)
+        setdrawerState(!drawerState);
     };
 
     return (

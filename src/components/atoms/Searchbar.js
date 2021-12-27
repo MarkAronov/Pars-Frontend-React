@@ -69,10 +69,10 @@ const SearchButton = styled(Button)(({ theme }) => ({
 }));
 
 export default function SearchBar(props) {
-    const theme = useTheme()
+    const theme = useTheme();
 
     const handleMobileSearch = () => {
-        props.setMoblieSearchBar(!props.moblieSearchBar)
+        props.setMoblieSearchBar(!props.moblieSearchBar);
     };
 
     return (
