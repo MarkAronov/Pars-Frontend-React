@@ -1,8 +1,14 @@
 import React from 'react';
 
-export default function HomePage() {
-    return (
-        <>
-        </>
-    );
-}
+/**
+ * The home page
+ * @return {JSX.Element} returns a home page
+ */
+const HomePage = () => {
+  return (
+    <>
+    </>
+  );
+};
+
+export default HomePage;

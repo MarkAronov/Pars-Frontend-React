@@ -1,35 +1,35 @@
-import { useState, useEffect, useCallback } from "react";
+import {useState, useEffect, useCallback} from 'react';
 
 export const useAsync = (asyncFunction, functionProps, immediate = true) => {
-    const [status, setStatus] = useState("idle");
-    const [value, setValue] = useState(null);
-    const [error, setError] = useState(null);
-    // The execute function wraps asyncFunction and
-    // handles setting state for pending, value, and error.
-    // useCallback ensures the below useEffect is not called
-    // on every render, but only if asyncFunction changes.
-    const execute = useCallback(() => {
-        setStatus("pending");
-        setValue(null);
-        setError(null);
-        return asyncFunction(functionProps)
-            .then((response) => {
-                setValue(response);
-                setStatus("success");
-            })
-            .catch((error) => {
-                setError(error);
-                setStatus("error");
-            });
-    }, [asyncFunction, functionProps]);
+  const [status, setStatus] = useState('idle');
+  const [value, setValue] = useState(null);
+  const [error, setError] = useState(null);
+  // The execute function wraps asyncFunction and
+  // handles setting state for pending, value, and error.
+  // useCallback ensures the below useEffect is not called
+  // on every render, but only if asyncFunction changes.
+  const execute = useCallback(() => {
+    setStatus('pending');
+    setValue(null);
+    setError(null);
+    return asyncFunction(functionProps)
+        .then((response) => {
+          setValue(response);
+          setStatus('success');
+        })
+        .catch((error) => {
+          setError(error);
+          setStatus('error');
+        });
+  }, [asyncFunction, functionProps]);
     // Call execute if we want to fire it right away.
     // Otherwise execute can be called later, such as
     // in an onClick handler.
-    useEffect(() => {
-        if (immediate) {
-            execute();
-        }
-    }, [execute, immediate]);
-    return { execute, status, value, error };
+  useEffect(() => {
+    if (immediate) {
+      execute();
+    }
+  }, [execute, immediate]);
+  return {execute, status, value, error};
 };
 

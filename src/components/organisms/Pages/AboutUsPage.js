@@ -1,8 +1,14 @@
 import React from 'react';
 
-export default function AboutUs() {
-    return (
-        <>
-        </>
-    );
-}
+/**
+ * The AboutUs page
+ * @return {JSX.Element} returns an AboutUs page
+ */
+const AboutUs = () => {
+  return (
+    <>
+    </>
+  );
+};
+
+export default AboutUs;

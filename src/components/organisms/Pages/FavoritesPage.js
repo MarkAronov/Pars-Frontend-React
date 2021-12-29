@@ -1,8 +1,14 @@
 import React from 'react';
 
-export default function FavoritesPage() {
-    return (
-        <>
-        </>
-    );
-}
+/**
+ * The favorites page
+ * @return {JSX.Element} returns a favorites page
+ */
+const FavoritesPage = () => {
+  return (
+    <>
+    </>
+  );
+};
+
+export default FavoritesPage;

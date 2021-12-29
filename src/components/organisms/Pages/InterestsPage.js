@@ -1,8 +1,14 @@
 import React from 'react';
 
-export default function InterestsPage() {
-    return (
-        <>
-        </>
-    );
-}
+/**
+ * The interests page
+ * @return {JSX.Element} returns a interests page
+ */
+const InterestsPage = () => {
+  return (
+    <>
+    </>
+  );
+};
+
+export default InterestsPage;
