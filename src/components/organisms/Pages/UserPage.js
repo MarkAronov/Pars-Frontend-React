@@ -34,21 +34,26 @@ const UserPage = (props) => {
   const [showMediaDialog, setShowMediaDialog] = useState(false);
   const [isUserInsterested, setIsUserInsterested] = useState(false);
   const [updatingInterest, setUpdatingInterest] = useState(false);
-  const {execute, status, value} = useAsync(auth.findUser, username, false);
+  const userFinder = useAsync(auth.findUser, false, username );
   const theme = useTheme();
+  let userBackgroundImage;
 
-  const IsDataLoading = ((status === 'success' || status === 'idle'));
+  const hasDataLoaded = (
+    (userFinder.status === 'success' || userFinder.status === 'idle')
+  );
 
   useEffect(() => {
-    if (user === null || username !== user.name) {
-      if (username === auth.user.name) {
+    if (user === null || username !== user.username) {
+      if (username === auth.user.username) {
         setUser(auth.user);
       } else {
-        if (status === 'idle') execute();
-        else if (status === 'success') setUser(value);
+        if (userFinder.status === 'idle') userFinder.execute();
+        else if (userFinder.status === 'success') setUser(userFinder.value);
       }
     }
-  }, [user, username, auth, execute, value, status]);
+  }, [user, username, auth,
+    userFinder.value, userFinder.status],
+  );
 
   const handleAvatarDialog = () => {
     setShowMediaDialog(!showMediaDialog);
@@ -85,20 +90,26 @@ const UserPage = (props) => {
           [theme.breakpoints.down('sm')]: {
             height: '90px',
           },
+          alignItems: 'center',
+          justifyContent: 'center',
         }}>
-          <img
-            style={{
-              objectFit: 'fill',
-              borderRadius: '5px 5px 0px 0px',
-              height: '100%',
-              width: '100%',
-            }}
-            src={
-                (user && user.backgroundImage) ?
-                    `data:image/jpeg;base64,${user.backgroundImage}` : ''
-            }
-            alt={''}
-          />
+          {
+            (hasDataLoaded) ?
+            <img
+              style={{
+                objectFit: 'fill',
+                borderRadius: '5px 5px 0px 0px',
+                height: '100%',
+                width: '100%',
+              }}
+              src={
+                (user && userBackgroundImage) ?
+                    `data:image/jpeg;base64,${userBackgroundImage}` : ''
+              }
+              alt={''}
+            />:
+            <Skeleton width="100%" height="100%" />
+          }
         </Grid>
         <Grid
           item
@@ -155,15 +166,15 @@ const UserPage = (props) => {
               }}
             >
               {
-                (IsDataLoading) ?
+                (hasDataLoaded) ?
                   <UserProfileIcon sizeChange={true} user={user} /> :
                   <Skeleton variant="circular" width="100%" height="100%" />
               }
             </Box>
             {
-                (IsDataLoading) ?
+                (hasDataLoaded) ?
                     <Typography variant='h5' color='inherit'>
-                      {(user) ? user.name : 'No user with such name'}
+                      {(user) ? user.username : 'No user with such name'}
                     </Typography> :
                     <Skeleton width="20%" height="10%" />
             }
@@ -171,20 +182,26 @@ const UserPage = (props) => {
               display: 'flex',
               flexGrow: 1,
             }} />
-            <Tooltip title={(isUserInsterested) ? 'Interested' : 'Interest'}>
-              <LoadingButton
-                onClick={handleInterest}
-                endIcon={(isUserInsterested) ?
-                    <CheckOutlinedIcon /> :
-                    <InterestsOutlinedIcon />
-                }
-                loading={updatingInterest}
-                loadingPosition="end"
-                variant={(isUserInsterested) ? 'outlined' : 'contained'}
-              >
-                {(isUserInsterested) ? 'Interested' : 'Interest'}
-              </LoadingButton>
-            </Tooltip>
+
+            {
+            (hasDataLoaded && username === auth.user.username)?
+              <>
+              </>:
+              <Tooltip title={(isUserInsterested) ? 'Interested' : 'Interest'}>
+                <LoadingButton
+                  onClick={handleInterest}
+                  endIcon={(isUserInsterested) ?
+                      <CheckOutlinedIcon /> :
+                      <InterestsOutlinedIcon />
+                  }
+                  loading={updatingInterest}
+                  loadingPosition="end"
+                  variant={(isUserInsterested) ? 'outlined' : 'contained'}
+                >
+                  {(isUserInsterested) ? 'Interested' : 'Interest'}
+                </LoadingButton>
+              </Tooltip>
+            }
           </Box>
           <Box
             component='div'
@@ -195,7 +212,7 @@ const UserPage = (props) => {
             }}
           >
             {
-                (IsDataLoading) ?
+                (hasDataLoaded) ?
                     <DynamicTypography type={'bio'} user={user} /> :
                     <Skeleton width="20%" height="10%" />
             }

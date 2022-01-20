@@ -21,7 +21,7 @@ const ViewMediaDialog = (props) => {
   const [doesUserHaveAvatar, setDoesUserHaveAvatar] = useState(false);
 
   useEffect(() => {
-    if (user) setIsUserSelf(auth.user.name === user.name);
+    if (user) setIsUserSelf(auth.user.username === user.username);
   }, [user, isUserSelf, auth]);
 
   useEffect(() => {
@@ -36,7 +36,8 @@ const ViewMediaDialog = (props) => {
       onClose={handleClose}
     >
       <DialogTitle>{
-        (isUserSelf) ? 'Your Avatar' : ((user) ? `${user.name}'s Avatar` : '')}
+        (isUserSelf) ? 'Your Avatar' :
+            ((user) ? `${user.username}'s Avatar` : '')}
       </DialogTitle>
       <DialogContent>
         <Box

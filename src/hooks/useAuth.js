@@ -52,7 +52,6 @@ const useProvideAuth = () => {
           });
     } catch (err) {
       if (err.response) {
-        console.log(err.response);
         if (err.response.status === 401) {
           await setData(null, null);
           return (null);
@@ -80,7 +79,6 @@ const useProvideAuth = () => {
       if (mediaType === 'backgroundImage') user.backgroundImage = null;
     } catch (err) {
       if (err.response) {
-        console.log(err.response);
         if (err.response.status === 401) {
           await setData(null, null);
         } else return (err.response);
@@ -106,7 +104,6 @@ const useProvideAuth = () => {
       });
     } catch (err) {
       if (err.response) {
-        console.log(err.response);
         if (err.response.status === 401) {
           await setData(null, null);
         } else return (err.response);
@@ -116,7 +113,6 @@ const useProvideAuth = () => {
 
   const signIn = async (userEmail, userPassword) => {
     try {
-      console.log('here');
       const {data} = await axios.post(
           `${process.env.REACT_APP_BACKEND_URL}/users/login`,
           {
@@ -127,19 +123,18 @@ const useProvideAuth = () => {
               'Access-Control-Allow-Origin': '*',
             },
           });
-      console.log(data.user);
 
       data.user.avatar = await getUserProfileMedia(
-          data.token, data.user.name, 'avatar',
+          data.token, data.user.username, 'avatar',
       );
       // eslint-disable-next-line max-len
-      // data.user.backgroundImage = await getUserProfileMedia(data.token, data.user.name, "backgroundImage")
-      console.log(data.user);
+      // data.user.backgroundImage = await getUserProfileMedia(data.token, data.user.username, "backgroundImage")
       await setData(data.user, data.token);
     } catch (err) {
-      console.log(err);
       if (err.response) {
-        console.log(err.response);
+        if (err.response.status === 400) {
+          return (Object.keys(err.response.data)[0]);
+        }
         if (err.response.status === 401) {
           await setData(null, null);
         } else return (err.response);
@@ -152,7 +147,7 @@ const useProvideAuth = () => {
       const {data} = await axios.post(`
       ${process.env.REACT_APP_BACKEND_URL}/users`,
       {
-        name: userName,
+        username: userName,
         email: userEmail,
         password: userPassword,
       }, {
@@ -163,7 +158,9 @@ const useProvideAuth = () => {
       await setData(data.user, data.token);
     } catch (err) {
       if (err.response) {
-        console.log(err.response);
+        if (err.response.status === 400) {
+          return (err.response.data);
+        }
         if (err.response.status === 401) {
           await setData(null, null);
         } else return (err.response);
@@ -183,10 +180,9 @@ const useProvideAuth = () => {
       await setData(null, null);
     } catch (err) {
       if (err.response) {
-        console.log(err.response);
         if (err.response.status === 401) {
           await setData(null, null);
-        }
+        } else return (err.response);
       }
     }
   };
@@ -204,15 +200,18 @@ const useProvideAuth = () => {
           });
       result.data.user.avatar =
                 await getUserProfileMedia(
-                    result.data.token, result.data.user.name, 'avatar',
+                    result.data.token,
+                    result.data.user.username,
+                    'avatar',
                 );
       result.data.user.backgroundImage =
                 await getUserProfileMedia(
-                    result.data.token, result.data.user.name, 'backgroundImage',
+                    result.data.token,
+                    result.data.user.username,
+                    'backgroundImage',
                 );
     } catch (err) {
       if (err.response) {
-        console.log(err.response);
         if (err.response.status === 401) {
           await setData(null, null);
         } else if (err.response.status === 404) {

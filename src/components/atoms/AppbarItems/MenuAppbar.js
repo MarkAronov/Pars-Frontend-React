@@ -113,9 +113,9 @@ const MenuAppbar = () => {
         anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
       >
         <MenuItemLink
-          to={(auth.user) ? `/user/${auth.user.name}` : ''}
+          to={(auth.user) ? `/user/${auth.user.username}` : ''}
           icon={<UserProfileIcon sizeChange={false} user={auth.user} />}
-          text={(auth.user) ? auth.user.name : ''}
+          text={(auth.user) ? auth.user.username : ''}
         />
         <Divider />
         {/* <MenuItem>

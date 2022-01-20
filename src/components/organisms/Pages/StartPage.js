@@ -152,7 +152,7 @@ const StartPage = (props) => {
 };
 
 StartPage.propTypes = {
-  page: PropTypes.func.isRequired,
+  page: PropTypes.object.isRequired,
 };
 
 export default StartPage;

@@ -18,8 +18,8 @@ const UserProfileIcon = (props) => {
   if (user) {
     if (user.avatar) {
       userAvatar = `data:image/jpeg;base64,${user.avatar}`;
-    } else if (user.name) {
-      userNameLetter = user.name[0];
+    } else if (user.username) {
+      userNameLetter = user.username[0];
     }
   }
   return (
