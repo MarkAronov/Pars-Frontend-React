@@ -1,12 +1,18 @@
-import React, {useEffect, useState} from 'react';
+/* eslint-disable no-unused-vars */
+import React, {useEffect, useState, useRef} from 'react';
 import PropTypes from 'prop-types';
 
 import {
   Box, Button, Dialog, DialogActions,
-  DialogContent, DialogTitle,
+  DialogContent, DialogTitle, styled,
 } from '@mui/material';
 
 import {useAuth} from '../../../hooks/useAuth';
+
+const Input = styled('input')({
+  display: 'none',
+});
+
 
 /**
  * The ViewMediaDialog component
@@ -16,28 +22,77 @@ import {useAuth} from '../../../hooks/useAuth';
  */
 const ViewMediaDialog = (props) => {
   const auth = useAuth();
-  const {open, handleClose, user} = props;
+  const {open, handleClose, user, mediaType} = props;
   const [isUserSelf, setIsUserSelf] = useState(false);
-  const [doesUserHaveAvatar, setDoesUserHaveAvatar] = useState(false);
+  const [imageToDisplay, setImageToDisplay] = useState(null);
+  const [doesUserHaveMedia, setDoesUserHaveMedia] = useState(false);
+  const hiddenFileInput = useRef(null);
+  const mediaTypeFormal = new Map([
+    ['avatar', 'Avatar'],
+    ['backgroundImage', 'Background Image'],
+  ]);
 
   useEffect(() => {
-    if (user) setIsUserSelf(auth.user.username === user.username);
-  }, [user, isUserSelf, auth]);
+    if (user) {
+      setIsUserSelf(auth.user.username === user.username);
+      setImageToDisplay(user[mediaType]);
+      setDoesUserHaveMedia((user !== undefined));
+    }
+  }, [user, auth, mediaType]);
 
-  useEffect(() => {
-    if (user && user.avatar) setDoesUserHaveAvatar(true);
-  }, [user, doesUserHaveAvatar]);
+  console.log(imageToDisplay);
+
+  const handleRemove = async () => {
+    const results = await auth.deleteUserProfileMedia(mediaType);
+    if (results !== undefined) {
+      // console.log(results);
+    }
+  };
+
+  const handleFileClick = (event) => {
+    hiddenFileInput.current.click();
+  };
+
+  const handleFile = async (event) => {
+    const reader = new FileReader();
+    const file = event.target.files[0];
+    console.log(file);
+    await reader.readAsDataURL(file);
+    setImageToDisplay(reader.result );
+  };
+
+  const uploadFile = async (file) =>{
+    const results = await auth.setUserProfileMedia(mediaType, file);
+    if (results !== undefined) {
+      user[mediaType] = results;
+      await auth.setData(user, auth.userToken);
+    }
+  };
 
   return (
     <Dialog
       fullWidth={true}
       maxWidth="sm"
-      open={open && doesUserHaveAvatar}
+      open={open && doesUserHaveMedia}
       onClose={handleClose}
+      sx={{
+      }}
     >
-      <DialogTitle>{
-        (isUserSelf) ? 'Your Avatar' :
-            ((user) ? `${user.username}'s Avatar` : '')}
+      <DialogTitle
+        sx={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: 'rgba(255, 255, 255, 0.00)',
+        }}
+      >
+        {(isUserSelf) ?
+          `Your ${mediaTypeFormal.get(mediaType)}` :
+          (
+            (user) ?
+            `${user.username}'s ${mediaTypeFormal.get(mediaType)}` :
+            ``
+          )
+        }
       </DialogTitle>
       <DialogContent>
         <Box
@@ -46,29 +101,49 @@ const ViewMediaDialog = (props) => {
           sx={{
             display: 'flex',
             flexDirection: 'column',
-            m: 'auto',
-            width: 'fit-content',
+            height: 'fit-content',
+            color: 'rgba(255, 255, 255, 0.00)',
           }}
         >
           <img
             style={{
-              objectFit: 'fit',
-              height: '100%',
-              width: '100%',
+              objectFit: 'fill',
+              maxHeight: '100%',
+              maxWidth: '100%',
             }}
             src={
-                (user && user.avatar) ?
-                    `data:image/jpeg;base64,${user.avatar}` : ''
+                (user) ?
+                    `data:image/jpeg;base64,${imageToDisplay}` : ''
             }
             alt={''}
           />
         </Box>
       </DialogContent>
-      <DialogActions>
+      <DialogActions
+        sx={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: 'rgba(255, 255, 255, 0.00)',
+        }}
+      >
         {(isUserSelf) ?
             <>
-              <Button onClick={null}>Remove</Button>
-              <Button onClick={null}>Upload</Button>
+              <Button onClick={handleRemove}>{`Remove`}</Button>
+              <label htmlFor="contained-button-file">
+                <Button
+                  component="span"
+                  onClick={handleFileClick}
+                >
+                  {`Upload`}
+                </Button>
+                <Input
+                  ref={hiddenFileInput}
+                  accept="image/*"
+                  id="contained-button-file"
+                  multiple type="file"
+                  onChange={handleFile}
+                />
+              </label>
             </> :
             <></>
         }
@@ -80,9 +155,10 @@ const ViewMediaDialog = (props) => {
 
 
 ViewMediaDialog.propTypes = {
-  open: PropTypes.bool.isRequired,
-  handleClose: PropTypes.func.isRequired,
+  open: PropTypes.bool,
+  handleClose: PropTypes.func,
   user: PropTypes.object,
+  mediaType: PropTypes.string,
 };
 
 export default ViewMediaDialog;

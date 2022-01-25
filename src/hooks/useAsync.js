@@ -12,7 +12,7 @@ export const useAsync = (asyncFunction, immediate = true, ...functionProps) => {
     setStatus('pending');
     setValue(null);
     setError(null);
-    return asyncFunction(functionProps)
+    return asyncFunction(...functionProps)
         .then((response) => {
           setValue(response);
           setStatus('success');

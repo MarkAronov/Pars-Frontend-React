@@ -28,7 +28,8 @@ import ParsLogo from './CustomIcons/ParsLogo';
 
 const drawerWidth = 180;
 
-const openedMixin = (theme) => ({
+
+const openedMixin = (theme, headerHeight) => ({
   width: drawerWidth,
   transition: theme.transitions.create('width', {
     easing: theme.transitions.easing.sharp,
@@ -38,12 +39,12 @@ const openedMixin = (theme) => ({
   height: '100%',
   top: 0,
   [theme.breakpoints.up('sm')]: {
-    height: 'calc(100% -64px)',
-    top: 64,
+    height: `calc(100% - ${headerHeight})`,
+    top: headerHeight,
   },
 });
 
-const closedMixin = (theme) => ({
+const closedMixin = (theme, headerHeight) => ({
   transition: theme.transitions.create('width', {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
@@ -53,13 +54,13 @@ const closedMixin = (theme) => ({
   [theme.breakpoints.up('sm')]: {
     width: `calc(${theme.spacing(9)} + 1px)`,
   },
-  height: 'calc(100% -64px)',
-  top: 64,
+  height: `calc(100% - ${headerHeight})`,
+  top: headerHeight,
 });
 
 const StaticDrawer = styled(MuiDrawer,
     {shouldForwardProp: (prop) => prop !== 'open'})(
-    ({theme, open}) => ({
+    ({theme, open, headerheight}) => ({
       borderRight: 0,
       width: drawerWidth,
       flexShrink: 0,
@@ -71,12 +72,12 @@ const StaticDrawer = styled(MuiDrawer,
                 theme.palette.grey[50],
       },
       ...(open && {
-        ...openedMixin(theme, true),
-        '& .MuiDrawer-paper': openedMixin(theme),
+        ...openedMixin(theme, headerheight),
+        '& .MuiDrawer-paper': openedMixin(theme, headerheight),
       }),
       ...(!open && {
-        ...closedMixin(theme),
-        '& .MuiDrawer-paper': closedMixin(theme),
+        ...closedMixin(theme, headerheight),
+        '& .MuiDrawer-paper': closedMixin(theme, headerheight),
       }),
     }),
 );
@@ -104,6 +105,7 @@ const Drawers = (props) => {
   const theme = useTheme();
   const location = useLocation();
   const widthChange = useMediaQuery(theme.breakpoints.down('sm'));
+
   const toggleDrawer = (open) => (event) => {
     if (
       event &&
@@ -117,7 +119,6 @@ const Drawers = (props) => {
 
   const drawerItemComponent = (props) => {
     const listData = props;
-
     return (
       <List>
         {
@@ -191,6 +192,7 @@ const Drawers = (props) => {
             (<StaticDrawer
               variant="permanent"
               open={props.drawerState}
+              headerheight={props.headerHeight}
             >
               {drawerContent}
             </StaticDrawer>)
@@ -201,6 +203,7 @@ Drawers.propTypes = {
   drawerState: PropTypes.bool.isRequired,
   handleDrawer: PropTypes.func.isRequired,
   setdrawerState: PropTypes.func.isRequired,
+  headerHeight: PropTypes.number.isRequired,
 };
 
 export default Drawers;

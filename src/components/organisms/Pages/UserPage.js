@@ -15,7 +15,7 @@ import {useTheme, alpha} from '@mui/material/styles';
 import UserTabs from '../../atoms/UserTabs';
 import UserProfileIcon from '../../atoms/CustomIcons/UserProfileIcon';
 import ViewMediaDialog from '../../atoms/Dialogs/ViewMediaDialog';
-import DynamicTypography from '../../atoms/DynamicTypography';
+import DynamicTypography from '../../atoms/Typographies/DynamicTypography';
 import PostCardGroup from '../../molecules/PostCardGroup';
 
 import {useAuth} from '../../../hooks/useAuth';
@@ -32,22 +32,24 @@ const UserPage = (props) => {
   const [user, setUser] = useState(null);
   const [tabValue, setTabValue] = useState(0);
   const [showMediaDialog, setShowMediaDialog] = useState(false);
+  const [mediaDialogType, setMediaDialogType] = useState('');
   const [isUserInsterested, setIsUserInsterested] = useState(false);
   const [updatingInterest, setUpdatingInterest] = useState(false);
   const userFinder = useAsync(auth.findUser, false, username );
   const theme = useTheme();
-  let userBackgroundImage;
 
-  const hasDataLoaded = (
+
+  const userLoaded = (
     (userFinder.status === 'success' || userFinder.status === 'idle')
   );
+
 
   useEffect(() => {
     if (user === null || username !== user.username) {
       if (username === auth.user.username) {
         setUser(auth.user);
       } else {
-        if (userFinder.status === 'idle') userFinder.execute();
+        if ( userFinder.status === 'idle') userFinder.execute();
         else if (userFinder.status === 'success') setUser(userFinder.value);
       }
     }
@@ -55,7 +57,18 @@ const UserPage = (props) => {
     userFinder.value, userFinder.status],
   );
 
-  const handleAvatarDialog = () => {
+
+  const handleUserMediaDialog = () => {
+    setShowMediaDialog(!showMediaDialog);
+  };
+
+  const handleUserAvatarDialog = () => {
+    setMediaDialogType('avatar');
+    setShowMediaDialog(!showMediaDialog);
+  };
+
+  const handleUserBackgroundDialog = () => {
+    setMediaDialogType('backgroundImage');
     setShowMediaDialog(!showMediaDialog);
   };
 
@@ -84,31 +97,51 @@ const UserPage = (props) => {
         }}
         component={Paper}
       >
-        <Grid item sx={{
-          width: '100%',
-          height: '120px',
-          [theme.breakpoints.down('sm')]: {
-            height: '90px',
-          },
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
+        <Grid
+          item
+          onClick={handleUserBackgroundDialog}
+          component={Button}
+          sx={{
+            borderRadius: '5px 5px 0px 0px',
+            width: '100%',
+            height: '120px',
+            [theme.breakpoints.down('sm')]: {
+              height: '90px',
+            },
+            alignItems: 'center',
+            justifyContent: 'center',
+            py: 0,
+            px: 0,
+            backgroundColor:
+            (theme.palette.mode === 'dark') ?
+              theme.palette.grey[850] :
+              theme.palette.grey[100],
+          }}
+        >
           {
-            (hasDataLoaded) ?
-            <img
-              style={{
-                objectFit: 'fill',
-                borderRadius: '5px 5px 0px 0px',
-                height: '100%',
-                width: '100%',
-              }}
-              src={
-                (user && userBackgroundImage) ?
-                    `data:image/jpeg;base64,${userBackgroundImage}` : ''
-              }
-              alt={''}
-            />:
-            <Skeleton width="100%" height="100%" />
+            (userLoaded && user) ?
+            (user.backgroundImage)?
+              <img
+                style={{
+                  objectFit: 'fill',
+                  borderRadius: '5px 5px 0px 0px',
+                  height: '100%',
+                  width: '100%',
+                }}
+                src={
+                  (user && user.backgroundImage) ?
+                      `data:image/jpeg;base64,${user.backgroundImage}` : ''
+                }
+                alt={''}
+              /> :
+              <></> :
+              <Skeleton variant="rectangular"
+                sx={{
+                  borderRadius: '5px 5px 0px 0px',
+                  width: '100%',
+                  height: '100%',
+                }}
+              />
           }
         </Grid>
         <Grid
@@ -144,7 +177,7 @@ const UserPage = (props) => {
             }}
           >
             <Box
-              onClick={handleAvatarDialog}
+              onClick={handleUserAvatarDialog}
               component={Button}
               sx={{
                 px: 0,
@@ -166,25 +199,39 @@ const UserPage = (props) => {
               }}
             >
               {
-                (hasDataLoaded) ?
+                (userLoaded) ?
                   <UserProfileIcon sizeChange={true} user={user} /> :
                   <Skeleton variant="circular" width="100%" height="100%" />
               }
             </Box>
-            {
-                (hasDataLoaded) ?
+            <Box
+              sx={{
+                flexDirection: 'column',
+                width: '30%',
+              }}
+            >
+              {
+                (userLoaded) ?
                     <Typography variant='h5' color='inherit'>
-                      {(user) ? user.username : 'No user with such name'}
+                      {(user) ? user.displayName : 'No user with such name'}
                     </Typography> :
-                    <Skeleton width="20%" height="10%" />
-            }
+                    <Skeleton width="100%" height="10%" />
+              }
+              {
+                (userLoaded) ?
+                    <Typography variant='h7' color='inherit'>
+                      {(user) ? `@${user.username}` : 'No user with such name'}
+                    </Typography> :
+                    <Skeleton width="100%" height="10%" />
+              }
+            </Box>
             <Box sx={{
               display: 'flex',
               flexGrow: 1,
             }} />
 
             {
-            (hasDataLoaded && username === auth.user.username)?
+            (userLoaded && username === auth.user.username)?
               <>
               </>:
               <Tooltip title={(isUserInsterested) ? 'Interested' : 'Interest'}>
@@ -194,6 +241,7 @@ const UserPage = (props) => {
                       <CheckOutlinedIcon /> :
                       <InterestsOutlinedIcon />
                   }
+                  disabled={!userLoaded}
                   loading={updatingInterest}
                   loadingPosition="end"
                   variant={(isUserInsterested) ? 'outlined' : 'contained'}
@@ -212,9 +260,13 @@ const UserPage = (props) => {
             }}
           >
             {
-                (hasDataLoaded) ?
+                (userLoaded) ?
                     <DynamicTypography type={'bio'} user={user} /> :
-                    <Skeleton width="20%" height="10%" />
+                    <>
+                      <Skeleton width="100%" height="10%" />
+                      <Skeleton width="100%" height="10%" />
+                      <Skeleton width="100%" height="10%" />
+                    </>
             }
           </Box>
           <Box
@@ -232,6 +284,7 @@ const UserPage = (props) => {
                     alpha(theme.palette.common.white, 0.1) :
                     alpha(theme.palette.common.white, 0.5),
               py: 1,
+              mt: 1,
               width: 'auto',
             }}
           >
@@ -246,8 +299,9 @@ const UserPage = (props) => {
       <PostCardGroup cardlist={[1, 2, 3]}/>
       <ViewMediaDialog
         open={showMediaDialog}
-        handleClose={handleAvatarDialog}
+        handleClose={handleUserMediaDialog}
         user={user}
+        mediaType={mediaDialogType}
       />
     </Container>
   );

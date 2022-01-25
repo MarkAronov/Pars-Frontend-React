@@ -15,7 +15,12 @@ const PostCardGroup = (props) => {
   const {cardlist} = props;
 
   return (
-    <Grid container >
+    <Grid
+      container
+      sx={{
+        alignItems: 'center',
+        justifyContent: 'center'}}
+    >
       {cardlist.map((value) => (
         <PostCard key={value} />
       ))}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 
 import {Avatar} from '@mui/material';
@@ -13,17 +13,23 @@ import {alpha, useTheme} from '@mui/material/styles';
 const UserProfileIcon = (props) => {
   const {user} = props;
   const theme = useTheme();
+  const [userAvatar, setUserAvatar] = useState(null);
+  let [userNameLetter, setUserNameLetter] = useState(null);
 
-  let userNameLetter = ''; let userAvatar = '';
-  if (user) {
-    if (user.avatar) {
-      userAvatar = `data:image/jpeg;base64,${user.avatar}`;
-    } else if (user.username) {
-      userNameLetter = user.username[0];
+  useEffect(()=>{
+    if (user) {
+      if (user.avatar) {
+        setUserAvatar(`data:image/jpeg;base64,${user.avatar}`);
+        setUserNameLetter(null);
+      } else {
+        setUserAvatar(null);
+        setUserNameLetter(userNameLetter = user.displayName[0]);
+      }
     }
-  }
-  return (
+  }, [user]);
 
+
+  return (
     <Avatar
       src={userAvatar}
       sx={{

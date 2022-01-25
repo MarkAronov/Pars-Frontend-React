@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, forwardRef} from 'react';
 import PropTypes from 'prop-types';
 
 import {
@@ -20,7 +20,7 @@ import ParsLogo from '../atoms/CustomIcons/ParsLogo';
  *                       control the Header
  * @return {JSX.Element} returns a Header component
  */
-const Header = (props) =>{
+const Header = forwardRef((props, ref) =>{
   const theme = useTheme();
   const [moblieSearchBar, setMoblieSearchBar] = React.useState(false);
   const widthChange = useMediaQuery(theme.breakpoints.down('sm'));
@@ -87,15 +87,17 @@ const Header = (props) =>{
   };
 
   return (
-    <AppBar sx={{
-      justifyContent: 'space-between',
-      overflowX: 'auto',
-      zIndex: (theme) => (theme.zIndex.drawer),
-      backgroundColor:
+    <AppBar
+      ref={ref}
+      sx={{
+        justifyContent: 'space-between',
+        overflowX: 'auto',
+        zIndex: (theme) => (theme.zIndex.drawer),
+        backgroundColor:
                 (theme.palette.mode === 'dark') ?
                     theme.palette.grey[1100] :
                     theme.palette.grey[50],
-    }}>
+      }}>
       <Toolbar >
         <LeftSection />
         <SearchBar
@@ -106,10 +108,11 @@ const Header = (props) =>{
       </Toolbar>
     </AppBar>
   );
-};
+});
 
 Header.propTypes = {
   handleDrawer: PropTypes.func.isRequired,
 };
+Header.displayName = 'Header';
 
 export default Header;

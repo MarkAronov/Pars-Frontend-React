@@ -26,6 +26,7 @@ const useProvideAuth = () => {
   const [userToken, setUserToken] = useState(localStorage.getItem('token'));
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
 
+
   const setData = async (user, token) => {
     setUserToken(token);
     setUser(user);
@@ -56,8 +57,7 @@ const useProvideAuth = () => {
           await setData(null, null);
           return (null);
         } else if (err.response.status === 404) {
-          userMedia = null;
-          return userMedia;
+          return null;
         } else return (err.response);
       }
     }
@@ -75,8 +75,10 @@ const useProvideAuth = () => {
               'Authorization': 'Bearer ' + userToken,
             },
           });
-      if (mediaType === 'avatar') user.avatar = null;
-      if (mediaType === 'backgroundImage') user.backgroundImage = null;
+      if (mediaType === 'avatar') {
+        user.avatar = null;
+        setData(user, userToken);
+      }
     } catch (err) {
       if (err.response) {
         if (err.response.status === 401) {
@@ -87,19 +89,19 @@ const useProvideAuth = () => {
   };
 
   const setUserProfileMedia = async (mediaType, mediaFile) => {
+    let userMedia;
     try {
       const formData = new FormData();
       formData.append(mediaType, mediaFile);
-
-      await axios.post(`
+      userMedia = await axios.post(`
       ${process.env.REACT_APP_BACKEND_URL}/users/me/${mediaType}`,
+      formData,
       {
-        mediaType: formData,
-      },
-      {
+        responseType: 'arraybuffer',
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Authorization': 'Bearer ' + userToken,
+          'Content-Type': 'multipart/form-data',
         },
       });
     } catch (err) {
@@ -109,6 +111,7 @@ const useProvideAuth = () => {
         } else return (err.response);
       }
     }
+    return Buffer.from(userMedia.data).toString('base64');
   };
 
   const signIn = async (userEmail, userPassword) => {
@@ -127,8 +130,9 @@ const useProvideAuth = () => {
       data.user.avatar = await getUserProfileMedia(
           data.token, data.user.username, 'avatar',
       );
-      // eslint-disable-next-line max-len
-      // data.user.backgroundImage = await getUserProfileMedia(data.token, data.user.username, "backgroundImage")
+      data.user.backgroundImage = await getUserProfileMedia(
+          data.token, data.user.username, 'backgroundImage',
+      );
       await setData(data.user, data.token);
     } catch (err) {
       if (err.response) {
@@ -187,7 +191,9 @@ const useProvideAuth = () => {
     }
   };
 
-  const findUser = async (userName) => {
+  // findType used to set what components do we
+  // want from the user at a given moment
+  const findUser = async (userName, findType) => {
     let result;
     try {
       result = await axios.get(
@@ -232,5 +238,6 @@ const useProvideAuth = () => {
     signUp,
     signOut,
     findUser,
+    setData,
   };
 };

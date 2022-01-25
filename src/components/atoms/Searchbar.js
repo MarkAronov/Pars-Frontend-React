@@ -12,8 +12,6 @@ import {styled, alpha, useTheme} from '@mui/material/styles';
 
 const Search = styled('div')(({theme}) => ({
   'borderRadius': '5px',
-
-
   'borderColor':
         (theme.palette.mode === 'dark') ?
             alpha(theme.palette.common.white, 0.1) :

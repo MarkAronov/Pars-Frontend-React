@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useLayoutEffect, useState, useRef} from 'react';
 import PropTypes from 'prop-types';
 
 import {Container, Box, Toolbar} from '@mui/material';
@@ -13,18 +13,30 @@ import Drawers from '../atoms/Drawers';
  */
 const ContainerPage = (props) => {
   const [drawerState, setdrawerState] = useState(false);
-
+  const [headerHeight, setHeaderHeight] = useState(0);
+  const header = useRef(null);
   const handleDrawer = () => {
     setdrawerState(!drawerState);
   };
 
+  useLayoutEffect(() => {
+    if (header.current) {
+      setHeaderHeight(header.current.offsetHeight);
+    }
+  }, [header]);
+
   return (
     <Box sx={{display: 'flex'}}>
-      <Header sx={{position: 'sticky'}} handleDrawer={handleDrawer} />
+      <Header
+        ref={header}
+        sx={{position: 'sticky'}}
+        handleDrawer={handleDrawer}
+      />
       <Drawers
         drawerState={drawerState}
         setdrawerState={setdrawerState}
         handleDrawer={handleDrawer}
+        headerHeight={headerHeight}
       />
       <Box
         component="main"
@@ -34,12 +46,18 @@ const ContainerPage = (props) => {
                             theme.palette.grey[900] :
                             theme.palette.grey[100],
           flexGrow: 1,
-          height: '100vh',
           overflow: 'auto',
+          top: `${headerHeight})`,
         }}
       >
-        <Toolbar />
-        <Container maxWidth='lg' sx={{my: 3, px: 0}}>
+        <Toolbar/>
+        <Container
+          maxWidth='lg'
+          sx={{
+            my: 3,
+            px: 0,
+          }}
+        >
           {props.page}
         </Container>
       </Box>
