@@ -31,11 +31,7 @@ const PageRouter = () => {
 
   const UserRoute = () => {
     const {username} = useParams();
-
-    if (auth.userToken !== null) {
-      return ( <UserPage username={username} />);
-    }
-    return <Redirect to="/start" />;
+    return ( <UserPage username={username} />);
   };
 
   return (
@@ -48,16 +44,10 @@ const PageRouter = () => {
           }
         </Route>
         <Route path="/aboutus">
-          {auth.userToken !== null ?
-                        <AboutUsPage /> :
-                        <Redirect to="/start" />
-          }
+          <AboutUsPage />
         </Route>
         <Route path="/home">
-          {auth.userToken !== null ?
-                        <ContainerPage page={<HomePage />} /> :
-                        <Redirect to="/start" />
-          }
+          <ContainerPage page={<HomePage />} />
         </Route>
         <Route path="/explore">
           {auth.userToken !== null ?
@@ -78,10 +68,7 @@ const PageRouter = () => {
           }
         </Route> */}
         <Route path="/user/:username">
-          {auth.userToken !== null ?
-                        <ContainerPage page={<UserRoute />} /> :
-                        <Redirect to="/start" />
-          }
+          <ContainerPage page={<UserRoute />} /> :
         </Route>
         <Route path="/start">
           {auth.userToken !== null ?

@@ -3,19 +3,16 @@ import PropTypes from 'prop-types';
 
 import {
   Grid, Box, Paper, Typography,
-  Container, Button, Skeleton, Tooltip,
+  Container, Button, Skeleton,
 } from '@mui/material';
-import LoadingButton from '@mui/lab/LoadingButton';
-import {
-  CheckOutlined as CheckOutlinedIcon,
-  InterestsOutlined as InterestsOutlinedIcon,
-} from '@mui/icons-material/';
+
 import {useTheme, alpha} from '@mui/material/styles';
 
 import UserTabs from '../../atoms/UserTabs';
 import UserProfileIcon from '../../atoms/CustomIcons/UserProfileIcon';
 import ViewMediaDialog from '../../atoms/Dialogs/ViewMediaDialog';
 import DynamicTypography from '../../atoms/Typographies/DynamicTypography';
+import ProfileButton from '../../atoms/Buttons/ProfileButton';
 import PostCardGroup from '../../molecules/PostCardGroup';
 
 import {useAuth} from '../../../hooks/useAuth';
@@ -33,28 +30,26 @@ const UserPage = (props) => {
   const [tabValue, setTabValue] = useState(0);
   const [showMediaDialog, setShowMediaDialog] = useState(false);
   const [mediaDialogType, setMediaDialogType] = useState('');
-  const [isUserInsterested, setIsUserInsterested] = useState(false);
-  const [updatingInterest, setUpdatingInterest] = useState(false);
   const userFinder = useAsync(auth.findUser, false, username );
   const theme = useTheme();
 
-
   const userLoaded = (
-    (userFinder.status === 'success' || userFinder.status === 'idle')
+    (
+      userFinder.status === 'success' ||
+      userFinder.status === 'error' ||
+      userFinder.status === 'idle'
+    )
   );
 
 
   useEffect(() => {
-    if (user === null || username !== user.username) {
-      if (username === auth.user.username) {
-        setUser(auth.user);
-      } else {
-        if ( userFinder.status === 'idle') userFinder.execute();
-        else if (userFinder.status === 'success') setUser(userFinder.value);
-      }
+    if (user === null || (username !== user.username)) {
+      if ( userFinder.status === 'idle') userFinder.execute();
+      else if (userFinder.status === 'success') setUser(userFinder.value);
+      else if (userFinder.status === 'error') setUser(null);
     }
-  }, [user, username, auth,
-    userFinder.value, userFinder.status],
+    return () => setUser(userFinder.value);
+  }, [user, username, auth, userFinder],
   );
 
 
@@ -72,14 +67,6 @@ const UserPage = (props) => {
     setShowMediaDialog(!showMediaDialog);
   };
 
-  const handleInterest = async () => {
-    setUpdatingInterest(true);
-    await new Promise((resolve) => {
-      setTimeout(resolve, 2000);
-    });
-    setUpdatingInterest(false);
-    setIsUserInsterested(!isUserInsterested);
-  };
 
   return (
     <Container>
@@ -119,22 +106,22 @@ const UserPage = (props) => {
           }}
         >
           {
-            (userLoaded && user) ?
-            (user.backgroundImage)?
+            (userLoaded ) ?
+            ((user)?
               <img
                 style={{
-                  objectFit: 'fill',
+                  objectFit: 'cover',
                   borderRadius: '5px 5px 0px 0px',
                   height: '100%',
                   width: '100%',
                 }}
                 src={
-                  (user && user.backgroundImage) ?
-                      `data:image/jpeg;base64,${user.backgroundImage}` : ''
+                  // eslint-disable-next-line max-len
+                  `${process.env.REACT_APP_BACKEND_URL}/users/${user.username}/backgroundImage#` + new Date().getTime()
                 }
                 alt={''}
               /> :
-              <></> :
+              <></>) :
               <Skeleton variant="rectangular"
                 sx={{
                   borderRadius: '5px 5px 0px 0px',
@@ -228,28 +215,12 @@ const UserPage = (props) => {
             <Box sx={{
               display: 'flex',
               flexGrow: 1,
-            }} />
-
-            {
-            (userLoaded && username === auth.user.username)?
-              <>
-              </>:
-              <Tooltip title={(isUserInsterested) ? 'Interested' : 'Interest'}>
-                <LoadingButton
-                  onClick={handleInterest}
-                  endIcon={(isUserInsterested) ?
-                      <CheckOutlinedIcon /> :
-                      <InterestsOutlinedIcon />
-                  }
-                  disabled={!userLoaded}
-                  loading={updatingInterest}
-                  loadingPosition="end"
-                  variant={(isUserInsterested) ? 'outlined' : 'contained'}
-                >
-                  {(isUserInsterested) ? 'Interested' : 'Interest'}
-                </LoadingButton>
-              </Tooltip>
-            }
+            }}/>
+            <ProfileButton
+              userLoaded={userLoaded}
+              user={user}
+              username={username}
+            />
           </Box>
           <Box
             component='div'

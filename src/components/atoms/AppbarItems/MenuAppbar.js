@@ -7,7 +7,7 @@ import {
 } from '@mui/material';
 import {
   // eslint-disable-next-line
-    PersonAddOutlined as PersonAddOutlinedIcon,
+  PersonAddOutlined as PersonAddOutlinedIcon,
   SettingsOutlined as SettingsOutlinedIcon,
   LogoutOutlined as LogoutOutlinedIcon,
 } from '@mui/icons-material';
@@ -24,7 +24,6 @@ const MenuAppbar = () => {
   const auth = useAuth();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -69,7 +68,8 @@ const MenuAppbar = () => {
 
   return (
     <>
-      <IconButton onClick={handleClick}
+      <IconButton
+        onClick={handleClick}
         sx={{
           height: '48px',
           width: '48px',
@@ -115,27 +115,46 @@ const MenuAppbar = () => {
         <MenuItemLink
           to={(auth.user) ? `/user/${auth.user.username}` : ''}
           icon={<UserProfileIcon sizeChange={false} user={auth.user} />}
-          text={(auth.user) ? auth.user.username : ''}
+          text={(auth.user) ? auth.user.username : 'Log In'}
         />
         <Divider />
-        {/* <MenuItem>
+        {
+          /* <MenuItem>
                     <ListItemIcon>
                         <PersonAddOutlinedIcon fontSize='small' />
                     </ListItemIcon>
                     Add another account
-                </MenuItem> */}
-        <MenuItem>
-          <ListItemIcon>
-            <SettingsOutlinedIcon fontSize='small' />
-          </ListItemIcon>
-                    Settings
-        </MenuItem>
-        <MenuItem onClick={handleSignOut}>
-          <ListItemIcon>
-            <LogoutOutlinedIcon fontSize='small' />
-          </ListItemIcon>
-                    Logout
-        </MenuItem>
+                </MenuItem> */
+        }
+        {
+          [
+            [
+              <SettingsOutlinedIcon
+                key={'Settings'}
+                fontSize='small'
+              />,
+              'Settings',
+              null,
+            ],
+            [
+              <LogoutOutlinedIcon
+                key={'Logout'}
+                fontSize='small'
+              />,
+              'Logout',
+              handleSignOut,
+            ],
+          ].map((value)=>((!auth.user)?
+            '':
+            <MenuItem onClick={value[2]} key={value[1]}>
+              <ListItemIcon>
+                {value[0]}
+              </ListItemIcon>
+              {value[1]}
+            </MenuItem>
+          ))
+        }
+
       </Menu>
     </>
   );

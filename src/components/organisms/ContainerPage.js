@@ -26,7 +26,8 @@ const ContainerPage = (props) => {
   }, [header]);
 
   return (
-    <Box sx={{display: 'flex'}}>
+    <Box sx={{display: 'flex',
+    }}>
       <Header
         ref={header}
         sx={{position: 'sticky'}}
@@ -47,7 +48,6 @@ const ContainerPage = (props) => {
                             theme.palette.grey[100],
           flexGrow: 1,
           overflow: 'auto',
-          top: `${headerHeight})`,
         }}
       >
         <Toolbar/>

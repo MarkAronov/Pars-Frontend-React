@@ -122,7 +122,7 @@ const Drawers = (props) => {
     return (
       <List>
         {
-          listData.map((value, index) => (
+          listData.map((value) => (
             <ListItemButton
               sx={{pl: 3}}
               component={Link}

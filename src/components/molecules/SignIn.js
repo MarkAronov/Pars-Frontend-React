@@ -1,21 +1,18 @@
 import React, {useState, useEffect} from 'react';
 
 import {
-  TextField, Grid, Link, InputLabel, FormHelperText,
-  FilledInput, FormControl, IconButton, InputAdornment, Typography,
+  Grid, Link, Box,
 } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import {useTheme} from '@mui/material/styles';
-import {
-  Visibility as VisibilityIcon,
-  VisibilityOff as VisibilityOffIcon,
-} from '@mui/icons-material/';
-
 import {Link as RouterLink} from 'react-router-dom';
 
+import TextInput from '../atoms/TextInputs/TextInput';
 import useActiveElement from '../../hooks/useActiveElement';
 import usePrevious from '../../hooks/usePrevious';
 import {useAuth} from '../../hooks/useAuth';
+
+
 /**
  * The SignIn component
  * @return {JSX.Element} returns a signin component
@@ -24,8 +21,8 @@ const SignIn = () => {
   const theme = useTheme();
   const auth = useAuth();
   const [data, setData] = useState({
-    email: 'test2@testing.com',
-    password: 'Password12345678',
+    email: 'asd@dd.com',
+    password: 'Asd123453sasd',
   });
   const [errors, setErrors] = useState({
     email: false,
@@ -35,8 +32,6 @@ const SignIn = () => {
     email: '',
     password: '',
   });
-
-  const [showPassword, setshowPassword] = useState(false);
   const [disabledSignIn, setdisabledSignIn] = useState(true);
   const [errorDisplayTimer, setErrorDisplayTimer] = useState(0);
   const [hasDataLoaded, setHasDataLoaded] = useState(true);
@@ -49,15 +44,14 @@ const SignIn = () => {
     return errorDisplayTimer;
   };
 
-
   useEffect(() => {
     if (!errorDisplayTimer) return;
 
-    const intervalId = setInterval(() => {
+    const timeout = setTimeout(() => {
       setErrorDisplayTimer(errorDisplayTimer - 1);
     }, 1000);
 
-    return () => clearInterval(intervalId);
+    return () => clearTimeout(timeout);
   }, [errorDisplayTimer]);
 
   useEffect(() => {
@@ -70,7 +64,8 @@ const SignIn = () => {
         (errorDisplayTimer !== 0 &&
         activeElement?.id !== undefined),
     );
-  }, [data, errors, activeElement, errorDisplayTimer],
+    return () => setdisabledSignIn(false);
+  }, [data, errors, erroredValues, activeElement, errorDisplayTimer],
   );
 
   useEffect(async () => {
@@ -85,7 +80,7 @@ const SignIn = () => {
           [activeElement?.id]: false,
         }));
 
-      if (prevData !== data ) setErrorDisplayTimer(2);
+      if (prevData !== data ) setErrorDisplayTimer(1);
       const time = await getAsyncTimer();
 
       if ((!time && prevData === data ) || !activeElement?.id) {
@@ -97,6 +92,7 @@ const SignIn = () => {
         }
       }
     }
+    return () => setErrors({});
   }, [
     data, activeElement, errorDisplayTimer,
   ]);
@@ -105,14 +101,6 @@ const SignIn = () => {
   const handleChange = (event) => {
     const {value, id} = event.target;
     setData((data) => ({...data, [id]: value}));
-  };
-
-  const handleClickShowPassword = () => {
-    setshowPassword(!showPassword);
-  };
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
   };
 
   const handleSignIn = async () => {
@@ -134,84 +122,38 @@ const SignIn = () => {
 
 
   return (
-    <>
-      <form >
-        <TextField
-          error={errors.email}
-          helperText={errors.email ?
-            <Typography
-              component={'span'}
-              sx={{display: 'block'}}
-            >
-              {(erroredValues.email === data.email)?
-                  `Email is already taken.`:
-                  `Invalid Email.`
-              }
-            </Typography> :
-            ''
-          }
-          value={data.email}
-          variant="filled"
-          fullWidth
-          id="email"
-          label="email"
-          onChange={handleChange}
-          disabled={!hasDataLoaded}
-        />
-        <FormControl
-          id="passwordform"
-          fullWidth
-          variant="filled"
-          error={errors.password}
-          disabled={!hasDataLoaded}
-        >
-          <InputLabel htmlFor="password">Password</InputLabel>
-          <FilledInput
-            id="password"
-            type={showPassword ? 'text' : 'password'}
-            value={data.password}
-            onChange={handleChange}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  id="showPassword"
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                  edge="end"
-                >
-                  {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
-                </IconButton>
-              </InputAdornment>
-            }
-          />
-          {errors.password ?
-                        <FormHelperText
-                          error={true}
-                          id="component-helper-text"
-                        >
-                          <Typography
-                            component={'span'}
-                            sx={{display: 'block'}}
-                          >
-                            {`Passwords don't match`}
-                          </Typography>
-                        </FormHelperText> :
-                        <></>
-          }
-        </FormControl>
-        <LoadingButton
-          id="signin"
-          disabled={disabledSignIn}
-          loading={!hasDataLoaded}
-          fullWidth
-          variant="contained"
-          onClick={handleSignIn}
-          sx={{margin: theme.spacing(3, 0, 2)}}
-        >
-          {'Sign In'}
-        </LoadingButton>
-
-      </form>
+    <Box
+      component="form"
+    >
+      <TextInput
+        id="email"
+        label="Email"
+        value={data.email}
+        handleChange={handleChange}
+        error={errors.email}
+        errorTextList={['Invalid Email.']}
+        disabled={!hasDataLoaded}
+      />
+      <TextInput
+        id="password"
+        label="Password"
+        value={data.password}
+        handleChange={handleChange}
+        error={errors.password}
+        errorTextList={['Invalid Password.']}
+        disabled={!hasDataLoaded}
+      />
+      <LoadingButton
+        id="signin"
+        disabled={disabledSignIn}
+        loading={!hasDataLoaded}
+        fullWidth
+        variant="contained"
+        onClick={handleSignIn}
+        sx={{margin: theme.spacing(3, 0, 2)}}
+      >
+        {'Sign In'}
+      </LoadingButton>
       <Grid
         container
         direction="row"
@@ -238,7 +180,7 @@ const SignIn = () => {
           </Link>
         </Grid>
       </Grid>
-    </>
+    </Box>
   );
 };
 

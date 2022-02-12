@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import {Avatar} from '@mui/material';
@@ -13,21 +13,17 @@ import {alpha, useTheme} from '@mui/material/styles';
 const UserProfileIcon = (props) => {
   const {user} = props;
   const theme = useTheme();
-  const [userAvatar, setUserAvatar] = useState(null);
-  let [userNameLetter, setUserNameLetter] = useState(null);
+  let userAvatar;
+  let userNameLetter;
 
-  useEffect(()=>{
-    if (user) {
-      if (user.avatar) {
-        setUserAvatar(`data:image/jpeg;base64,${user.avatar}`);
-        setUserNameLetter(null);
-      } else {
-        setUserAvatar(null);
-        setUserNameLetter(userNameLetter = user.displayName[0]);
-      }
-    }
-  }, [user]);
-
+  if (user !== null) {
+    // eslint-disable-next-line max-len
+    userAvatar = `${process.env.REACT_APP_BACKEND_URL}/users/${user.username}/avatar?` + Date.now();
+    userNameLetter = user.displayName[0];
+  } else {
+    userAvatar = null;
+    userNameLetter = null;
+  }
 
   return (
     <Avatar
@@ -37,8 +33,8 @@ const UserProfileIcon = (props) => {
         width: (props.sizeChange) ? '100%' : 'default',
         fontSize: '75vm',
         bgcolor: (theme.palette.mode === 'dark') ?
-                    alpha(theme.palette.common.white, 0.9) :
-                    alpha(theme.palette.common.white, 0.5),
+                      alpha(theme.palette.common.white, 0.9) :
+                      alpha(theme.palette.common.white, 0.5),
       }}
     >
       {userNameLetter}

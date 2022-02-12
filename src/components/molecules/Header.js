@@ -7,7 +7,7 @@ import {
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
 import {useTheme} from '@mui/material/styles';
 
-import SearchBar from '../atoms/SearchBar';
+import SearchBar from '../atoms/TextInputs/SearchBar';
 import NotificationsAppbar from '../atoms/AppbarItems/NotificationsAppbar';
 // eslint-disable-next-line
 import MessagesAppbar from '../atoms/AppbarItems/MessagesAppbar';
@@ -31,6 +31,7 @@ const Header = forwardRef((props, ref) =>{
     }
   }, [widthChange, moblieSearchBar],
   );
+
   const LeftSection = () => {
     return (
       <>

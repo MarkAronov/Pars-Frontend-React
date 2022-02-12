@@ -3,8 +3,8 @@ import React, {useEffect, useState, useRef} from 'react';
 import PropTypes from 'prop-types';
 
 import {
-  Box, Button, Dialog, DialogActions,
-  DialogContent, DialogTitle, styled,
+  Box, Button, Dialog, Paper, styled,
+  Backdrop, Snackbar, Alert,
 } from '@mui/material';
 
 import {useAuth} from '../../../hooks/useAuth';
@@ -23,51 +23,76 @@ const Input = styled('input')({
 const ViewMediaDialog = (props) => {
   const auth = useAuth();
   const {open, handleClose, user, mediaType} = props;
-  const [isUserSelf, setIsUserSelf] = useState(false);
   const [imageToDisplay, setImageToDisplay] = useState(null);
+  const [fileToUpload, setFileToUpload] = useState(null);
+  const [isUserSelf, setIsUserSelf] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(false);
   const [doesUserHaveMedia, setDoesUserHaveMedia] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const hiddenFileInput = useRef(null);
-  const mediaTypeFormal = new Map([
-    ['avatar', 'Avatar'],
-    ['backgroundImage', 'Background Image'],
-  ]);
+
 
   useEffect(() => {
     if (user) {
-      setIsUserSelf(auth.user.username === user.username);
-      setImageToDisplay(user[mediaType]);
-      setDoesUserHaveMedia((user !== undefined));
+      setIsUserSelf(auth.user !== null && auth.user.username === user.username);
+      setDoesUserHaveMedia((user[mediaType] !== undefined));
+      // eslint-disable-next-line max-len
+      setImageToDisplay(`${process.env.REACT_APP_BACKEND_URL}/users/${user.username}/${mediaType}#` + new Date().getTime());
+      if (!open) {
+        setSelectedImage(false);
+        setFileToUpload(null);
+        setLoading(false);
+      }
     }
-  }, [user, auth, mediaType]);
+    return () => setIsUserSelf(false);
+  }, [user, isUserSelf, mediaType, open]);
 
-  console.log(imageToDisplay);
 
-  const handleRemove = async () => {
+  const handleSnackbarClose = (event) =>{
+    event.stopPropagation();
+    setSnackbarOpen(false);
+  };
+
+  const handleRemove = async (event) => {
+    event.stopPropagation();
+    setLoading(true);
     const results = await auth.deleteUserProfileMedia(mediaType);
     if (results !== undefined) {
       // console.log(results);
     }
+    setSnackbarOpen(true);
+    setLoading(false);
   };
 
-  const handleFileClick = (event) => {
+  const handleFileClick = () => {
     hiddenFileInput.current.click();
   };
 
   const handleFile = async (event) => {
     const reader = new FileReader();
     const file = event.target.files[0];
-    console.log(file);
-    await reader.readAsDataURL(file);
-    setImageToDisplay(reader.result );
+    setFileToUpload(file);
+    reader.readAsDataURL(file);
+    reader.onload = function() {
+      setImageToDisplay(reader.result);
+      setSelectedImage(true);
+    };
   };
 
-  const uploadFile = async (file) =>{
-    const results = await auth.setUserProfileMedia(mediaType, file);
+  const handleUploadFile = async (event) => {
+    event.stopPropagation();
+    setLoading(true);
+    const results = await auth.setUserProfileMedia(mediaType, fileToUpload);
     if (results !== undefined) {
+      setSelectedImage(false);
+      setSnackbarOpen(true);
       user[mediaType] = results;
       await auth.setData(user, auth.userToken);
     }
+    setLoading(false);
   };
+
 
   return (
     <Dialog
@@ -78,63 +103,70 @@ const ViewMediaDialog = (props) => {
       sx={{
       }}
     >
-      <DialogTitle
+      <Backdrop
         sx={{
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: 'rgba(255, 255, 255, 0.00)',
+          color: '#fff',
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+          display: 'flex',
+          flexDirection: 'column',
         }}
+        open={open}
+        onClick={handleClose}
       >
-        {(isUserSelf) ?
-          `Your ${mediaTypeFormal.get(mediaType)}` :
-          (
-            (user) ?
-            `${user.username}'s ${mediaTypeFormal.get(mediaType)}` :
-            ``
-          )
-        }
-      </DialogTitle>
-      <DialogContent>
+        <img
+          style={{
+            objectFit: 'cover',
+            maxHeight: '75%',
+            maxWidth: '75%',
+          }}
+          src={(user) ? imageToDisplay: ''}
+          alt={''}
+        />
         <Box
-          noValidate
-          component="form"
+          component={Paper}
           sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            height: 'fit-content',
-            color: 'rgba(255, 255, 255, 0.00)',
+            mt: 4,
           }}
         >
-          <img
-            style={{
-              objectFit: 'fill',
-              maxHeight: '100%',
-              maxWidth: '100%',
-            }}
-            src={
-                (user) ?
-                    `data:image/jpeg;base64,${imageToDisplay}` : ''
-            }
-            alt={''}
-          />
-        </Box>
-      </DialogContent>
-      <DialogActions
-        sx={{
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: 'rgba(255, 255, 255, 0.00)',
-        }}
-      >
-        {(isUserSelf) ?
+          {(isUserSelf) ?
             <>
-              <Button onClick={handleRemove}>{`Remove`}</Button>
-              <label htmlFor="contained-button-file">
+              {
+              (selectedImage)?
                 <Button
-                  component="span"
-                  onClick={handleFileClick}
+                  disabled={loading}
+                  onClick={handleUploadFile}
+                  sx={{
+                    borderRadius: '4px 0px 0px 4px',
+                    px: 2,
+                    py: 2,
+                  }}
                 >
                   {`Upload`}
+                </Button>:
+                <Button
+                  disabled={!(user[mediaType]) || loading}
+                  onClick={handleRemove}
+                  sx={{
+                    borderRadius: '4px 0px 0px 4px',
+                    px: 2,
+                    py: 2,
+                  }}
+                >
+                  {`Remove`}
+                </Button>
+              }
+              <label htmlFor="contained-button-file">
+                <Button
+                  disabled={loading}
+                  component="span"
+                  onClick={handleFileClick}
+                  sx={{
+                    borderRadius: '0px',
+                    px: 2,
+                    py: 2,
+                  }}
+                >
+                  {`Change`}
                 </Button>
                 <Input
                   ref={hiddenFileInput}
@@ -144,11 +176,38 @@ const ViewMediaDialog = (props) => {
                   onChange={handleFile}
                 />
               </label>
-            </> :
+            </>:
             <></>
-        }
-        <Button onClick={handleClose}>{'Close'}</Button>
-      </DialogActions>
+          }
+          <Button
+            disabled={loading}
+            onClick={handleClose}
+            sx={{
+              borderRadius: (isUserSelf)? '0px 4px 4px 0px':'4px',
+              px: 2,
+              py: 2,
+            }}
+          >
+            {'Close'}
+          </Button>
+        </Box>
+      </Backdrop>
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+        severity='success'
+        open={snackbarOpen && open}
+        onClose={handleSnackbarClose}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity='success'
+        >
+          {`Successfully updated your image!`}
+        </Alert>
+      </Snackbar>
     </Dialog>
   );
 };

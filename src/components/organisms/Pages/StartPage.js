@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 
 import {Grid, Box, Paper, Typography, useMediaQuery} from '@mui/material';
@@ -22,6 +22,12 @@ import ParsLogo from '../../atoms/CustomIcons/ParsLogo';
 const StartPage = (props) => {
   const theme = useTheme();
   const widthChange = useMediaQuery(theme.breakpoints.up('xs'));
+  useEffect(() => {
+    return () => {
+      // This is the cleanup function
+    };
+  }, []);
+
   return (
     <Grid
       sx={{
