@@ -1,8 +1,13 @@
 import React from 'react';
 
 import {
-  Menu, MenuItem, Divider,
-  IconButton, Tooltip, Typography, Badge,
+  Menu,
+  MenuItem,
+  Divider,
+  IconButton,
+  Tooltip,
+  Typography,
+  Badge,
 } from '@mui/material';
 import MessageOutlinedIcon from '@mui/icons-material/MessageOutlined';
 
@@ -23,11 +28,7 @@ const MessagesAppbar = () => {
   return (
     <>
       <Tooltip title="Messages">
-        <IconButton
-          color="inherit"
-          onClick={handleClick}
-          size="large"
-        >
+        <IconButton color="inherit" onClick={handleClick} size="large">
           <Badge badgeContent={0} color="error">
             <MessageOutlinedIcon />
           </Badge>
@@ -42,8 +43,8 @@ const MessagesAppbar = () => {
         PaperProps={{
           elevation: 0,
           sx: {
-            'filter': 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-            'mt': 1.5,
+            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+            mt: 1.5,
             '&:before': {
               content: '""',
               display: 'block',
@@ -58,13 +59,11 @@ const MessagesAppbar = () => {
             },
           },
         }}
-        transformOrigin={{horizontal: 'left', vertical: 'top'}}
-        anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+        transformOrigin={{ horizontal: 'left', vertical: 'top' }}
+        anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
       >
-        <MenuItem >
-          <Typography>
-                        You have no new messages.
-          </Typography>
+        <MenuItem>
+          <Typography>You have no new messages.</Typography>
         </MenuItem>
         <Divider />
       </Menu>

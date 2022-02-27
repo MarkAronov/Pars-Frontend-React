@@ -1,4 +1,4 @@
-import {useState, useEffect, useCallback} from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 export const useAsync = (asyncFunction, immediate = true, ...functionProps) => {
   const [status, setStatus] = useState('idle');
@@ -13,23 +13,22 @@ export const useAsync = (asyncFunction, immediate = true, ...functionProps) => {
     setValue(null);
     setError(null);
     return asyncFunction(...functionProps)
-        .then((response) => {
-          setValue(response);
-          setStatus('success');
-        })
-        .catch((error) => {
-          setError(error);
-          setStatus('error');
-        });
+      .then((response) => {
+        setValue(response);
+        setStatus('success');
+      })
+      .catch((error) => {
+        setError(error);
+        setStatus('error');
+      });
   }, [asyncFunction, functionProps]);
-    // Call execute if we want to fire it right away.
-    // Otherwise execute can be called later, such as
-    // in an onClick handler.
+  // Call execute if we want to fire it right away.
+  // Otherwise execute can be called later, such as
+  // in an onClick handler.
   useEffect(() => {
     if (immediate) {
       execute();
     }
   }, [execute, immediate]);
-  return {execute, status, value, error};
+  return { execute, status, value, error };
 };
-

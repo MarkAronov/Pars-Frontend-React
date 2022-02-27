@@ -1,9 +1,13 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import {
-  FormControl, Typography, InputLabel,
-  FilledInput, InputAdornment, FormHelperText,
+  FormControl,
+  Typography,
+  InputLabel,
+  FilledInput,
+  InputAdornment,
+  FormHelperText,
   IconButton,
 } from '@mui/material';
 import {
@@ -11,14 +15,9 @@ import {
   VisibilityOff as VisibilityOffIcon,
 } from '@mui/icons-material/';
 
-
 const TextInput = (props) => {
-  const {
-    id, label,
-    value, handleChange,
-    error, errorTextList,
-    disabled,
-  } = props;
+  const { id, label, value, handleChange, error, errorTextList, disabled } =
+    props;
   const [show, setShow] = useState(!id.includes('password'));
 
   const handleClickShow = () => {
@@ -38,51 +37,46 @@ const TextInput = (props) => {
       disabled={disabled}
       margin="dense"
     >
-      <InputLabel htmlFor={id}>
-        {`${label}`}
-      </InputLabel>
+      <InputLabel htmlFor={id}>{`${label}`}</InputLabel>
       <FilledInput
         id={id}
         type={show ? 'text' : 'password'}
         value={value}
         onChange={handleChange}
         endAdornment={
-        (id.includes('password'))?
-          <InputAdornment position="end">
-            <IconButton
-              id="show"
-              onClick={handleClickShow}
-              onMouseDown={handleMouseDown}
-              edge="end"
-            >
-              {show ? <VisibilityIcon /> : <VisibilityOffIcon />}
-            </IconButton>
-          </InputAdornment>:
-          ''
+          id.includes('password') ? (
+            <InputAdornment position="end">
+              <IconButton
+                id="show"
+                onClick={handleClickShow}
+                onMouseDown={handleMouseDown}
+                edge="end"
+              >
+                {show ? <VisibilityIcon /> : <VisibilityOffIcon />}
+              </IconButton>
+            </InputAdornment>
+          ) : (
+            ''
+          )
         }
       />
-      {
-        (error) ?
-          <FormHelperText
-            error={true}
-            id="component-helper-text"
-            sx={{
-              alignItems: 'center',
-            }}
-          >
-            {
-              errorTextList.map((error, i) =>
-                <Typography
-                  component={'span'}
-                  key={i}
-                  sx={{display: 'block'}}
-                >
-                  {error}
-                </Typography>)
-            }
-          </FormHelperText> :
-          ''
-      }
+      {error ? (
+        <FormHelperText
+          error={true}
+          id="component-helper-text"
+          sx={{
+            alignItems: 'center',
+          }}
+        >
+          {errorTextList.map((error, i) => (
+            <Typography component={'span'} key={i} sx={{ display: 'block' }}>
+              {error}
+            </Typography>
+          ))}
+        </FormHelperText>
+      ) : (
+        ''
+      )}
     </FormControl>
   );
 };
@@ -95,7 +89,6 @@ TextInput.propTypes = {
   errorTextList: PropTypes.array,
   handleChange: PropTypes.func,
   value: PropTypes.string,
-  handleChange: PropTypes.func,
 };
 
 export default TextInput;

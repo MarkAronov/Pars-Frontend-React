@@ -4,11 +4,6 @@ import React from 'react';
  * The interests page
  * @return {JSX.Element} returns a interests page
  */
-const InterestsPage = () => {
-  return (
-    <>
-    </>
-  );
-};
+const InterestsPage = () => <></>;
 
 export default InterestsPage;

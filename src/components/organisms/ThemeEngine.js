@@ -1,7 +1,7 @@
 import React from 'react';
 
-import {createTheme, ThemeProvider} from '@mui/material/styles';
-import {CssBaseline, useMediaQuery} from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { CssBaseline, useMediaQuery } from '@mui/material';
 
 import PageRouter from './PageRouter';
 
@@ -10,18 +10,18 @@ import PageRouter from './PageRouter';
  * @return {JSX.Element} the app
  */
 const ThemeEngine = () => {
-  const prefersDarkMode = useMediaQuery(
-      '(prefers-color-scheme: dark)', {noSsr: true},
-  );
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)', {
+    noSsr: true,
+  });
 
   const theme = React.useMemo(
-      () =>
-        createTheme({
-          palette: {
-            mode: prefersDarkMode ? 'dark' : 'light',
-          },
-        }),
-      [prefersDarkMode],
+    () =>
+      createTheme({
+        palette: {
+          mode: prefersDarkMode ? 'dark' : 'light',
+        },
+      }),
+    [prefersDarkMode]
   );
 
   return (

@@ -1,13 +1,19 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import {
-  Dialog, Snackbar, Alert, TextField,
-  DialogTitle, DialogContent,
-  DialogActions, Button, Typography,
+  Dialog,
+  Snackbar,
+  Alert,
+  TextField,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  Typography,
 } from '@mui/material';
 
-import {useAuth} from '../../../hooks/useAuth';
+import { useAuth } from '../../../hooks/useAuth';
 
 /**
  * The UserProfileEditDialog component
@@ -17,7 +23,7 @@ import {useAuth} from '../../../hooks/useAuth';
  */
 const UserProfileEditDialog = (props) => {
   const auth = useAuth();
-  const {open, handleClose} = props;
+  const { open, handleClose } = props;
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -36,24 +42,21 @@ const UserProfileEditDialog = (props) => {
     bio: '',
   });
 
-
   useEffect(() => {
     if (!open) {
       setLoading(false);
     }
   }, [auth.user, open]);
 
-
   const handleChange = (event) => {
-    const {value, id} = event.target;
-    setData((data) => ({...data, [id]: value}));
+    const { value, id } = event.target;
+    setData((data) => ({ ...data, [id]: value }));
   };
 
-  const handleSnackbarClose = (event) =>{
+  const handleSnackbarClose = (event) => {
     event.stopPropagation();
     setSnackbarOpen(false);
   };
-
 
   return (
     <Dialog
@@ -63,26 +66,20 @@ const UserProfileEditDialog = (props) => {
       open={open}
       onClose={handleClose}
     >
-      <DialogTitle>
-        {`User Info`}
-      </DialogTitle>
-      <DialogContent
-        dividers={scroll === 'paper'}
-      >
-
+      <DialogTitle>{`User Info`}</DialogTitle>
+      <DialogContent dividers={false}>
         <TextField
           error={errors.displayName}
-          helperText={errors.displayName ?
-            <Typography
-              component={'span'}
-              sx={{display: 'block'}}
-            >
-              {(erroredValues.displayName === data.displayName)?
-                  `Display Name is already taken.`:
-                  `Invalid Display Name.`
-              }
-            </Typography> :
-            ''
+          helperText={
+            errors.displayName ? (
+              <Typography component={'span'} sx={{ display: 'block' }}>
+                {erroredValues.displayName === data.displayName
+                  ? `Display Name is already taken.`
+                  : `Invalid Display Name.`}
+              </Typography>
+            ) : (
+              ''
+            )
           }
           value={data.displayName}
           variant="standard"
@@ -95,17 +92,16 @@ const UserProfileEditDialog = (props) => {
         />
         <TextField
           error={errors.bio}
-          helperText={errors.bio ?
-            <Typography
-              component={'span'}
-              sx={{display: 'block'}}
-            >
-              {(erroredValues.bio === data.bio)?
-                  `Bio is already taken.`:
-                  `Bio Email.`
-              }
-            </Typography> :
-            ''
+          helperText={
+            errors.bio ? (
+              <Typography component={'span'} sx={{ display: 'block' }}>
+                {erroredValues.bio === data.bio
+                  ? `Bio is already taken.`
+                  : `Bio Email.`}
+              </Typography>
+            ) : (
+              ''
+            )
           }
           value={data.bio}
           variant="standard"
@@ -121,35 +117,25 @@ const UserProfileEditDialog = (props) => {
         />
       </DialogContent>
       <DialogActions>
-        <Button
-          onClick={handleClose}>
-          {`Cancel`}
-        </Button>
-        <Button
-          onClick={handleClose}>
-          {`Update`}
-        </Button>
+        <Button onClick={handleClose}>{`Cancel`}</Button>
+        <Button onClick={handleClose}>{`Update`}</Button>
       </DialogActions>
       <Snackbar
         anchorOrigin={{
           vertical: 'top',
           horizontal: 'center',
         }}
-        severity='success'
+        severity="success"
         open={snackbarOpen && open}
         onClose={handleSnackbarClose}
       >
-        <Alert
-          onClose={handleSnackbarClose}
-          severity='success'
-        >
+        <Alert onClose={handleSnackbarClose} severity="success">
           {`Successfully updated your data!`}
         </Alert>
       </Snackbar>
     </Dialog>
   );
 };
-
 
 UserProfileEditDialog.propTypes = {
   open: PropTypes.bool,

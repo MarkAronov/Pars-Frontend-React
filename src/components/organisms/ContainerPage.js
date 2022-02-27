@@ -1,7 +1,7 @@
-import React, {useLayoutEffect, useState, useRef} from 'react';
+import React, { useLayoutEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-import {Container, Box, Toolbar} from '@mui/material';
+import { Container, Box, Toolbar } from '@mui/material';
 
 import Header from '../molecules/Header';
 import Drawers from '../atoms/Drawers';
@@ -26,11 +26,10 @@ const ContainerPage = (props) => {
   }, [header]);
 
   return (
-    <Box sx={{display: 'flex',
-    }}>
+    <Box sx={{ display: 'flex' }}>
       <Header
         ref={header}
-        sx={{position: 'sticky'}}
+        sx={{ position: 'sticky' }}
         handleDrawer={handleDrawer}
       />
       <Drawers
@@ -43,16 +42,16 @@ const ContainerPage = (props) => {
         component="main"
         sx={{
           backgroundColor: (theme) =>
-                        (theme.palette.mode === 'dark') ?
-                            theme.palette.grey[900] :
-                            theme.palette.grey[100],
+            theme.palette.mode === 'dark'
+              ? theme.palette.grey[900]
+              : theme.palette.grey[100],
           flexGrow: 1,
           overflow: 'auto',
         }}
       >
-        <Toolbar/>
+        <Toolbar />
         <Container
-          maxWidth='lg'
+          maxWidth="lg"
           sx={{
             my: 3,
             px: 0,

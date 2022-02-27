@@ -1,18 +1,16 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 
-import {
-  Box, Grid, Link, Typography,
-} from '@mui/material';
+import { Box, Grid, Link, Typography } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
-import {useTheme} from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 
-import {Link as RouterLink} from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import * as Valid from 'validator';
 
 import TextInput from '../atoms/TextInputs/TextInput';
 import useActiveElement from '../../hooks/useActiveElement';
 import usePrevious from '../../hooks/usePrevious';
-import {useAuth} from '../../hooks/useAuth';
+import { useAuth } from '../../hooks/useAuth';
 import passwordChecker from '../../funcs/PasswordChecker';
 /**
  * The SignUp component
@@ -46,14 +44,10 @@ const SignUp = () => {
   const [errorDisplayTimer, setErrorDisplayTimer] = useState(0);
   const [hasDataLoaded, setHasDataLoaded] = useState(true);
 
-  const {activeElement, listenersReady} = useActiveElement();
+  const { activeElement, listenersReady } = useActiveElement();
   const prevData = usePrevious(data);
 
-
-  const getAsyncTimer = async () =>{
-    return errorDisplayTimer;
-  };
-
+  const getAsyncTimer = async () => errorDisplayTimer;
 
   useEffect(() => {
     if (!errorDisplayTimer) return;
@@ -67,7 +61,7 @@ const SignUp = () => {
 
   useEffect(() => {
     setdisabledSignUp(
-        data.username === '' ||
+      data.username === '' ||
         data.email === '' ||
         data.emailRepeat === '' ||
         data.password === '' ||
@@ -77,60 +71,67 @@ const SignUp = () => {
         errors.emailRepeat ||
         errors.password ||
         errors.passwordRepeat ||
-        (errorDisplayTimer !== 0 &&
-        activeElement?.id !== undefined),
+        (errorDisplayTimer !== 0 && activeElement?.id !== undefined)
     );
     return () => setdisabledSignUp(false);
-  }, [data, errors, erroredValues, activeElement, errorDisplayTimer],
-  );
+  }, [data, errors, erroredValues, activeElement, errorDisplayTimer]);
 
-  useEffect(async () => {
-    // eslint-disable-next-line no-unused-vars
-    const {passwordErrors, Entropy} =
-    passwordChecker(data.password, passwordErrorList, setpasswordErrorList);
-    const errorMap = new Map([
-      ['username', (data.username.length >= 64 ||
-                    erroredValues.username === data.username),
-      ],
-      ['email', (!Valid.isEmail(data.email) && !Valid.isEmpty(data.email)||
-                erroredValues.email === data.email),
-      ],
-      ['emailRepeat', (data.email !== data.emailRepeat &&
-                      data.emailRepeat !== ''),
-      ],
-      ['password', (data.password !== '' && passwordErrors.length !== 0)],
-      ['passwordRepeat', (data.password !== data.passwordRepeat &&
-                          data.passwordRepeat !== ''),
-      ],
-    ]);
+  useEffect(() => {
+    const asyncFunc = async () => {
+      // eslint-disable-next-line no-unused-vars
+      const { passwordErrors } = passwordChecker(
+        data.password,
+        passwordErrorList,
+        setpasswordErrorList
+      );
+      const errorMap = new Map([
+        [
+          'username',
+          data.username.length >= 64 ||
+            erroredValues.username === data.username,
+        ],
+        [
+          'email',
+          (!Valid.isEmail(data.email) && !Valid.isEmpty(data.email)) ||
+            erroredValues.email === data.email,
+        ],
+        [
+          'emailRepeat',
+          data.email !== data.emailRepeat && data.emailRepeat !== '',
+        ],
+        ['password', data.password !== '' && passwordErrors.length !== 0],
+        [
+          'passwordRepeat',
+          data.password !== data.passwordRepeat && data.passwordRepeat !== '',
+        ],
+      ]);
 
-
-    if (listenersReady) {
-      setErrors((prevState) =>(
-        {...prevState,
+      if (listenersReady) {
+        setErrors((prevState) => ({
+          ...prevState,
           [activeElement?.id]: false,
         }));
 
-      if (prevData !== data ) setErrorDisplayTimer(1);
-      const time = await getAsyncTimer();
+        if (prevData !== data) setErrorDisplayTimer(1);
+        const time = await getAsyncTimer();
 
-      if ((!time && prevData === data ) || !activeElement?.id) {
-        for (const key of errorMap.keys()) {
-          setErrors((prevState) =>(
-            {...prevState,
+        if ((!time && prevData === data) || !activeElement?.id) {
+          for (const key of errorMap.keys()) {
+            setErrors((prevState) => ({
+              ...prevState,
               [key]: errorMap.get(key),
             }));
+          }
         }
       }
-    }
-  }, [
-    data, activeElement, errorDisplayTimer,
-  ]);
-
+    };
+    asyncFunc();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data, activeElement, errorDisplayTimer]);
 
   const handleChange = (event) => {
-    const {value, id} = event.target;
-    setData((data) => ({...data, [id]: value}));
+    const { value, id } = event.target;
+    setData((data) => ({ ...data, [id]: value }));
   };
 
   const signUpHandle = async () => {
@@ -141,24 +142,18 @@ const SignUp = () => {
     if (results !== undefined) {
       for (const key of Object.keys(results)) {
         if (results[key].length !== 0) {
-          setErrors((prevState) =>(
-            {...prevState,
-              [key]: true,
-            }));
-          setErroredValues((prevErrors) =>(
-            {...prevErrors,
-              [key]: data[key],
-            }));
+          setErrors((prevState) => ({ ...prevState, [key]: true }));
+          setErroredValues((prevErrors) => ({
+            ...prevErrors,
+            [key]: data[key],
+          }));
         }
       }
     }
   };
 
-
   return (
-    <Box
-      component="form"
-    >
+    <Box component="form">
       <TextInput
         id="username"
         label="Username"
@@ -166,9 +161,9 @@ const SignUp = () => {
         handleChange={handleChange}
         error={errors.username}
         errorTextList={
-          (erroredValues.username === data.username)?
-            ['Username is already taken.']:
-            ['Invalid Username.']
+          erroredValues.username === data.username
+            ? ['Username is already taken.']
+            : ['Invalid Username.']
         }
         disabled={!hasDataLoaded}
       />
@@ -179,9 +174,9 @@ const SignUp = () => {
         handleChange={handleChange}
         error={errors.email}
         errorTextList={
-          (erroredValues.email === data.email)?
-            ['Email is already taken.']:
-            ['Invalid Email.']
+          erroredValues.email === data.email
+            ? ['Email is already taken.']
+            : ['Invalid Email.']
         }
         disabled={!hasDataLoaded}
       />
@@ -191,7 +186,7 @@ const SignUp = () => {
         value={data.emailRepeat}
         handleChange={handleChange}
         error={errors.emailRepeat}
-        errorTextList={['Emails don\'t match.']}
+        errorTextList={["Emails don't match."]}
         disabled={!hasDataLoaded}
       />
       <TextInput
@@ -209,7 +204,7 @@ const SignUp = () => {
         value={data.passwordRepeat}
         handleChange={handleChange}
         error={errors.passwordRepeat}
-        errorTextList={['Passwords don\'t match']}
+        errorTextList={["Passwords don't match"]}
         disabled={!hasDataLoaded}
       />
       <LoadingButton
@@ -219,16 +214,13 @@ const SignUp = () => {
         fullWidth
         variant="contained"
         onClick={signUpHandle}
-        sx={{margin: theme.spacing(3, 0, 2)}}
+        sx={{ margin: theme.spacing(3, 0, 2) }}
       >
-        <Typography
-          component={'span'}
-          sx={{display: 'block'}}
-        >
+        <Typography component={'span'} sx={{ display: 'block' }}>
           {`Sign Up`}
         </Typography>
       </LoadingButton>
-      <Grid container >
+      <Grid container>
         <Grid item>
           <Link
             component={RouterLink}
@@ -236,10 +228,7 @@ const SignUp = () => {
             variant="body2"
             to="/signin"
           >
-            <Typography
-              component={'span'}
-              sx={{display: 'block'}}
-            >
+            <Typography component={'span'} sx={{ display: 'block' }}>
               {`Already have an account? Sign In instead`}
             </Typography>
           </Link>

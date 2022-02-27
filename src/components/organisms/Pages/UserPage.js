@@ -1,12 +1,17 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import {
-  Grid, Box, Paper, Typography,
-  Container, Button, Skeleton,
+  Grid,
+  Box,
+  Paper,
+  Typography,
+  Container,
+  Button,
+  Skeleton,
 } from '@mui/material';
 
-import {useTheme, alpha} from '@mui/material/styles';
+import { useTheme, alpha } from '@mui/material/styles';
 
 import UserTabs from '../../atoms/UserTabs';
 import UserProfileIcon from '../../atoms/CustomIcons/UserProfileIcon';
@@ -15,8 +20,8 @@ import DynamicTypography from '../../atoms/Typographies/DynamicTypography';
 import ProfileButton from '../../atoms/Buttons/ProfileButton';
 import PostCardGroup from '../../molecules/PostCardGroup';
 
-import {useAuth} from '../../../hooks/useAuth';
-import {useAsync} from '../../../hooks/useAsync';
+import { useAuth } from '../../../hooks/useAuth';
+import { useAsync } from '../../../hooks/useAsync';
 
 /**
  * The user's page
@@ -25,33 +30,27 @@ import {useAsync} from '../../../hooks/useAsync';
  */
 const UserPage = (props) => {
   const auth = useAuth();
-  const {username} = props;
+  const { username } = props;
   const [user, setUser] = useState(null);
   const [tabValue, setTabValue] = useState(0);
   const [showMediaDialog, setShowMediaDialog] = useState(false);
   const [mediaDialogType, setMediaDialogType] = useState('');
-  const userFinder = useAsync(auth.findUser, false, username );
+  const userFinder = useAsync(auth.findUser, false, username);
   const theme = useTheme();
 
-  const userLoaded = (
-    (
-      userFinder.status === 'success' ||
-      userFinder.status === 'error' ||
-      userFinder.status === 'idle'
-    )
-  );
-
+  const userLoaded =
+    userFinder.status === 'success' ||
+    userFinder.status === 'error' ||
+    userFinder.status === 'idle';
 
   useEffect(() => {
-    if (user === null || (username !== user.username)) {
-      if ( userFinder.status === 'idle') userFinder.execute();
+    if (user === null || username !== user.username) {
+      if (userFinder.status === 'idle') userFinder.execute();
       else if (userFinder.status === 'success') setUser(userFinder.value);
       else if (userFinder.status === 'error') setUser(null);
     }
     return () => setUser(userFinder.value);
-  }, [user, username, auth, userFinder],
-  );
-
+  }, [user, username, auth, userFinder]);
 
   const handleUserMediaDialog = () => {
     setShowMediaDialog(!showMediaDialog);
@@ -67,7 +66,6 @@ const UserPage = (props) => {
     setShowMediaDialog(!showMediaDialog);
   };
 
-
   return (
     <Container>
       <Grid
@@ -78,9 +76,9 @@ const UserPage = (props) => {
           borderRadius: '5px',
           position: 'relative',
           backgroundColor:
-            (theme.palette.mode === 'dark') ?
-            theme.palette.grey[900] :
-            theme.palette.grey[50],
+            theme.palette.mode === 'dark'
+              ? theme.palette.grey[900]
+              : theme.palette.grey[50],
         }}
         component={Paper}
       >
@@ -100,14 +98,13 @@ const UserPage = (props) => {
             py: 0,
             px: 0,
             backgroundColor:
-            (theme.palette.mode === 'dark') ?
-              theme.palette.grey[850] :
-              theme.palette.grey[100],
+              theme.palette.mode === 'dark'
+                ? theme.palette.grey[850]
+                : theme.palette.grey[100],
           }}
         >
-          {
-            (userLoaded ) ?
-            ((user)?
+          {userLoaded ? (
+            user ? (
               <img
                 style={{
                   objectFit: 'cover',
@@ -117,27 +114,34 @@ const UserPage = (props) => {
                 }}
                 src={
                   // eslint-disable-next-line max-len
-                  `${process.env.REACT_APP_BACKEND_URL}/users/${user.username}/backgroundImage#` + new Date().getTime()
+                  `${process.env.REACT_APP_BACKEND_URL}/users/${user.username}/backgroundImage#` +
+                  new Date().getTime()
                 }
                 alt={''}
-              /> :
-              <></>) :
-              <Skeleton variant="rectangular"
-                sx={{
-                  borderRadius: '5px 5px 0px 0px',
-                  width: '100%',
-                  height: '100%',
-                }}
               />
-          }
+            ) : (
+              <></>
+            )
+          ) : (
+            <Skeleton
+              variant="rectangular"
+              sx={{
+                borderRadius: '5px 5px 0px 0px',
+                width: '100%',
+                height: '100%',
+              }}
+            />
+          )}
         </Grid>
         <Grid
           item
           sx={{
-            backgroundColor:
-                alpha((theme.palette.mode === 'dark') ?
-                theme.palette.grey[900] :
-                theme.palette.grey[50], 0.3),
+            backgroundColor: alpha(
+              theme.palette.mode === 'dark'
+                ? theme.palette.grey[900]
+                : theme.palette.grey[50],
+              0.3
+            ),
             borderRadius: '0px 0px 5px 5px ',
             width: '100%',
             height: '60%',
@@ -170,7 +174,8 @@ const UserPage = (props) => {
                 px: 0,
                 py: 0,
                 mr: 3,
-                width: '70px', height: '70px',
+                width: '70px',
+                height: '70px',
                 [theme.breakpoints.down('md')]: {
                   mr: 1,
                 },
@@ -179,17 +184,21 @@ const UserPage = (props) => {
                 borderRadius: '50%',
                 borderStyle: 'solid',
                 borderWidth: '5px',
-                borderColor: (theme.palette.mode === 'dark') ?
-                        theme.palette.grey[800] : theme.palette.grey[100],
-                backgroundColor: (theme.palette.mode === 'dark') ?
-                        theme.palette.grey[800] : theme.palette.grey[100],
+                borderColor:
+                  theme.palette.mode === 'dark'
+                    ? theme.palette.grey[800]
+                    : theme.palette.grey[100],
+                backgroundColor:
+                  theme.palette.mode === 'dark'
+                    ? theme.palette.grey[800]
+                    : theme.palette.grey[100],
               }}
             >
-              {
-                (userLoaded) ?
-                  <UserProfileIcon sizeChange={true} user={user} /> :
-                  <Skeleton variant="circular" width="100%" height="100%" />
-              }
+              {userLoaded ? (
+                <UserProfileIcon sizeChange={true} user={user} />
+              ) : (
+                <Skeleton variant="circular" width="100%" height="100%" />
+              )}
             </Box>
             <Box
               sx={{
@@ -197,25 +206,27 @@ const UserPage = (props) => {
                 width: '30%',
               }}
             >
-              {
-                (userLoaded) ?
-                    <Typography variant='h5' color='inherit'>
-                      {(user) ? user.displayName : 'No user with such name'}
-                    </Typography> :
-                    <Skeleton width="100%" height="10%" />
-              }
-              {
-                (userLoaded) ?
-                    <Typography variant='h7' color='inherit'>
-                      {(user) ? `@${user.username}` : 'No user with such name'}
-                    </Typography> :
-                    <Skeleton width="100%" height="10%" />
-              }
+              {userLoaded ? (
+                <Typography variant="h5" color="inherit">
+                  {user ? user.displayName : 'No user with such name'}
+                </Typography>
+              ) : (
+                <Skeleton width="100%" height="10%" />
+              )}
+              {userLoaded ? (
+                <Typography variant="h7" color="inherit">
+                  {user ? `@${user.username}` : 'No user with such name'}
+                </Typography>
+              ) : (
+                <Skeleton width="100%" height="10%" />
+              )}
             </Box>
-            <Box sx={{
-              display: 'flex',
-              flexGrow: 1,
-            }}/>
+            <Box
+              sx={{
+                display: 'flex',
+                flexGrow: 1,
+              }}
+            />
             <ProfileButton
               userLoaded={userLoaded}
               user={user}
@@ -223,22 +234,22 @@ const UserPage = (props) => {
             />
           </Box>
           <Box
-            component='div'
+            component="div"
             sx={{
               mt: 2,
               mx: 4,
               minHeight: '48px',
             }}
           >
-            {
-                (userLoaded) ?
-                    <DynamicTypography type={'bio'} user={user} /> :
-                    <>
-                      <Skeleton width="100%" height="10%" />
-                      <Skeleton width="100%" height="10%" />
-                      <Skeleton width="100%" height="10%" />
-                    </>
-            }
+            {userLoaded ? (
+              <DynamicTypography type={'bio'} user={user} />
+            ) : (
+              <>
+                <Skeleton width="100%" height="10%" />
+                <Skeleton width="100%" height="10%" />
+                <Skeleton width="100%" height="10%" />
+              </>
+            )}
           </Box>
           <Box
             sx={{
@@ -251,9 +262,9 @@ const UserPage = (props) => {
               top: '20%',
               borderTopWidth: '2px',
               borderColor:
-                (theme.palette.mode === 'dark') ?
-                    alpha(theme.palette.common.white, 0.1) :
-                    alpha(theme.palette.common.white, 0.5),
+                theme.palette.mode === 'dark'
+                  ? alpha(theme.palette.common.white, 0.1)
+                  : alpha(theme.palette.common.white, 0.5),
               py: 1,
               mt: 1,
               width: 'auto',
@@ -266,8 +277,8 @@ const UserPage = (props) => {
             />
           </Box>
         </Grid>
-      </Grid >
-      <PostCardGroup cardlist={[1, 2, 3]}/>
+      </Grid>
+      <PostCardGroup cardlist={[1, 2, 3]} />
       <ViewMediaDialog
         open={showMediaDialog}
         handleClose={handleUserMediaDialog}

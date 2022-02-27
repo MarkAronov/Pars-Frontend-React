@@ -2,7 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {
-  Menu, MenuItem, Divider, ListItemIcon,
+  Menu,
+  MenuItem,
+  Divider,
+  ListItemIcon,
   IconButton,
 } from '@mui/material';
 import {
@@ -11,9 +14,9 @@ import {
   SettingsOutlined as SettingsOutlinedIcon,
   LogoutOutlined as LogoutOutlinedIcon,
 } from '@mui/icons-material';
-import {Link as RouterLink} from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 
-import {useAuth} from '../../../hooks/useAuth';
+import { useAuth } from '../../../hooks/useAuth';
 import UserProfileIcon from '../CustomIcons/UserProfileIcon';
 
 /**
@@ -37,20 +40,15 @@ const MenuAppbar = () => {
     await auth.signOut();
   };
 
-
   const MenuItemLink = (props) => {
-    const {icon, text, to} = props;
+    const { icon, text, to } = props;
 
-    const renderLink = React.useMemo(
-        () =>
-          React.forwardRef(function Link(itemProps, ref) {
-            return (
-              <RouterLink to={to} ref={ref} {...itemProps} role={undefined} />
-            );
-          }),
-        [to],
-    );
-
+    const renderLink = React.useMemo(() => {
+      const Link = (itemProps, ref) => (
+        <RouterLink to={to} ref={ref} {...itemProps} role={undefined} />
+      );
+      return React.forwardRef(Link);
+    }, [to]);
 
     return (
       <MenuItem component={renderLink}>
@@ -79,7 +77,7 @@ const MenuAppbar = () => {
         <UserProfileIcon sizeChange={false} user={auth.user} />
       </IconButton>
       <Menu
-        id='long-menu'
+        id="long-menu"
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
@@ -87,8 +85,8 @@ const MenuAppbar = () => {
         PaperProps={{
           elevation: 0,
           sx: {
-            'filter': 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-            'mt': 1.5,
+            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+            mt: 1.5,
             '& .MuiAvatar-root': {
               width: 32,
               height: 32,
@@ -96,7 +94,7 @@ const MenuAppbar = () => {
               mr: 1,
             },
             '&:before': {
-              content: '\'\'',
+              content: "''",
               display: 'block',
               position: 'absolute',
               top: 0,
@@ -109,52 +107,42 @@ const MenuAppbar = () => {
             },
           },
         }}
-        transformOrigin={{horizontal: 'right', vertical: 'top'}}
-        anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
+        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
         <MenuItemLink
-          to={(auth.user) ? `/user/${auth.user.username}` : ''}
+          to={auth.user ? `/user/${auth.user.username}` : ''}
           icon={<UserProfileIcon sizeChange={false} user={auth.user} />}
-          text={(auth.user) ? auth.user.username : 'Log In'}
+          text={auth.user ? auth.user.username : 'Log In'}
         />
         <Divider />
-        {
-          /* <MenuItem>
+        {/* <MenuItem>
                     <ListItemIcon>
                         <PersonAddOutlinedIcon fontSize='small' />
                     </ListItemIcon>
                     Add another account
-                </MenuItem> */
-        }
-        {
+                </MenuItem> */}
+        {[
           [
-            [
-              <SettingsOutlinedIcon
-                key={'Settings'}
-                fontSize='small'
-              />,
-              'Settings',
-              null,
-            ],
-            [
-              <LogoutOutlinedIcon
-                key={'Logout'}
-                fontSize='small'
-              />,
-              'Logout',
-              handleSignOut,
-            ],
-          ].map((value)=>((!auth.user)?
-            '':
+            <SettingsOutlinedIcon key={'Settings'} fontSize="small" />,
+            'Settings',
+            null,
+          ],
+          [
+            <LogoutOutlinedIcon key={'Logout'} fontSize="small" />,
+            'Logout',
+            handleSignOut,
+          ],
+        ].map((value) =>
+          !auth.user ? (
+            ''
+          ) : (
             <MenuItem onClick={value[2]} key={value[1]}>
-              <ListItemIcon>
-                {value[0]}
-              </ListItemIcon>
+              <ListItemIcon>{value[0]}</ListItemIcon>
               {value[1]}
             </MenuItem>
-          ))
-        }
-
+          )
+        )}
       </Menu>
     </>
   );

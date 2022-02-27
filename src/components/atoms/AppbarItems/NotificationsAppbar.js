@@ -1,12 +1,15 @@
 import React from 'react';
 
 import {
-  Menu, MenuItem, Divider,
-  IconButton, Tooltip, Typography, Badge,
+  Menu,
+  MenuItem,
+  Divider,
+  IconButton,
+  Tooltip,
+  Typography,
+  Badge,
 } from '@mui/material';
-import {
-  NotificationsNoneOutlined as NotificationsNoneOutlinedIcon,
-} from '@mui/icons-material/';
+import { NotificationsNoneOutlined as NotificationsNoneOutlinedIcon } from '@mui/icons-material/';
 
 /**
  * The NotificationsAppbar component
@@ -15,7 +18,6 @@ import {
 const NotificationsAppbar = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -27,11 +29,7 @@ const NotificationsAppbar = () => {
   return (
     <>
       <Tooltip title="Notifications">
-        <IconButton
-          color="inherit"
-          onClick={handleClick}
-          size="large"
-        >
+        <IconButton color="inherit" onClick={handleClick} size="large">
           <Badge badgeContent={0} color="error">
             <NotificationsNoneOutlinedIcon />
           </Badge>
@@ -46,8 +44,8 @@ const NotificationsAppbar = () => {
         PaperProps={{
           elevation: 0,
           sx: {
-            'filter': 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-            'mt': 1.5,
+            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+            mt: 1.5,
             '&:before': {
               content: '""',
               display: 'block',
@@ -62,16 +60,13 @@ const NotificationsAppbar = () => {
             },
           },
         }}
-        transformOrigin={{horizontal: 'center', vertical: 'top'}}
-        anchorOrigin={{horizontal: 'center', vertical: 'bottom'}}
+        transformOrigin={{ horizontal: 'center', vertical: 'top' }}
+        anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
       >
         <MenuItem>
-          <Typography>
-                        You have no new notifications.
-          </Typography>
+          <Typography>You have no new notifications.</Typography>
         </MenuItem>
         <Divider />
-
       </Menu>
     </>
   );

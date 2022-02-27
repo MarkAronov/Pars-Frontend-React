@@ -1,23 +1,34 @@
 module.exports = {
-  'env': {
-    'browser': true,
-    'es2021': true,
+  env: {
+    browser: true,
+    es2021: true,
   },
-  'extends': [
-    'plugin:react/recommended',
+  extends: [
     'google',
+    'react-app',
+    'prettier',
+    'react-app/jest',
+    'plugin:react/recommended',
   ],
-  'parserOptions': {
-    'ecmaFeatures': {
-      'jsx': true,
+  plugins: ['react', 'prettier'],
+  parserOptions: {
+    ecmaFeatures: {
+      jsx: true,
     },
-    'ecmaVersion': 12,
-    'sourceType': 'module',
+    ecmaVersion: 12,
+    sourceType: 'module',
   },
-  'plugins': [
-    'react',
-  ],
-  'rules': {
-    'linebreak-style': 0,
+  rules: {
+    'prettier/prettier': 'error',
+    'no-unused-vars': 'error',
+    'no-console': 'off',
+    'func-names': 'off',
+    'no-process-exit': 'off',
+    'object-shorthand': 'off',
+    'class-methods-use-this': 'off',
+    'linebreak-style': 'off',
+    'react/prop-types': 'off',
+    'arrow-body-style': 'error',
+    'prefer-arrow-callback': 'error',
   },
 };

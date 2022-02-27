@@ -1,27 +1,20 @@
-import React, {useState, useContext, createContext} from 'react';
+import React, { useState, useContext, createContext } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
 const authContext = createContext();
 
-export const ProvideAuth = ({children}) => {
+export const ProvideAuth = ({ children }) => {
   const auth = useProvideAuth();
 
-  return (
-    <authContext.Provider value={auth}>
-      {children}
-    </authContext.Provider>
-  );
+  return <authContext.Provider value={auth}>{children}</authContext.Provider>;
 };
 
 ProvideAuth.propTypes = {
   children: PropTypes.object.isRequired,
 };
 
-
-export const useAuth = () => {
-  return useContext(authContext);
-};
+export const useAuth = () => useContext(authContext);
 
 const useProvideAuth = () => {
   const [userToken, setUserToken] = useState(localStorage.getItem('token'));
@@ -43,37 +36,38 @@ const useProvideAuth = () => {
     let userMedia;
     try {
       userMedia = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}/users/${username}/${mediaType}`,
-          {
-            responseType: 'arraybuffer',
-            headers: {
-              'Access-Control-Allow-Origin': '*',
-            },
-          });
+        `${process.env.REACT_APP_BACKEND_URL}/users/${username}/${mediaType}`,
+        {
+          responseType: 'arraybuffer',
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+          },
+        }
+      );
     } catch (err) {
       if (err.response) {
         if (err.response.status === 401 || err.response.status === 500) {
           await setData(null, null);
-          return (null);
+          return null;
         } else if (err.response.status === 404) {
           return null;
-        } else return (err.response);
+        } else return err.response;
       }
     }
     return Buffer.from(userMedia.data).toString('base64');
   };
 
-
   const deleteUserProfileMedia = async (mediaType) => {
     try {
       await axios.delete(
-          `${process.env.REACT_APP_BACKEND_URL}/users/me/${mediaType}`,
-          {
-            headers: {
-              'Access-Control-Allow-Origin': '*',
-              'Authorization': 'Bearer ' + userToken,
-            },
-          });
+        `${process.env.REACT_APP_BACKEND_URL}/users/me/${mediaType}`,
+        {
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            Authorization: 'Bearer ' + userToken,
+          },
+        }
+      );
       if (mediaType === 'avatar') {
         user.avatar = null;
         setData(user, userToken);
@@ -82,7 +76,7 @@ const useProvideAuth = () => {
       if (err.response) {
         if (err.response.status === 401 || err.response.status === 500) {
           await setData(null, null);
-        } else return (err.response);
+        } else return err.response;
       }
     }
   };
@@ -91,92 +85,102 @@ const useProvideAuth = () => {
     try {
       const formData = new FormData();
       formData.append(mediaType, mediaFile);
-      const {data} = await axios.post(`
+      const { data } = await axios.post(
+        `
       ${process.env.REACT_APP_BACKEND_URL}/users/me/${mediaType}`,
-      formData,
-      {
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Authorization': 'Bearer ' + userToken,
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+        formData,
+        {
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            Authorization: 'Bearer ' + userToken,
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
       return data;
     } catch (err) {
       if (err.response) {
         if (err.response.status === 401 || err.response.status === 500) {
           await setData(null, null);
-        } else return (err.response);
+        } else return err.response;
       }
     }
   };
 
   const signIn = async (userEmail, userPassword) => {
     try {
-      const {data} = await axios.post(
-          `${process.env.REACT_APP_BACKEND_URL}/users/login`,
-          {
-            email: userEmail,
-            password: userPassword,
-          }, {
-            headers: {
-              'Access-Control-Allow-Origin': '*',
-            },
-          });
+      const { data } = await axios.post(
+        `${process.env.REACT_APP_BACKEND_URL}/users/login`,
+        {
+          email: userEmail,
+          password: userPassword,
+        },
+        {
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+          },
+        }
+      );
       await setData(data.user, data.token);
     } catch (err) {
       if (err.response) {
         if (err.response.status === 400) {
-          return (Object.keys(err.response.data)[0]);
+          return Object.keys(err.response.data)[0];
         }
         if (err.response.status === 401 || err.response.status === 500) {
           await setData(null, null);
-        } else return (err.response);
+        } else return err.response;
       }
     }
   };
 
   const signUp = async (userName, userEmail, userPassword) => {
     try {
-      const {data} = await axios.post(`
+      const { data } = await axios.post(
+        `
       ${process.env.REACT_APP_BACKEND_URL}/users`,
-      {
-        username: userName,
-        email: userEmail,
-        password: userPassword,
-      }, {
-        headers: {
-          'Access-Control-Allow-Origin': '*',
+        {
+          username: userName,
+          email: userEmail,
+          password: userPassword,
         },
-      });
+        {
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+          },
+        }
+      );
       await setData(data.user, data.token);
     } catch (err) {
       if (err.response) {
         if (err.response.status === 400) {
-          return (err.response.data);
+          return err.response.data;
         }
         if (err.response.status === 401 || err.response.status === 500) {
           await setData(null, null);
-        } else return (err.response);
+        } else return err.response;
       }
     }
   };
 
   const signOut = async () => {
     try {
-      await axios.post(`${process.env.REACT_APP_BACKEND_URL}/users/logout`,
-          {}, {
-            headers: {
-              'Access-Control-Allow-Origin': '*',
-              'Authorization': 'Bearer ' + userToken,
-            },
-          });
+      await axios.post(
+        `${process.env.REACT_APP_BACKEND_URL}/users/logout`,
+        {},
+        {
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            Authorization: 'Bearer ' + userToken,
+          },
+        }
+      );
       await setData(null, null);
     } catch (err) {
       if (err.response) {
         if (err.response.status === 401 || err.response.status === 500) {
           await setData(null, null);
-        } else return (err.response);
+        } else return err.response;
       }
     }
   };
@@ -187,12 +191,13 @@ const useProvideAuth = () => {
     let result;
     try {
       result = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}/users/${userName}`,
-          {
-            headers: {
-              'Access-Control-Allow-Origin': '*',
-            },
-          });
+        `${process.env.REACT_APP_BACKEND_URL}/users/${userName}`,
+        {
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+          },
+        }
+      );
     } catch (err) {
       if (err.response) {
         if (err.response.status === 401 || err.response.status === 500) {
@@ -202,10 +207,10 @@ const useProvideAuth = () => {
             await setData(null, null);
           }
           return null;
-        } else return (err.response);
+        } else return err.response;
       }
     }
-    return (result.data);
+    return result.data;
   };
 
   return {

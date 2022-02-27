@@ -3,11 +3,18 @@ import PropTypes from 'prop-types';
 
 import {
   SwipeableDrawer as MuiSwipeableDrawer,
-  Drawer as MuiDrawer, Toolbar, Link, List,
-  Divider, ListItemButton, ListItemIcon,
-  ListItemText, useMediaQuery, IconButton,
+  Drawer as MuiDrawer,
+  Toolbar,
+  Link,
+  List,
+  Divider,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  useMediaQuery,
+  IconButton,
 } from '@mui/material';
-import {styled, useTheme} from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import {
   MenuOutlined as MenuOutlinedIcon,
   Home as HomeIcon,
@@ -22,12 +29,11 @@ import {
   FavoriteBorderOutlined as FavoriteBorderOutlinedIcon,
 } from '@mui/icons-material/';
 
-import {useLocation} from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import ParsLogo from './CustomIcons/ParsLogo';
 
 const drawerWidth = 180;
-
 
 const openedMixin = (theme, headerHeight) => ({
   width: drawerWidth,
@@ -58,42 +64,40 @@ const closedMixin = (theme, headerHeight) => ({
   top: headerHeight,
 });
 
-const StaticDrawer = styled(MuiDrawer,
-    {shouldForwardProp: (prop) => prop !== 'open'})(
-    ({theme, open, headerheight}) => ({
-      borderRight: 0,
-      width: drawerWidth,
-      flexShrink: 0,
-      whiteSpace: 'nowrap',
-      boxSizing: 'border-box',
-      paper: {
-        color: (theme.palette.mode === 'dark') ?
-                theme.palette.grey[1000] :
-                theme.palette.grey[50],
-      },
-      ...(open && {
-        ...openedMixin(theme, headerheight),
-        '& .MuiDrawer-paper': openedMixin(theme, headerheight),
-      }),
-      ...(!open && {
-        ...closedMixin(theme, headerheight),
-        '& .MuiDrawer-paper': closedMixin(theme, headerheight),
-      }),
-    }),
-);
+const StaticDrawer = styled(MuiDrawer, {
+  shouldForwardProp: (prop) => prop !== 'open',
+})(({ theme, open, headerheight }) => ({
+  borderRight: 0,
+  width: drawerWidth,
+  flexShrink: 0,
+  whiteSpace: 'nowrap',
+  boxSizing: 'border-box',
+  paper: {
+    color:
+      theme.palette.mode === 'dark'
+        ? theme.palette.grey[1000]
+        : theme.palette.grey[50],
+  },
+  ...(open && {
+    ...openedMixin(theme, headerheight),
+    '& .MuiDrawer-paper': openedMixin(theme, headerheight),
+  }),
+  ...(!open && {
+    ...closedMixin(theme, headerheight),
+    '& .MuiDrawer-paper': closedMixin(theme, headerheight),
+  }),
+}));
 
-const SwipeableDrawer = styled(MuiSwipeableDrawer)(
-    ({theme, open}) => ({
-      width: drawerWidth,
-      flexShrink: 0,
-      whiteSpace: 'nowrap',
-      boxSizing: 'border-box',
-      ...(open && {
-        ...openedMixin(theme, false),
-        '& .MuiDrawer-paper': openedMixin(theme),
-      }),
-    }),
-);
+const SwipeableDrawer = styled(MuiSwipeableDrawer)(({ theme, open }) => ({
+  width: drawerWidth,
+  flexShrink: 0,
+  whiteSpace: 'nowrap',
+  boxSizing: 'border-box',
+  ...(open && {
+    ...openedMixin(theme, false),
+    '& .MuiDrawer-paper': openedMixin(theme),
+  }),
+}));
 
 /**
  * The Drawers component
@@ -109,8 +113,8 @@ const Drawers = (props) => {
   const toggleDrawer = (open) => (event) => {
     if (
       event &&
-            event.type === 'keydown' &&
-            (event.key === 'Tab' || event.key === 'Shift')
+      event.type === 'keydown' &&
+      (event.key === 'Tab' || event.key === 'Shift')
     ) {
       return;
     }
@@ -121,81 +125,81 @@ const Drawers = (props) => {
     const listData = props;
     return (
       <List>
-        {
-          listData.map((value) => (
-            <ListItemButton
-              sx={{pl: 3}}
-              component={Link}
-              href={value[3]}
-              key={value[2]}
-            >
-              <ListItemIcon>
-                {(location.pathname === value[3]) ? value[1] : value[0]}
-              </ListItemIcon>
-              <ListItemText primary={value[2]} />
-            </ListItemButton>
-          ))
-        }
+        {listData.map((value) => (
+          <ListItemButton
+            sx={{ pl: 3 }}
+            component={Link}
+            href={value[3]}
+            key={value[2]}
+          >
+            <ListItemIcon>
+              {location.pathname === value[3] ? value[1] : value[0]}
+            </ListItemIcon>
+            <ListItemText primary={value[2]} />
+          </ListItemButton>
+        ))}
       </List>
     );
   };
 
-  const drawerContent =
-        (
-          <>
-            {drawerItemComponent(
-                [[<HomeOutlinedIcon key={1}/>,
-                  <HomeIcon key={2}/>,
-                  'Home', '/home'],
-                [<ExploreOutlinedIcon key={1}/>,
-                  <ExploreIcon key={2}/>,
-                  'Explore', '/explore'],
-                [<InterestsOutlinedIcon key={1}/>,
-                  <InterestsIcon key={2}/>,
-                  'Interests', '/interests'],
-                ])
-            }
-            <Divider />
-            {/* {drawerItemComponent(
+  const drawerContent = (
+    <>
+      {drawerItemComponent([
+        [<HomeOutlinedIcon key={1} />, <HomeIcon key={2} />, 'Home', '/home'],
+        [
+          <ExploreOutlinedIcon key={1} />,
+          <ExploreIcon key={2} />,
+          'Explore',
+          '/explore',
+        ],
+        [
+          <InterestsOutlinedIcon key={1} />,
+          <InterestsIcon key={2} />,
+          'Interests',
+          '/interests',
+        ],
+      ])}
+      <Divider />
+      {/* {drawerItemComponent(
                 [[<FavoriteBorderOutlinedIcon key={1}/>,
                   <FavoriteBorderIcon key={2}/>,
                   'Favorites', '/favorites'],
                 ])
             } */}
-          </>
-        );
+    </>
+  );
 
-  return (
-        (widthChange) ?
-            (<SwipeableDrawer
-              open={props.drawerState}
-              onClose={toggleDrawer(false)}
-              onOpen={toggleDrawer(true)}
-            >
-              < Toolbar sx={{ml: 1}}>
-                <IconButton
-                  size="large"
-                  edge="start"
-                  color="inherit"
-                  onClick={props.handleDrawer}
-                  sx={{
-                    mr: 1,
-                  }}
-                >
-                  <MenuOutlinedIcon />
-                </IconButton>
-                <ParsLogo />
-              </Toolbar>
-              <Divider />
-              {drawerContent}
-            </SwipeableDrawer>) :
-            (<StaticDrawer
-              variant="permanent"
-              open={props.drawerState}
-              headerheight={props.headerHeight}
-            >
-              {drawerContent}
-            </StaticDrawer>)
+  return widthChange ? (
+    <SwipeableDrawer
+      open={props.drawerState}
+      onClose={toggleDrawer(false)}
+      onOpen={toggleDrawer(true)}
+    >
+      <Toolbar sx={{ ml: 1 }}>
+        <IconButton
+          size="large"
+          edge="start"
+          color="inherit"
+          onClick={props.handleDrawer}
+          sx={{
+            mr: 1,
+          }}
+        >
+          <MenuOutlinedIcon />
+        </IconButton>
+        <ParsLogo />
+      </Toolbar>
+      <Divider />
+      {drawerContent}
+    </SwipeableDrawer>
+  ) : (
+    <StaticDrawer
+      variant="permanent"
+      open={props.drawerState}
+      headerheight={props.headerHeight}
+    >
+      {drawerContent}
+    </StaticDrawer>
   );
 };
 

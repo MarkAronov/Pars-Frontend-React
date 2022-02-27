@@ -1,11 +1,12 @@
 /**
-   * Removes dupes in array
-   * @param {array} arr the error array list
-   * @return {object} returns a filtered array
-   */
+ * Removes dupes in array
+ * @param {array} arr the error array list
+ * @return {object} returns a filtered array
+ */
 const filterDupes = (arr) => {
   const map = new Map();
   let filtered = [];
+
   for (const a of arr) {
     if (map.get(a) === undefined) {
       map.set(a, true);
@@ -47,7 +48,7 @@ const passwordChecker = (str, passwordErrors, setpasswordErrorList) => {
   // Password entropy used to mesure the strenght
   const Entropy = str.length * Math.log2(filterDupes(str.split('')).length);
 
-  return {passwordErrors, Entropy};
+  return { passwordErrors, Entropy };
 };
 
 export default passwordChecker;

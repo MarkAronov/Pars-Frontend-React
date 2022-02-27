@@ -1,15 +1,15 @@
-import {useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 
 const useFocusedElement = () => {
   const [listenersReady, setListenersReady] = useState(false);
   const [activeElement, setActiveElement] = useState(document.activeElement);
 
   useEffect(() => {
-    const onFocus = (event) =>{
+    const onFocus = (event) => {
       setActiveElement(event.target);
     };
 
-    const onBlur = () =>{
+    const onBlur = () => {
       setActiveElement(null);
     };
 

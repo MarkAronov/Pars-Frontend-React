@@ -1,7 +1,7 @@
-import React, {useLayoutEffect, useEffect, useState, useRef} from 'react';
+import React, { useLayoutEffect, useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-import {Box, Typography, Button} from '@mui/material';
+import { Box, Typography, Button } from '@mui/material';
 
 /**
  * The DynamicTypography component
@@ -10,12 +10,11 @@ import {Box, Typography, Button} from '@mui/material';
  * @return {JSX.Element} returns a DynamicTypography component
  */
 const DynamicTypography = (props) => {
-  const {type, user} = props;
+  const { type, user } = props;
   const [expandInfo, setExpandInfo] = useState(false);
   const [showButton, setShowButton] = useState(false);
   const [numberOfLines, setNumberOfLines] = useState(0);
   const ref = useRef(null);
-
 
   useEffect(() => {
     if (type === 'bio') setNumberOfLines(2);
@@ -24,11 +23,10 @@ const DynamicTypography = (props) => {
 
   useLayoutEffect(() => {
     if (numberOfLines) {
-      const lineNumber =
-                Math.floor(
-                    parseInt(ref.current.scrollHeight) /
-                    (parseInt(ref.current.style.fontSize) *
-                        ref.current.style.lineHeight));
+      const lineNumber = Math.floor(
+        parseInt(ref.current.scrollHeight) /
+          (parseInt(ref.current.style.fontSize) * ref.current.style.lineHeight)
+      );
       // console.log(
       //     lineNumber, numberOfLines, ref.current.scrollHeight,
       //     ref.current.style.fontSize, ref.current.style.lineHeight
@@ -44,7 +42,7 @@ const DynamicTypography = (props) => {
   };
 
   return (
-    <div >
+    <div>
       <Typography component="div">
         <Box
           ref={ref}
@@ -54,20 +52,20 @@ const DynamicTypography = (props) => {
           }}
           sx={{
             mb: 1,
-            display: (expandInfo || !showButton) ? '' : '-webkit-box',
-            WebkitBoxOrient: (expandInfo || !showButton) ? '' : 'vertical',
-            WebkitLineClamp: (expandInfo || !showButton) ? '' : numberOfLines,
-            overflow: (expandInfo || !showButton) ? '' : 'hidden',
-            textOverflow: (expandInfo || !showButton) ? '' : 'ellipsis',
+            display: expandInfo || !showButton ? '' : '-webkit-box',
+            WebkitBoxOrient: expandInfo || !showButton ? '' : 'vertical',
+            WebkitLineClamp: expandInfo || !showButton ? '' : numberOfLines,
+            overflow: expandInfo || !showButton ? '' : 'hidden',
+            textOverflow: expandInfo || !showButton ? '' : 'ellipsis',
             wordWrap: 'break-word',
           }}
         >
-          {(user && user.bio) ? user.bio : `There's no bio for this user`}
+          {user && user.bio ? user.bio : `There's no bio for this user`}
         </Box>
       </Typography>
       {showButton && (
         <Box
-          component='div'
+          component="div"
           sx={{
             my: 2,
             flexDirection: 'column',
@@ -77,7 +75,7 @@ const DynamicTypography = (props) => {
           }}
         >
           <Button onClick={handleMoreBio}>
-            {(expandInfo) ? 'Show less' : 'Show more'}
+            {expandInfo ? 'Show less' : 'Show more'}
           </Button>
         </Box>
       )}

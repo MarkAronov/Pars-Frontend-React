@@ -1,8 +1,14 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
 import {
-  Button, Dialog, DialogActions, DialogContent,
-  DialogContentText, DialogTitle, TextField,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  TextField,
 } from '@mui/material';
 
 /**
@@ -25,17 +31,15 @@ const CreatPostDialog = (props) => {
   return (
     <div>
       <Button variant="outlined" onClick={handleOpen}>
-                Open form dialog
+        Open form dialog
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Subscribe</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            {
-              `To subscribe to this website, 
+            {`To subscribe to this website, 
                 please enter your email address here. We
-                will send updates occasionally.`
-            }
+                will send updates occasionally.`}
           </DialogContentText>
           <TextField
             autoFocus

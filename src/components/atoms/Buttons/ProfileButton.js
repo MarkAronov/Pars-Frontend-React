@@ -1,9 +1,12 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import {
-  Skeleton, IconButton, Menu,
-  MenuItem, ListItemIcon,
+  Skeleton,
+  IconButton,
+  Menu,
+  MenuItem,
+  ListItemIcon,
 } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import {
@@ -21,11 +24,11 @@ import {
 import UserProfileEditDialog from '../../atoms/Dialogs/UserProfileEditDialog';
 import ViewMediaDialog from '../../atoms/Dialogs/ViewMediaDialog';
 
-import {useAuth} from '../../../hooks/useAuth';
+import { useAuth } from '../../../hooks/useAuth';
 
-const ProfileButton = (props) =>{
+const ProfileButton = (props) => {
   const auth = useAuth();
-  const {userLoaded, user, username} = props;
+  const { userLoaded, user, username } = props;
   const [updatingInterest, setUpdatingInterest] = useState(false);
   const [isUserInsterested, setIsUserInsterested] = useState(false);
   const [showProfileDialog, setShowProfileDialog] = useState(false);
@@ -71,15 +74,12 @@ const ProfileButton = (props) =>{
       setAnchorEl(null);
     };
 
-
     if (userLoaded) {
-      if (user !== null && auth.user !=null) {
+      if (user !== null && auth.user != null) {
         if (username === auth.user.username) {
           return (
             <>
-              <IconButton
-                onClick={handleProfileMenuClick}
-              >
+              <IconButton onClick={handleProfileMenuClick}>
                 <MoreVertIcon />
               </IconButton>
               <Menu
@@ -91,9 +91,9 @@ const ProfileButton = (props) =>{
                 PaperProps={{
                   elevation: 0,
                   sx: {
-                    'overflow': 'visible',
-                    'filter': 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-                    'mt': 1.5,
+                    overflow: 'visible',
+                    filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                    mt: 1.5,
                     '&:before': {
                       content: '""',
                       display: 'block',
@@ -108,8 +108,8 @@ const ProfileButton = (props) =>{
                     },
                   },
                 }}
-                transformOrigin={{horizontal: 'right', vertical: 'top'}}
-                anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
+                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
               >
                 <MenuItem onClick={handleUserProfileDialog}>
                   <ListItemIcon>
@@ -147,47 +147,31 @@ const ProfileButton = (props) =>{
             <LoadingButton
               onClick={handleInterest}
               endIcon={
-                (isUserInsterested) ?
-                  <CheckOutlinedIcon /> :
+                isUserInsterested ? (
+                  <CheckOutlinedIcon />
+                ) : (
                   <InterestsOutlinedIcon />
+                )
               }
               disabled={!userLoaded}
               loading={updatingInterest}
               loadingPosition="end"
-              variant={
-                (isUserInsterested) ?
-                  'outlined' :
-                  'contained'
-              }
+              variant={isUserInsterested ? 'outlined' : 'contained'}
             >
-              {
-                (isUserInsterested) ?
-                  'Interested' :
-                  'Interest'
-              }
+              {isUserInsterested ? 'Interested' : 'Interest'}
             </LoadingButton>
           );
         }
       } else {
-        return (
-          <></>
-        );
+        return <></>;
       }
     } else {
-      return (
-        <Skeleton
-          width="2%"
-          height="50%"
-        />
-      );
+      return <Skeleton width="2%" height="50%" />;
     }
   };
 
-  return (
-    <ButtonType/>
-  );
+  return <ButtonType />;
 };
-
 
 ProfileButton.propTypes = {
   userLoaded: PropTypes.bool,
