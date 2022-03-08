@@ -35,7 +35,10 @@ const UserPage = (props) => {
   const [tabValue, setTabValue] = useState(0);
   const [showMediaDialog, setShowMediaDialog] = useState(false);
   const [mediaDialogType, setMediaDialogType] = useState('');
-  const userFinder = useAsync(auth.findUser, false, username);
+  const userFinder = useAsync(auth.dispatch, false, {
+    type: 'findUser',
+    username,
+  });
   const theme = useTheme();
 
   const userLoaded =
@@ -50,7 +53,7 @@ const UserPage = (props) => {
       else if (userFinder.status === 'error') setUser(null);
     }
     return () => setUser(userFinder.value);
-  }, [user, username, auth, userFinder]);
+  }, [user, username, auth.user, userFinder]);
 
   const handleUserMediaDialog = () => {
     setShowMediaDialog(!showMediaDialog);
@@ -84,7 +87,7 @@ const UserPage = (props) => {
       >
         <Grid
           item
-          onClick={handleUserBackgroundDialog}
+          onClick={user?.backgroundImage ? handleUserBackgroundDialog : null}
           component={Button}
           sx={{
             borderRadius: '5px 5px 0px 0px',
@@ -104,7 +107,7 @@ const UserPage = (props) => {
           }}
         >
           {userLoaded ? (
-            user ? (
+            user?.backgroundImage ? (
               <img
                 style={{
                   objectFit: 'cover',
@@ -168,7 +171,7 @@ const UserPage = (props) => {
             }}
           >
             <Box
-              onClick={handleUserAvatarDialog}
+              onClick={user?.avatar ? handleUserAvatarDialog : null}
               component={Button}
               sx={{
                 px: 0,

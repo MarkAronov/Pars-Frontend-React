@@ -37,7 +37,7 @@ const MenuAppbar = () => {
   };
 
   const handleSignOut = async () => {
-    await auth.signOut();
+    await auth.dispatch({ type: 'signOut' });
   };
 
   const MenuItemLink = (props) => {

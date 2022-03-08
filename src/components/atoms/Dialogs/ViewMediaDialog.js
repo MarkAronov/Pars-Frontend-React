@@ -29,7 +29,7 @@ const ViewMediaDialog = (props) => {
   const auth = useAuth();
   const { open, handleClose, user, mediaType } = props;
   const [imageToDisplay, setImageToDisplay] = useState(null);
-  const [fileToUpload, setFileToUpload] = useState(null);
+  const [mediaFile, setMediaFile] = useState(null);
   const [isUserSelf, setIsUserSelf] = useState(false);
   const [selectedImage, setSelectedImage] = useState(false);
   const [doesUserHaveMedia, setDoesUserHaveMedia] = useState(false);
@@ -48,7 +48,7 @@ const ViewMediaDialog = (props) => {
       );
       if (!open) {
         setSelectedImage(false);
-        setFileToUpload(null);
+        setMediaFile(null);
         setLoading(false);
       }
     }
@@ -64,7 +64,10 @@ const ViewMediaDialog = (props) => {
   const handleRemove = async (event) => {
     event.stopPropagation();
     setLoading(true);
-    const results = await auth.deleteUserProfileMedia(mediaType);
+    const results = await auth.dispatch({
+      type: 'deleteUserProfileMedia',
+      mediaType,
+    });
     if (results !== undefined) {
       // console.log(results);
     }
@@ -79,7 +82,7 @@ const ViewMediaDialog = (props) => {
   const handleFile = async (event) => {
     const reader = new FileReader();
     const file = event.target.files[0];
-    setFileToUpload(file);
+    setMediaFile(file);
     reader.readAsDataURL(file);
     reader.onload = function () {
       setImageToDisplay(reader.result);
@@ -90,7 +93,12 @@ const ViewMediaDialog = (props) => {
   const handleUploadFile = async (event) => {
     event.stopPropagation();
     setLoading(true);
-    const results = await auth.setUserProfileMedia(mediaType, fileToUpload);
+    const results = await auth.dispatch({
+      type: 'setUserProfileMedia',
+      mediaType,
+      mediaFile,
+    });
+    console.log(results);
     if (results !== undefined) {
       setSelectedImage(false);
       setSnackbarOpen(true);

@@ -27,11 +27,13 @@ const ContainerPage = (props) => {
 
   return (
     <Box sx={{ display: 'flex' }}>
-      <Header
-        ref={header}
-        sx={{ position: 'sticky' }}
-        handleDrawer={handleDrawer}
-      />
+      <React.StrictMode>
+        <Header
+          ref={header}
+          sx={{ position: 'sticky' }}
+          handleDrawer={handleDrawer}
+        />
+      </React.StrictMode>
       <Drawers
         drawerState={drawerState}
         setdrawerState={setdrawerState}
@@ -67,5 +69,6 @@ const ContainerPage = (props) => {
 ContainerPage.propTypes = {
   page: PropTypes.object.isRequired,
 };
+ContainerPage.displayName = 'Container Page';
 
 export default ContainerPage;

@@ -1,4 +1,4 @@
-import React, { useEffect, forwardRef } from 'react';
+import React, { useEffect, forwardRef, memo } from 'react';
 import PropTypes from 'prop-types';
 
 import {
@@ -24,94 +24,108 @@ import ParsLogo from '../atoms/CustomIcons/ParsLogo';
  *                       control the Header
  * @return {JSX.Element} returns a Header component
  */
-const Header = forwardRef((props, ref) => {
-  const theme = useTheme();
-  const [moblieSearchBar, setMoblieSearchBar] = React.useState(false);
-  const widthChange = useMediaQuery(theme.breakpoints.down('sm'));
+const Header = memo(
+  // eslint-disable-next-line react/display-name
+  forwardRef(
+    (props, ref) => {
+      const theme = useTheme();
+      const [moblieSearchBar, setMoblieSearchBar] = React.useState(false);
+      const widthChange = useMediaQuery(theme.breakpoints.down('sm'));
 
-  useEffect(() => {
-    if (!widthChange && moblieSearchBar) {
-      setMoblieSearchBar(!moblieSearchBar);
-    }
-  }, [widthChange, moblieSearchBar]);
+      useEffect(() => {
+        if (!widthChange && moblieSearchBar) {
+          setMoblieSearchBar(!moblieSearchBar);
+        }
+      }, [widthChange, moblieSearchBar]);
 
-  const LeftSection = () => (
-    <>
-      <Box sx={{ display: moblieSearchBar && widthChange ? 'none' : 'flex' }}>
-        <IconButton
-          size="large"
-          edge="start"
-          color="inherit"
-          onClick={props.handleDrawer}
-          sx={{
-            mr: 1,
-          }}
-        >
-          <MenuOutlinedIcon />
-        </IconButton>
-        <IconButton>
-          <ParsLogo
+      const LeftSection = () => (
+        <>
+          <Box
+            sx={{ display: moblieSearchBar && widthChange ? 'none' : 'flex' }}
+          >
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              onClick={props.handleDrawer}
+              sx={{
+                mr: 1,
+              }}
+            >
+              <MenuOutlinedIcon />
+            </IconButton>
+            <IconButton>
+              <ParsLogo
+                sx={{
+                  mx: 3,
+                  [theme.breakpoints.down('sm')]: {
+                    mx: 1,
+                  },
+                }}
+                size={32}
+              />
+            </IconButton>
+          </Box>
+          <Box
             sx={{
-              mx: 3,
+              flexGrow: moblieSearchBar && widthChange ? 0 : 1,
+            }}
+          />
+        </>
+      );
+
+      const RightSection = () => (
+        <>
+          <Box
+            sx={{
+              display: moblieSearchBar && widthChange ? 'none' : 'flex',
+              flexGrow: 1,
               [theme.breakpoints.down('sm')]: {
-                mx: 1,
+                flexGrow: 0,
               },
             }}
-            size={32}
           />
-        </IconButton>
-      </Box>
-      <Box
-        sx={{
-          flexGrow: moblieSearchBar && widthChange ? 0 : 1,
-        }}
-      />
-    </>
-  );
+          <Box
+            sx={{ display: moblieSearchBar && widthChange ? 'none' : 'flex' }}
+          >
+            {/* <MessagesAppbar /> */}
+            <NotificationsAppbar />
+            <MenuAppbar />
+          </Box>
+        </>
+      );
 
-  const RightSection = () => (
-    <>
-      <Box
-        sx={{
-          display: moblieSearchBar && widthChange ? 'none' : 'flex',
-          flexGrow: 1,
-          [theme.breakpoints.down('sm')]: {
-            flexGrow: 0,
-          },
-        }}
-      />
-      <Box sx={{ display: moblieSearchBar && widthChange ? 'none' : 'flex' }}>
-        {/* <MessagesAppbar /> */}
-        <NotificationsAppbar />
-        <MenuAppbar />
-      </Box>
-    </>
-  );
-
-  return (
-    <AppBar
-      ref={ref}
-      sx={{
-        justifyContent: 'space-between',
-        overflowX: 'auto',
-        zIndex: (theme) => theme.zIndex.drawer,
-        backgroundColor:
-          theme.palette.mode === 'dark'
-            ? theme.palette.grey[1100]
-            : theme.palette.grey[50],
-      }}
-    >
-      <Toolbar>
-        <LeftSection />
-        <SearchBar
-          moblieSearchBar={moblieSearchBar}
-          setMoblieSearchBar={setMoblieSearchBar}
-        />
-        <RightSection />
-      </Toolbar>
-    </AppBar>
-  );
-});
+      return (
+        <AppBar
+          ref={ref}
+          sx={{
+            justifyContent: 'space-between',
+            overflowX: 'auto',
+            zIndex: (theme) => theme.zIndex.drawer,
+            backgroundColor:
+              theme.palette.mode === 'dark'
+                ? theme.palette.grey[1100]
+                : theme.palette.grey[50],
+          }}
+        >
+          <Toolbar>
+            <LeftSection />
+            <SearchBar
+              moblieSearchBar={moblieSearchBar}
+              setMoblieSearchBar={setMoblieSearchBar}
+            />
+            <RightSection />
+          </Toolbar>
+        </AppBar>
+      );
+    },
+    (prevProps, nextProps) => {
+      console.log(prevProps);
+      console.log(prevProps);
+      return prevProps.show === nextProps.show;
+    }
+  )
+);
 
 Header.propTypes = {
   handleDrawer: PropTypes.func.isRequired,

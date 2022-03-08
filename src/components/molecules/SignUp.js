@@ -20,11 +20,11 @@ const SignUp = () => {
   const theme = useTheme();
   const auth = useAuth();
   const [data, setData] = useState({
-    username: 'asd',
-    email: 'asd@dd.com',
-    emailRepeat: 'asd@dd.com',
-    password: 'Asd123453sasd',
-    passwordRepeat: 'Asd123453sasd',
+    username: '',
+    email: '',
+    emailRepeat: '',
+    password: '',
+    passwordRepeat: '',
   });
   const [errors, setErrors] = useState({
     username: false,
@@ -34,9 +34,9 @@ const SignUp = () => {
     passwordRepeat: false,
   });
   const [erroredValues, setErroredValues] = useState({
-    username: '',
-    email: '',
-    password: '',
+    username: null,
+    email: null,
+    password: null,
   });
   const [passwordErrorList, setpasswordErrorList] = useState([]);
 
@@ -136,10 +136,15 @@ const SignUp = () => {
 
   const signUpHandle = async () => {
     setHasDataLoaded(false);
-    const results = await auth.signUp(data.username, data.email, data.password);
+    const results = await auth.dispatch({
+      type: 'signUp',
+      username: data.username,
+      email: data.email,
+      password: data.password,
+    });
     setHasDataLoaded(true);
 
-    if (results !== undefined) {
+    if (results !== null && results !== undefined) {
       for (const key of Object.keys(results)) {
         if (results[key].length !== 0) {
           setErrors((prevState) => ({ ...prevState, [key]: true }));

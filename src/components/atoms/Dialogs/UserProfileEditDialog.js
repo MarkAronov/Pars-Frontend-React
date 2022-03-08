@@ -38,8 +38,8 @@ const UserProfileEditDialog = (props) => {
   });
   // eslint-disable-next-line no-unused-vars
   const [erroredValues, setErroredValues] = useState({
-    displayName: '',
-    bio: '',
+    displayName: null,
+    bio: null,
   });
 
   useEffect(() => {

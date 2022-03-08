@@ -1,5 +1,6 @@
 import React from 'react';
 import { ProvideAuth } from './hooks/useAuth';
+import { ProvideGlobalProps } from './hooks/useGlobalProps';
 import ThemeEngine from './components/organisms/ThemeEngine';
 
 /**
@@ -7,9 +8,11 @@ import ThemeEngine from './components/organisms/ThemeEngine';
  * @return {JSX.Element} the app
  */
 const App = () => (
-  <ProvideAuth>
-    <ThemeEngine />
-  </ProvideAuth>
+  <ProvideGlobalProps>
+    <ProvideAuth>
+      <ThemeEngine />
+    </ProvideAuth>
+  </ProvideGlobalProps>
 );
 
 export default App;

@@ -26,8 +26,8 @@ const SignIn = () => {
     password: false,
   });
   const [erroredValues, setErroredValues] = useState({
-    email: '',
-    password: '',
+    email: null,
+    password: null,
   });
   const [disabledSignIn, setdisabledSignIn] = useState(true);
   const [errorDisplayTimer, setErrorDisplayTimer] = useState(0);
@@ -99,17 +99,23 @@ const SignIn = () => {
 
   const handleSignIn = async () => {
     setHasDataLoaded(false);
-    const results = await auth.signIn(data.email, data.password);
+    const results = await auth.dispatch({
+      type: 'signIn',
+      email: data.email,
+      password: data.password,
+    });
     setHasDataLoaded(true);
 
-    if (results !== undefined) {
+    if (results !== null && results !== undefined) {
+      const errorKeys = Object.keys(results)[0];
+
       setErrors((errors) => ({
         ...errors,
-        [results]: true,
+        [errorKeys]: true,
       }));
       setErroredValues((prevErrors) => ({
         ...prevErrors,
-        [results]: data[results],
+        [errorKeys]: data[errorKeys],
       }));
     }
   };

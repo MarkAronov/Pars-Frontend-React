@@ -19,7 +19,7 @@ import ParsLogo from '../../atoms/CustomIcons/ParsLogo';
  *                       signin component
  * @return {JSX.Element} returns a start page
  */
-const StartPage = (props) => {
+const StartPage = React.memo((props) => {
   const theme = useTheme();
   const widthChange = useMediaQuery(theme.breakpoints.up('xs'));
   useEffect(
@@ -156,10 +156,11 @@ const StartPage = (props) => {
       <Footer />
     </Grid>
   );
-};
+});
 
 StartPage.propTypes = {
   page: PropTypes.object.isRequired,
 };
+StartPage.displayName = 'Start Page';
 
 export default StartPage;
