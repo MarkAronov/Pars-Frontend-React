@@ -35,7 +35,7 @@ import ParsLogo from './CustomIcons/ParsLogo';
 
 const drawerWidth = 180;
 
-const openedMixin = (theme, headerHeight) => ({
+const openedMixin = (theme) => ({
   width: drawerWidth,
   transition: theme.transitions.create('width', {
     easing: theme.transitions.easing.sharp,
@@ -45,12 +45,12 @@ const openedMixin = (theme, headerHeight) => ({
   height: '100%',
   top: 0,
   [theme.breakpoints.up('sm')]: {
-    height: `calc(100% - ${headerHeight})`,
-    top: headerHeight,
+    height: `calc(100% - 48px)`,
+    top: '48px',
   },
 });
 
-const closedMixin = (theme, headerHeight) => ({
+const closedMixin = (theme) => ({
   transition: theme.transitions.create('width', {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
@@ -60,13 +60,13 @@ const closedMixin = (theme, headerHeight) => ({
   [theme.breakpoints.up('sm')]: {
     width: `calc(${theme.spacing(9)} + 1px)`,
   },
-  height: `calc(100% - ${headerHeight})`,
-  top: headerHeight,
+  height: `calc(100% - 48px)`,
+  top: '48px',
 });
 
 const StaticDrawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== 'open',
-})(({ theme, open, headerheight }) => ({
+})(({ theme, open }) => ({
   borderRight: 0,
   width: drawerWidth,
   flexShrink: 0,
@@ -79,12 +79,12 @@ const StaticDrawer = styled(MuiDrawer, {
         : theme.palette.grey[50],
   },
   ...(open && {
-    ...openedMixin(theme, headerheight),
-    '& .MuiDrawer-paper': openedMixin(theme, headerheight),
+    ...openedMixin(theme),
+    '& .MuiDrawer-paper': openedMixin(theme),
   }),
   ...(!open && {
-    ...closedMixin(theme, headerheight),
-    '& .MuiDrawer-paper': closedMixin(theme, headerheight),
+    ...closedMixin(theme),
+    '& .MuiDrawer-paper': closedMixin(theme),
   }),
 }));
 
@@ -193,11 +193,7 @@ const Drawers = (props) => {
       {drawerContent}
     </SwipeableDrawer>
   ) : (
-    <StaticDrawer
-      variant="permanent"
-      open={props.drawerState}
-      headerheight={props.headerHeight}
-    >
+    <StaticDrawer variant="permanent" open={props.drawerState}>
       {drawerContent}
     </StaticDrawer>
   );
@@ -207,7 +203,6 @@ Drawers.propTypes = {
   drawerState: PropTypes.bool.isRequired,
   handleDrawer: PropTypes.func.isRequired,
   setdrawerState: PropTypes.func.isRequired,
-  headerHeight: PropTypes.number.isRequired,
 };
 
 export default Drawers;

@@ -19,10 +19,11 @@ import HomePage from './Pages/HomePage';
 import InterestsPage from './Pages/InterestsPage';
 import StartPage from './Pages/StartPage';
 import UserPage from './Pages/UserPage';
+import SettingsPage from './Pages/SettingsPage';
 
-import SignButtons from '../molecules/SignButtons';
+import StartButtons from '../molecules/StartButtons';
 import SignUp from '../molecules/SignUp';
-import SignIn from '../molecules/SignIn';
+import Login from '../molecules/Login';
 
 import { useAuth } from '../../hooks/useAuth';
 
@@ -68,6 +69,13 @@ const PageRouter = () => {
             <Redirect to="/start" />
           )}
         </Route>
+        <Route path="/settings">
+          {auth.userToken !== null ? (
+            <ContainerPage page={<SettingsPage />} />
+          ) : (
+            <Redirect to="/start" />
+          )}
+        </Route>
         {/* <Route path="/favorites">
           {auth.userToken !== null ?
                         <ContainerPage page={<FavoritesPage />} /> :
@@ -75,13 +83,13 @@ const PageRouter = () => {
           }
         </Route> */}
         <Route path="/user/:username">
-          <ContainerPage page={<UserRoute />} /> :
+          <ContainerPage page={<UserRoute />} />
         </Route>
         <Route path="/start">
           {auth.userToken !== null ? (
             <Redirect to="/home" />
           ) : (
-            <StartPage page={<SignButtons />} />
+            <StartPage page={<StartButtons />} />
           )}
         </Route>
         <Route path="/signup">
@@ -91,11 +99,11 @@ const PageRouter = () => {
             <StartPage page={<SignUp />} />
           )}
         </Route>
-        <Route path="/signin">
+        <Route path="/login">
           {auth.userToken !== null ? (
             <Redirect to="/home" />
           ) : (
-            <StartPage page={<SignIn />} />
+            <StartPage page={<Login />} />
           )}
         </Route>
         <Route path="*">

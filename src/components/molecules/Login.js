@@ -1,31 +1,23 @@
 import React, { useState, useEffect } from 'react';
 
-import { Box, Grid, Link, Typography } from '@mui/material';
+import { Grid, Link, Box } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { useTheme } from '@mui/material/styles';
-
 import { Link as RouterLink } from 'react-router-dom';
 
 import TextInput from '../atoms/TextInputs/TextInput';
 import { useAuth } from '../../hooks/useAuth';
-import {
-  usernameChecker,
-  emailChecker,
-  passwordChecker,
-} from '../../funcs/checkers';
+import { emailChecker } from '../../funcs/checkers';
 /**
- * The SignUp component
- * @return {JSX.Element} returns a signup component
+ * The login component
+ * @return {JSX.Element} returns a login component
  */
-const SignUp = () => {
+const Login = () => {
   const theme = useTheme();
   const auth = useAuth();
   const formKeys = [
-    ['username', 'Username'],
     ['email', 'Email'],
-    ['emailRepeat', 'Repeat Your Email'],
     ['password', 'Password'],
-    ['passwordRepeat', 'Repeat Your Password'],
   ];
   // const [data, setData] = useState(
   //   formKeys.reduce(
@@ -37,11 +29,8 @@ const SignUp = () => {
   //   )
   // );
   const [data, setData] = useState({
-    username: 'asdaa',
     email: 'asd@dd.com',
-    emailRepeat: 'asd@dd.com',
     password: 'Asd123453sasd',
-    passwordRepeat: 'Asd123453sasd',
   });
   const [errors, setErrors] = useState(
     formKeys.reduce(
@@ -56,39 +45,23 @@ const SignUp = () => {
       {}
     )
   );
-  const [disabledSignUp, setDisabledSignUp] = useState(true);
+  const [disabledLogin, setDisabledLogin] = useState(true);
   const [hasDataLoaded, setHasDataLoaded] = useState(true);
   const errorMap = {
-    username: {
-      state:
-        usernameChecker(data.username, errors.username.data).length !== 0 &&
-        data.username !== '',
-      message: usernameChecker(data.username, errors.username.data),
-    },
     email: {
       state:
-        emailChecker(data.email, errors.email.data, 'signup').length !== 0 &&
+        emailChecker(data.email, errors.email.data, 'login').length !== 0 &&
         data.email !== '',
-      message: emailChecker(data.email, errors.email.data, 'signup'),
-    },
-    emailRepeat: {
-      state: data.email !== data.emailRepeat && data.emailRepeat !== '',
-      message: ["Emails don't match."],
+      message: emailChecker(data.email, errors.email.data, 'login'),
     },
     password: {
-      state:
-        passwordChecker(data.password).length !== 0 && data.password !== '',
-      message: passwordChecker(data.password),
-    },
-    passwordRepeat: {
-      state:
-        data.password !== data.passwordRepeat && data.passwordRepeat !== '',
-      message: ["Passwords don't match"],
+      state: data.password === errors.password.data && data.password !== '',
+      message: ['Incorrect password'],
     },
   };
 
   useEffect(() => {
-    setDisabledSignUp(true);
+    setDisabledLogin(true);
     formKeys.forEach((key) => {
       setErrors((errors) => ({
         ...errors,
@@ -98,7 +71,7 @@ const SignUp = () => {
         },
       }));
     });
-    const timeout = setTimeout(async () => {
+    const timeout = setTimeout(() => {
       formKeys.forEach((key) => {
         setErrors((errors) => ({
           ...errors,
@@ -110,27 +83,26 @@ const SignUp = () => {
         }));
       });
 
-      setDisabledSignUp(false);
+      setDisabledLogin(false);
     }, 1000);
 
     return () => {
-      setDisabledSignUp(false);
+      setDisabledLogin(false);
       clearTimeout(timeout);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   const handleChange = (event) => {
-    const { value, id } = event.target;
+    const { id, value } = event.target;
     setData((data) => ({ ...data, [id]: value }));
   };
 
-  const signUpHandle = async () => {
+  const handleLogin = async () => {
     setHasDataLoaded(false);
     const results = await auth.dispatch({
-      type: 'signUp',
+      type: 'login',
       params: {
-        username: data.username,
         email: data.email,
         password: data.password,
       },
@@ -152,7 +124,7 @@ const SignUp = () => {
           }));
         }
       }
-      setDisabledSignUp(true);
+      setDisabledLogin(true);
     }
   };
 
@@ -171,33 +143,35 @@ const SignUp = () => {
         />
       ))}
       <LoadingButton
-        id="signup"
+        id="login"
         disabled={
-          disabledSignUp ||
+          disabledLogin ||
           !Object.keys(data).every((key) => data[key] !== '') ||
-          !Object.keys(errors).every((key) => !errors[key].state)
+          !Object.keys(errors).every((key) => !errors[key].state) ||
+          data.password.length < 10
         }
         loading={!hasDataLoaded}
         fullWidth
         variant="contained"
-        onClick={signUpHandle}
+        onClick={handleLogin}
         sx={{ margin: theme.spacing(3, 0, 2) }}
       >
-        <Typography component={'span'} sx={{ display: 'block' }}>
-          {`Sign Up`}
-        </Typography>
+        {'Log In'}
       </LoadingButton>
-      <Grid container>
+      <Grid container direction="row" alignItems="center">
+        <Grid item xs>
+          <Link component={RouterLink} color="inherit" variant="body2" to="/">
+            {'Forgot password?'}
+          </Link>
+        </Grid>
         <Grid item>
           <Link
             component={RouterLink}
             color="inherit"
             variant="body2"
-            to="/login"
+            to="/signup"
           >
-            <Typography component={'span'} sx={{ display: 'block' }}>
-              {`Already have an account? Log In instead`}
-            </Typography>
+            {'New to Pars? Sign Up'}
           </Link>
         </Grid>
       </Grid>
@@ -205,4 +179,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default Login;

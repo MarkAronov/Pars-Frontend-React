@@ -13,6 +13,8 @@ import {
   PersonAddOutlined as PersonAddOutlinedIcon,
   SettingsOutlined as SettingsOutlinedIcon,
   LogoutOutlined as LogoutOutlinedIcon,
+  LoginOutlined as LoginOutlinedIcon,
+  CreateOutlined as CreateOutlinedIcon,
 } from '@mui/icons-material';
 import { Link as RouterLink } from 'react-router-dom';
 
@@ -36,8 +38,8 @@ const MenuAppbar = () => {
     setAnchorEl(null);
   };
 
-  const handleSignOut = async () => {
-    await auth.dispatch({ type: 'signOut' });
+  const handleLogOut = async () => {
+    await auth.dispatch({ type: 'logout' });
   };
 
   const MenuItemLink = (props) => {
@@ -110,39 +112,42 @@ const MenuAppbar = () => {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItemLink
-          to={auth.user ? `/user/${auth.user.username}` : ''}
-          icon={<UserProfileIcon sizeChange={false} user={auth.user} />}
-          text={auth.user ? auth.user.username : 'Log In'}
-        />
-        <Divider />
-        {/* <MenuItem>
-                    <ListItemIcon>
-                        <PersonAddOutlinedIcon fontSize='small' />
-                    </ListItemIcon>
-                    Add another account
-                </MenuItem> */}
-        {[
-          [
-            <SettingsOutlinedIcon key={'Settings'} fontSize="small" />,
-            'Settings',
-            null,
-          ],
-          [
-            <LogoutOutlinedIcon key={'Logout'} fontSize="small" />,
-            'Logout',
-            handleSignOut,
-          ],
-        ].map((value) =>
-          !auth.user ? (
-            ''
-          ) : (
-            <MenuItem onClick={value[2]} key={value[1]}>
-              <ListItemIcon>{value[0]}</ListItemIcon>
-              {value[1]}
-            </MenuItem>
-          )
-        )}
+        {auth.user
+          ? [
+              <MenuItemLink
+                to={`/user/${auth.user.username}`}
+                icon={<UserProfileIcon sizeChange={false} user={auth.user} />}
+                text={auth.user.username}
+                key={1}
+              />,
+              <Divider key={2} />,
+              <MenuItemLink
+                to={`/settings`}
+                icon={<SettingsOutlinedIcon />}
+                text={'Settings'}
+                key={3}
+              />,
+              <MenuItem onClick={handleLogOut} key={4}>
+                <ListItemIcon>
+                  <LogoutOutlinedIcon fontSize="small" />
+                </ListItemIcon>
+                {`Log Out`}
+              </MenuItem>,
+            ]
+          : [
+              <MenuItemLink
+                to={`/login`}
+                icon={<LoginOutlinedIcon />}
+                text={'Log In'}
+                key={1}
+              />,
+              <MenuItemLink
+                to={`/signup`}
+                icon={<CreateOutlinedIcon />}
+                text={'Sign Up'}
+                key={2}
+              />,
+            ]}
       </Menu>
     </>
   );

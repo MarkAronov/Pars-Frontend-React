@@ -1,7 +1,7 @@
-import React, { useLayoutEffect, useState, useRef } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { Container, Box, Toolbar } from '@mui/material';
+import { Box, Container } from '@mui/material';
 
 import Header from '../molecules/Header';
 import Drawers from '../atoms/Drawers';
@@ -13,32 +13,37 @@ import Drawers from '../atoms/Drawers';
  */
 const ContainerPage = (props) => {
   const [drawerState, setdrawerState] = useState(false);
-  const [headerHeight, setHeaderHeight] = useState(0);
-  const header = useRef(null);
   const handleDrawer = () => {
     setdrawerState(!drawerState);
   };
-
-  useLayoutEffect(() => {
-    if (header.current) {
-      setHeaderHeight(header.current.offsetHeight);
-    }
-  }, [header]);
+  // const [headerHeight, setHeaderHeight] = useState(0);
+  // const header = useRef(null);
+  // useLayoutEffect(() => {
+  //   if (header.current) {
+  //     setHeaderHeight(header.current.offsetHeight);
+  //   }
+  //   console.log(header.current.offsetHeight);
+  // }, [header]);
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      <React.StrictMode>
-        <Header
-          ref={header}
-          sx={{ position: 'sticky' }}
-          handleDrawer={handleDrawer}
-        />
-      </React.StrictMode>
+    <Box
+      sx={{
+        display: 'flex',
+        overflow: 'auto',
+        height: 'auto',
+        minHeight: '100vh',
+      }}
+    >
+      <Header
+        // ref={header}
+        sx={{ position: 'sticky' }}
+        handleDrawer={handleDrawer}
+      />
       <Drawers
         drawerState={drawerState}
         setdrawerState={setdrawerState}
         handleDrawer={handleDrawer}
-        headerHeight={headerHeight}
+        // headerHeight={headerHeight}
       />
       <Box
         component="main"
@@ -48,17 +53,11 @@ const ContainerPage = (props) => {
               ? theme.palette.grey[900]
               : theme.palette.grey[100],
           flexGrow: 1,
-          overflow: 'auto',
+          mt: '48px',
+          py: 3,
         }}
       >
-        <Toolbar />
-        <Container
-          maxWidth="lg"
-          sx={{
-            my: 3,
-            px: 0,
-          }}
-        >
+        <Container maxWidth="lg" sx={{ px: 0, py: 0 }}>
           {props.page}
         </Container>
       </Box>

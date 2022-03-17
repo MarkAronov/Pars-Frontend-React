@@ -6,21 +6,21 @@ import { Link } from 'react-router-dom';
 
 /**
  * The a chooser component
- * It let's the user the choice of either signing up or signing in
+ * It let's the user the choice of either loging up or loging in
  * @return {JSX.Element} returns a signbuttons component
  */
-const SignButtons = () => (
+const StartButtons = () => (
   <>
     <Grid item xs={12} sm={12}>
       <Button
-        id="signin"
+        id="login"
         type="button"
         fullWidth
         variant="contained"
         component={Link}
-        to="/signin"
+        to="/login"
       >
-        Sign In
+        Log In
       </Button>
     </Grid>
     <Grid item xs={12} sm={12}>
@@ -38,4 +38,4 @@ const SignButtons = () => (
   </>
 );
 
-export default SignButtons;
+export default StartButtons;

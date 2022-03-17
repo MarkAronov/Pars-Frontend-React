@@ -5,16 +5,16 @@ import {
   Dialog,
   Snackbar,
   Alert,
-  TextField,
   DialogTitle,
   DialogContent,
   DialogActions,
   Button,
-  Typography,
 } from '@mui/material';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 import { useAuth } from '../../../hooks/useAuth';
-
+import TextInput from '../TextInputs/TextInput';
+import { displayNameChecker, bioChecker } from '../../../funcs/checkers';
 /**
  * The UserProfileEditDialog component
  * @param {object} props object file that contains all the needed props to
@@ -24,29 +24,80 @@ import { useAuth } from '../../../hooks/useAuth';
 const UserProfileEditDialog = (props) => {
   const auth = useAuth();
   const { open, handleClose } = props;
-
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [data, setData] = useState({
-    displayName: auth.user.displayName,
-    bio: auth.user.bio,
-  });
-  // eslint-disable-next-line no-unused-vars
-  const [errors, setErrors] = useState({
-    displayName: false,
-    bio: false,
-  });
-  // eslint-disable-next-line no-unused-vars
-  const [erroredValues, setErroredValues] = useState({
-    displayName: null,
-    bio: null,
-  });
+  const formKeys = [
+    ['displayName', 'Display Name', false],
+    ['bio', 'Bio ', true],
+  ];
+  const [data, setData] = useState(
+    formKeys.reduce(
+      (object, key) => ({
+        ...object,
+        [key[0]]: auth.user[key[0]],
+      }),
+      {}
+    )
+  );
+  const [errors, setErrors] = useState(
+    formKeys.reduce(
+      (object, key) => ({
+        ...object,
+        [key[0]]: {
+          state: false,
+          message: null,
+          data: null,
+        },
+      }),
+      {}
+    )
+  );
+  const [disabledUpdate, setDisabledUpdate] = useState(true);
+  const [hasDataLoaded, setHasDataLoaded] = useState(true);
+  const errorMap = {
+    displayName: {
+      state:
+        displayNameChecker(data.displayName).length !== 0 &&
+        data.displayName !== '',
+      message: displayNameChecker(data.displayName),
+    },
+    bio: {
+      state: bioChecker(data.bio).length !== 0 && data.bio !== '',
+      message: bioChecker(data.bio),
+    },
+  };
 
   useEffect(() => {
-    if (!open) {
-      setLoading(false);
-    }
-  }, [auth.user, open]);
+    setDisabledUpdate(true);
+    formKeys.forEach((key) => {
+      setErrors((errors) => ({
+        ...errors,
+        [key[0]]: {
+          ...errors[key[0]],
+          state: false,
+        },
+      }));
+    });
+    const timeout = setTimeout(async () => {
+      formKeys.forEach((key) => {
+        setErrors((errors) => ({
+          ...errors,
+          [key[0]]: {
+            ...errors[key[0]],
+            state: errorMap[key[0]].state,
+            message: errorMap[key[0]].message,
+          },
+        }));
+      });
+
+      setDisabledUpdate(false);
+    }, 1000);
+
+    return () => {
+      setDisabledUpdate(false);
+      clearTimeout(timeout);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
 
   const handleChange = (event) => {
     const { value, id } = event.target;
@@ -56,6 +107,42 @@ const UserProfileEditDialog = (props) => {
   const handleSnackbarClose = (event) => {
     event.stopPropagation();
     setSnackbarOpen(false);
+  };
+
+  const handlePostEdit = async () => {
+    setHasDataLoaded(false);
+    const params = {};
+    formKeys.forEach((key) => {
+      if (data[key[0]] !== auth.user[key[0]]) {
+        params[key[0]] = data[key[0]];
+      }
+    });
+    console.log(params);
+    const results = await auth.dispatch({
+      type: 'updateUserData',
+      updateType: 'regular',
+      params,
+    });
+    setHasDataLoaded(true);
+
+    console.log(results);
+    if (results !== null && results !== undefined) {
+      for (const key of Object.keys(results)) {
+        if (results[key].length !== 0) {
+          const msgArr = [];
+          results[key].forEach((res) => msgArr.push(res[1]));
+          setErrors((errors) => ({
+            ...errors,
+            [key]: {
+              state: true,
+              message: msgArr,
+              data: data[key],
+            },
+          }));
+        }
+      }
+      setDisabledUpdate(true);
+    }
   };
 
   return (
@@ -68,57 +155,35 @@ const UserProfileEditDialog = (props) => {
     >
       <DialogTitle>{`User Info`}</DialogTitle>
       <DialogContent dividers={false}>
-        <TextField
-          error={errors.displayName}
-          helperText={
-            errors.displayName ? (
-              <Typography component={'span'} sx={{ display: 'block' }}>
-                {erroredValues.displayName === data.displayName
-                  ? `Display Name is already taken.`
-                  : `Invalid Display Name.`}
-              </Typography>
-            ) : (
-              ''
-            )
-          }
-          value={data.displayName}
-          variant="standard"
-          fullWidth
-          multiline
-          id="displayName"
-          label="Display Name"
-          onChange={handleChange}
-          disabled={loading}
-        />
-        <TextField
-          error={errors.bio}
-          helperText={
-            errors.bio ? (
-              <Typography component={'span'} sx={{ display: 'block' }}>
-                {erroredValues.bio === data.bio
-                  ? `Bio is already taken.`
-                  : `Bio Email.`}
-              </Typography>
-            ) : (
-              ''
-            )
-          }
-          value={data.bio}
-          variant="standard"
-          fullWidth
-          multiline
-          id="bio"
-          label="Bio"
-          onChange={handleChange}
-          disabled={loading}
-          sx={{
-            mt: 2,
-          }}
-        />
+        {formKeys.map((value) => (
+          <TextInput
+            key={value}
+            id={value[0]}
+            label={value[1]}
+            value={data[value[0]]}
+            handleChange={handleChange}
+            error={errors[value[0]].state}
+            errorTextList={errors[value[0]].message}
+            disabled={!hasDataLoaded}
+            multiline={value[2]}
+          />
+        ))}
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>{`Cancel`}</Button>
-        <Button onClick={handleClose}>{`Update`}</Button>
+        <LoadingButton
+          id="update"
+          disabled={
+            disabledUpdate ||
+            Object.keys(data).every((key) => data[key] === '') ||
+            Object.keys(data).every((key) => data[key] === auth.user[key]) ||
+            !Object.keys(errors).every((key) => !errors[key].state)
+          }
+          loading={!hasDataLoaded}
+          onClick={handlePostEdit}
+        >
+          {'Update'}
+        </LoadingButton>
       </DialogActions>
       <Snackbar
         anchorOrigin={{

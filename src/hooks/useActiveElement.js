@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const useFocusedElement = () => {
+const useActiveElement = () => {
   const [listenersReady, setListenersReady] = useState(false);
   const [activeElement, setActiveElement] = useState(document.activeElement);
 
@@ -30,4 +30,4 @@ const useFocusedElement = () => {
   };
 };
 
-export default useFocusedElement;
+export default useActiveElement;

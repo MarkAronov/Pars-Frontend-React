@@ -5,7 +5,7 @@ import {
   FormControl,
   Typography,
   InputLabel,
-  FilledInput,
+  Input,
   InputAdornment,
   FormHelperText,
   IconButton,
@@ -16,8 +16,16 @@ import {
 } from '@mui/icons-material/';
 
 const TextInput = (props) => {
-  const { id, label, value, handleChange, error, errorTextList, disabled } =
-    props;
+  const {
+    id,
+    label,
+    value,
+    handleChange,
+    error,
+    errorTextList,
+    disabled,
+    multiline = false,
+  } = props;
   const [show, setShow] = useState(!id.includes('password'));
 
   const handleClickShow = () => {
@@ -37,12 +45,13 @@ const TextInput = (props) => {
       disabled={disabled}
       margin="dense"
     >
-      <InputLabel htmlFor={id}>{`${label}`}</InputLabel>
-      <FilledInput
+      <InputLabel variant="standard" htmlFor={id}>{`${label}`}</InputLabel>
+      <Input
         id={id}
         type={show ? 'text' : 'password'}
         value={value}
         onChange={handleChange}
+        multiline={multiline}
         endAdornment={
           id.includes('password') ? (
             <InputAdornment position="end">

@@ -14,9 +14,9 @@ import Footer from '../../molecules/Footer';
 import ParsLogo from '../../atoms/CustomIcons/ParsLogo';
 
 /**
- * The app's signin/signup page for new visitors
+ * The app's login/signup page for new visitors
  * @param {object} props object file that contains a signup or a
- *                       signin component
+ *                       login component
  * @return {JSX.Element} returns a start page
  */
 const StartPage = React.memo((props) => {

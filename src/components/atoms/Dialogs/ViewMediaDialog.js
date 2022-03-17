@@ -39,7 +39,9 @@ const ViewMediaDialog = (props) => {
 
   useEffect(() => {
     if (user) {
-      setIsUserSelf(auth.user !== null && auth.user.username === user.username);
+      setIsUserSelf(
+        auth?.user !== null && auth?.user?.username === user?.username
+      );
       setDoesUserHaveMedia(user[mediaType] !== undefined);
       // eslint-disable-next-line max-len
       setImageToDisplay(
