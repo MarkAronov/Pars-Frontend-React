@@ -13,12 +13,12 @@ const Search = styled('div')(({ theme }) => ({
   borderColor:
     theme.palette.mode === 'dark'
       ? alpha(theme.palette.common.white, 0.1)
-      : alpha(theme.palette.common.white, 0.5),
+      : alpha(theme.palette.common.black, 0.2),
   position: 'relative',
   backgroundColor:
     theme.palette.mode === 'dark'
       ? alpha(theme.palette.common.white, 0.1)
-      : alpha(theme.palette.common.white, 0.5),
+      : alpha(theme.palette.common.black, 0.2),
   width: '100%',
   [theme.breakpoints.up('sm')]: {
     marginLeft: theme.spacing(3),
@@ -28,7 +28,10 @@ const Search = styled('div')(({ theme }) => ({
     borderRadius: '5px',
     borderStyle: 'solid',
     borderWidth: '1px',
-    borderColor: 'white',
+    borderColor:
+      theme.palette.mode === 'dark'
+        ? alpha(theme.palette.common.white, 0.1)
+        : alpha(theme.palette.common.black, 0.4),
   },
 }));
 
@@ -39,7 +42,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     backgroundColor:
       theme.palette.mode === 'dark'
         ? alpha(theme.palette.common.white, 0.25)
-        : alpha(theme.palette.grey[700], 0.5),
+        : alpha(theme.palette.grey[700], 0.25),
   },
   '& .MuiInputBase-input': {
     padding: theme.spacing(1, 0, 1, 0),
@@ -58,12 +61,12 @@ const SearchButton = styled(Button)(({ theme }) => ({
   color:
     theme.palette.mode === 'dark'
       ? alpha(theme.palette.common.white, 1)
-      : alpha(theme.palette.common.white, 0.5),
+      : alpha(theme.palette.common.black, 0.2),
   '&:hover': {
     backgroundColor:
       theme.palette.mode === 'dark'
         ? alpha(theme.palette.common.white, 0.25)
-        : alpha(theme.palette.common.white, 0.5),
+        : alpha(theme.palette.grey[700], 0.25),
   },
 }));
 
@@ -75,7 +78,6 @@ const SearchButton = styled(Button)(({ theme }) => ({
  */
 const SearchBar = (props) => {
   const theme = useTheme();
-
   const handleMobileSearch = () => {
     props.setMoblieSearchBar(!props.moblieSearchBar);
   };
@@ -108,8 +110,12 @@ const SearchBar = (props) => {
       >
         <StyledInputBase placeholder="Search" />
         <Tooltip title="Search">
-          <SearchButton>
-            <SearchOutlinedIcon />
+          <SearchButton disabled={props.disableButton || false}>
+            <SearchOutlinedIcon
+              sx={{
+                color: alpha(theme.palette.common.white, 1),
+              }}
+            />
           </SearchButton>
         </Tooltip>
       </Search>

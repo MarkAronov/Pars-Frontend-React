@@ -31,7 +31,6 @@ export const usernameChecker = (str = '', dupeStr = '') => {
 };
 
 export const emailChecker = (str = '', dupeStr = '', type = '') => {
-  console.log(str);
   const emailErrors = [];
   if (str === dupeStr) {
     if (type === 'signup') {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   Menu,
@@ -16,7 +16,7 @@ import { NotificationsNoneOutlined as NotificationsNoneOutlinedIcon } from '@mui
  * @return {JSX.Element} returns a NotificationsAppbar component
  */
 const NotificationsAppbar = () => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
   const handleClick = (event) => {
@@ -29,7 +29,7 @@ const NotificationsAppbar = () => {
   return (
     <>
       <Tooltip title="Notifications">
-        <IconButton color="inherit" onClick={handleClick} size="large">
+        <IconButton onClick={handleClick} size="large">
           <Badge badgeContent={0} color="error">
             <NotificationsNoneOutlinedIcon />
           </Badge>

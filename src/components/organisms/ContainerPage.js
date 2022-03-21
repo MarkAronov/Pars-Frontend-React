@@ -16,15 +16,6 @@ const ContainerPage = (props) => {
   const handleDrawer = () => {
     setdrawerState(!drawerState);
   };
-  // const [headerHeight, setHeaderHeight] = useState(0);
-  // const header = useRef(null);
-  // useLayoutEffect(() => {
-  //   if (header.current) {
-  //     setHeaderHeight(header.current.offsetHeight);
-  //   }
-  //   console.log(header.current.offsetHeight);
-  // }, [header]);
-
   return (
     <Box
       sx={{
@@ -34,17 +25,8 @@ const ContainerPage = (props) => {
         minHeight: '100vh',
       }}
     >
-      <Header
-        // ref={header}
-        sx={{ position: 'sticky' }}
-        handleDrawer={handleDrawer}
-      />
-      <Drawers
-        drawerState={drawerState}
-        setdrawerState={setdrawerState}
-        handleDrawer={handleDrawer}
-        // headerHeight={headerHeight}
-      />
+      <Header sx={{ position: 'sticky' }} handleDrawer={handleDrawer} />
+      <Drawers drawerState={drawerState} handleDrawer={handleDrawer} />
       <Box
         component="main"
         sx={{

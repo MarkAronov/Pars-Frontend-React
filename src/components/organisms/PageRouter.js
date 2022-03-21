@@ -76,12 +76,6 @@ const PageRouter = () => {
             <Redirect to="/start" />
           )}
         </Route>
-        {/* <Route path="/favorites">
-          {auth.userToken !== null ?
-                        <ContainerPage page={<FavoritesPage />} /> :
-                        <Redirect to="/start" />
-          }
-        </Route> */}
         <Route path="/user/:username">
           <ContainerPage page={<UserRoute />} />
         </Route>

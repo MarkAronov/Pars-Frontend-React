@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   Menu,
@@ -16,7 +16,7 @@ import MessageOutlinedIcon from '@mui/icons-material/MessageOutlined';
  * @return {JSX.Element} returns a MessagesAppbar component
  */
 const MessagesAppbar = () => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);

@@ -10,7 +10,7 @@ module.exports = {
     'react-app/jest',
     'plugin:react/recommended',
   ],
-  plugins: ['react', 'prettier'],
+  plugins: ['react', 'prettier', 'react-hooks'],
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
@@ -30,5 +30,7 @@ module.exports = {
     'react/prop-types': 'off',
     'arrow-body-style': 'error',
     'prefer-arrow-callback': 'error',
+    'react-hooks/rules-of-hooks': 'error', // Checks rules of Hooks
+    'react-hooks/exhaustive-deps': 'warn', // Checks effect dependencies
   },
 };

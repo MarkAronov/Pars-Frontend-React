@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useMemo, forwardRef } from 'react';
 import PropTypes from 'prop-types';
 
 import {
@@ -27,7 +27,7 @@ import UserProfileIcon from '../CustomIcons/UserProfileIcon';
  */
 const MenuAppbar = () => {
   const auth = useAuth();
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
   const handleClick = (event) => {
@@ -45,11 +45,11 @@ const MenuAppbar = () => {
   const MenuItemLink = (props) => {
     const { icon, text, to } = props;
 
-    const renderLink = React.useMemo(() => {
+    const renderLink = useMemo(() => {
       const Link = (itemProps, ref) => (
         <RouterLink to={to} ref={ref} {...itemProps} role={undefined} />
       );
-      return React.forwardRef(Link);
+      return forwardRef(Link);
     }, [to]);
 
     return (

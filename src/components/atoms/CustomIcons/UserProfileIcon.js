@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 
 import { Avatar } from '@mui/material';
@@ -10,14 +10,13 @@ import { alpha, useTheme } from '@mui/material/styles';
  *                       control the UserTabs
  * @return {JSX.Element} returns a UserTabs component
  */
-const UserProfileIcon = React.memo(
+const UserProfileIcon = memo(
   (props) => {
     const { user } = props;
     const theme = useTheme();
     let userAvatar;
     let userNameLetter;
 
-    // console.log('Rendered');
     if (user !== null && user !== undefined) {
       // eslint-disable-next-line max-len
       userAvatar =
@@ -39,17 +38,14 @@ const UserProfileIcon = React.memo(
           bgcolor:
             theme.palette.mode === 'dark'
               ? alpha(theme.palette.common.white, 0.9)
-              : alpha(theme.palette.common.white, 0.5),
+              : alpha(theme.palette.common.black, 0.5),
         }}
       >
         {userNameLetter}
       </Avatar>
     );
   },
-  (prevProps, nextProps) =>
-    // console.log(prevProps);
-    // console.log(nextProps);
-    prevProps.user?.avatar === nextProps.user?.avatar
+  (prevProps, nextProps) => prevProps.user?.avatar === nextProps.user?.avatar
 );
 
 UserProfileIcon.propTypes = {

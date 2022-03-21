@@ -27,10 +27,6 @@ const DynamicTypography = (props) => {
         parseInt(ref.current.scrollHeight) /
           (parseInt(ref.current.style.fontSize) * ref.current.style.lineHeight)
       );
-      // console.log(
-      //     lineNumber, numberOfLines, ref.current.scrollHeight,
-      //     ref.current.style.fontSize, ref.current.style.lineHeight
-      // );
       if (lineNumber > numberOfLines) {
         setShowButton(true);
       }

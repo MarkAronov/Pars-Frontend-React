@@ -71,7 +71,6 @@ const ViewMediaDialog = (props) => {
       mediaType,
     });
     if (results !== undefined) {
-      // console.log(results);
     }
     setSnackbarOpen(true);
     setLoading(false);
@@ -100,7 +99,6 @@ const ViewMediaDialog = (props) => {
       mediaType,
       mediaFile,
     });
-    console.log(results);
     if (results !== undefined) {
       setSelectedImage(false);
       setSnackbarOpen(true);

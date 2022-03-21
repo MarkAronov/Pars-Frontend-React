@@ -72,12 +72,6 @@ const StaticDrawer = styled(MuiDrawer, {
   flexShrink: 0,
   whiteSpace: 'nowrap',
   boxSizing: 'border-box',
-  paper: {
-    color:
-      theme.palette.mode === 'dark'
-        ? theme.palette.grey[1000]
-        : theme.palette.grey[50],
-  },
   ...(open && {
     ...openedMixin(theme),
     '& .MuiDrawer-paper': openedMixin(theme),
@@ -94,7 +88,7 @@ const SwipeableDrawer = styled(MuiSwipeableDrawer)(({ theme, open }) => ({
   whiteSpace: 'nowrap',
   boxSizing: 'border-box',
   ...(open && {
-    ...openedMixin(theme, false),
+    ...openedMixin(theme),
     '& .MuiDrawer-paper': openedMixin(theme),
   }),
 }));
@@ -118,7 +112,7 @@ const Drawers = (props) => {
     ) {
       return;
     }
-    props.setdrawerState(open);
+    props.handleDrawer(open);
   };
 
   const drawerItemComponent = (props) => {
@@ -160,12 +154,6 @@ const Drawers = (props) => {
         ],
       ])}
       <Divider />
-      {/* {drawerItemComponent(
-                [[<FavoriteBorderOutlinedIcon key={1}/>,
-                  <FavoriteBorderIcon key={2}/>,
-                  'Favorites', '/favorites'],
-                ])
-            } */}
     </>
   );
 
@@ -193,7 +181,16 @@ const Drawers = (props) => {
       {drawerContent}
     </SwipeableDrawer>
   ) : (
-    <StaticDrawer variant="permanent" open={props.drawerState}>
+    <StaticDrawer
+      sx={{
+        PaperProps: {
+          elevation: 2,
+        },
+      }}
+      variant="permanent"
+      open={props.drawerState}
+      onClose={toggleDrawer(false)}
+    >
       {drawerContent}
     </StaticDrawer>
   );
@@ -202,7 +199,6 @@ const Drawers = (props) => {
 Drawers.propTypes = {
   drawerState: PropTypes.bool.isRequired,
   handleDrawer: PropTypes.func.isRequired,
-  setdrawerState: PropTypes.func.isRequired,
 };
 
 export default Drawers;
