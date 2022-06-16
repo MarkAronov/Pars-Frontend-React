@@ -19,7 +19,6 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {
-    'prettier/prettier': 'error',
     'no-unused-vars': 'error',
     'no-console': 'off',
     'func-names': 'off',
@@ -30,6 +29,7 @@ module.exports = {
     'react/prop-types': 'off',
     'arrow-body-style': 'error',
     'prefer-arrow-callback': 'error',
+    'prettier/prettier': ['error', { endOfLine: 'auto' }],
     'react-hooks/rules-of-hooks': 'error', // Checks rules of Hooks
     'react-hooks/exhaustive-deps': 'warn', // Checks effect dependencies
   },
