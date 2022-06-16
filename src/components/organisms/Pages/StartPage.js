@@ -42,13 +42,16 @@ const InfoPanel = React.memo(
           }}
         >
           {[
-            [<SearchIcon key={1} />, <>Follow your interests</>],
-            [<PeopleIcon key={2} />, <>Make some friends</>],
-            [<ChatIcon key={3} />, <>Join the conversation</>],
-            [<PlayCircleIcon key={4} />, <>Create original content</>],
-          ].map((value, index) => (
+            [<SearchIcon key="SearchIcon" />, 'Follow your interests'],
+            [<PeopleIcon key="PeopleIcon" />, 'Make some friends'],
+            [<ChatIcon key="ChatIcon" />, 'Join the conversation'],
+            [
+              <PlayCircleIcon key="PlayCircleIcon" />,
+              <>Create original content</>,
+            ],
+          ].map((value) => (
             <Grid
-              key={index}
+              key={value[1]}
               container
               direction="row"
               alignItems="center"

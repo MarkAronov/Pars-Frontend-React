@@ -44,10 +44,10 @@ const openedMixin = (theme) => ({
   overflowX: 'hidden',
   height: '100%',
   top: 0,
-  [theme.breakpoints.up('sm')]: {
-    height: `calc(100% - 48px)`,
-    top: '48px',
-  },
+  // [theme.breakpoints.up('sm')]: {
+  //   height: `calc(100% - 48px)`,
+  //   top: '48px',
+  // },
 });
 
 const closedMixin = (theme) => ({
@@ -64,6 +64,7 @@ const closedMixin = (theme) => ({
   top: '48px',
 });
 
+// eslint-disable-next-line no-unused-vars
 const StaticDrawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== 'open',
 })(({ theme, open }) => ({
@@ -102,6 +103,7 @@ const SwipeableDrawer = styled(MuiSwipeableDrawer)(({ theme, open }) => ({
 const Drawers = (props) => {
   const theme = useTheme();
   const location = useLocation();
+  // eslint-disable-next-line no-unused-vars
   const widthChange = useMediaQuery(theme.breakpoints.down('sm'));
 
   const toggleDrawer = (open) => (event) => {
@@ -139,16 +141,21 @@ const Drawers = (props) => {
   const drawerContent = (
     <>
       {drawerItemComponent([
-        [<HomeOutlinedIcon key={1} />, <HomeIcon key={2} />, 'Home', '/home'],
         [
-          <ExploreOutlinedIcon key={1} />,
-          <ExploreIcon key={2} />,
+          <HomeOutlinedIcon key="HomeOutlinedIcon" />,
+          <HomeIcon key="HomeIcon" />,
+          'Home',
+          '/home',
+        ],
+        [
+          <ExploreOutlinedIcon key="ExploreOutlinedIcon" />,
+          <ExploreIcon key="ExploreIcon" />,
           'Explore',
           '/explore',
         ],
         [
-          <InterestsOutlinedIcon key={1} />,
-          <InterestsIcon key={2} />,
+          <InterestsOutlinedIcon key="InterestsOutlinedIcon" />,
+          <InterestsIcon key="InterestsIcon" />,
           'Interests',
           '/interests',
         ],
@@ -157,7 +164,7 @@ const Drawers = (props) => {
     </>
   );
 
-  return widthChange ? (
+  return (
     <SwipeableDrawer
       open={props.drawerState}
       onClose={toggleDrawer(false)}
@@ -180,20 +187,43 @@ const Drawers = (props) => {
       <Divider />
       {drawerContent}
     </SwipeableDrawer>
-  ) : (
-    <StaticDrawer
-      sx={{
-        PaperProps: {
-          elevation: 2,
-        },
-      }}
-      variant="permanent"
-      open={props.drawerState}
-      onClose={toggleDrawer(false)}
-    >
-      {drawerContent}
-    </StaticDrawer>
   );
+
+  // return widthChange ? (
+  //   <SwipeableDrawer
+  //     open={props.drawerState}
+  //     onClose={toggleDrawer(false)}
+  //     onOpen={toggleDrawer(true)}
+  //   >
+  //     <Toolbar sx={{ ml: 1 }}>
+  //       <IconButton
+  //         size="large"
+  //         edge="start"
+  //         color="inherit"
+  //         onClick={props.handleDrawer}
+  //         sx={{
+  //           mr: 1,
+  //         }}
+  //       >
+  //         <MenuOutlinedIcon />
+  //       </IconButton>
+  //       <ParsLogo />
+  //     </Toolbar>
+  //     <Divider />
+  //     {drawerContent}
+  //   </SwipeableDrawer>
+  // ) : (
+  //   <StaticDrawer
+  //     sx={{
+  //       zIndex: (theme) => theme.zIndex.appBar,
+  //     }}
+  //     variant="permanent"
+  //     open={props.drawerState}
+  //     onClose={toggleDrawer(false)}
+  //   >
+  //     {drawerContent}
+  //   </StaticDrawer>
+  // );
 };
 
 Drawers.propTypes = {

@@ -85,7 +85,7 @@ const ViewMediaDialog = (props) => {
     const file = event.target.files[0];
     setMediaFile(file);
     reader.readAsDataURL(file);
-    reader.onload = function () {
+    reader.onload = () => {
       setImageToDisplay(reader.result);
       setSelectedImage(true);
     };
@@ -134,6 +134,7 @@ const ViewMediaDialog = (props) => {
           }}
           src={user ? imageToDisplay : ''}
           alt={''}
+          loading="lazy"
         />
         <Box
           component={Paper}

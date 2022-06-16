@@ -22,7 +22,13 @@ const PostCardGroup = (props) => {
       }}
     >
       {cardlist.map((value) => (
-        <PostCard key={value} />
+        <PostCard
+          key={value[0]}
+          title={value[1]}
+          content={value[2]}
+          mediafiles={value[3]}
+          owner={value[4]}
+        />
       ))}
     </Grid>
   );

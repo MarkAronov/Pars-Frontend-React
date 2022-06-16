@@ -7,13 +7,14 @@ import {
   CardMedia,
   CardContent,
   CardActions,
-  Avatar,
   IconButton,
   Typography,
 } from '@mui/material';
+
 import { useTheme } from '@mui/material/styles';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import UserProfileIcon from '../atoms/CustomIcons/UserProfileIcon';
 
 /**
  * The PostCard component
@@ -22,6 +23,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
  * @return {JSX.Element} returns a PostCard component
  */
 const PostCard = (props) => {
+  const { title, content, mediafiles, owner } = props;
   const theme = useTheme();
 
   return (
@@ -38,27 +40,24 @@ const PostCard = (props) => {
     >
       <CardMedia
         component="img"
-        height="194"
-        image="https://picsum.photos/200/300"
-        alt="Paella dish"
+        height="300"
+        image={mediafiles}
+        alt=""
+        loading="lazy"
       />
       <CardHeader
-        avatar={<Avatar>R</Avatar>}
+        avatar={<UserProfileIcon user={owner} />}
         action={
           <IconButton>
             <MoreVertIcon />
           </IconButton>
         }
-        title="Shrimp and Chorizo Paella"
-        subheader="September 14, 2016"
+        title={title}
+        subheader="September 14, 2021"
       />
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-          {`This impressive paella is a perfect 
-            party dish and a fun meal to cook
-            together with your guests. 
-            Add 1 cup of frozen peas along with the mussels,
-            if you like.`}
+          {content}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>

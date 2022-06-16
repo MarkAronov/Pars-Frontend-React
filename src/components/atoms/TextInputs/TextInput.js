@@ -79,7 +79,11 @@ const TextInput = React.memo(
             }}
           >
             {errorTextList.map((error, i) => (
-              <Typography component={'span'} key={i} sx={{ display: 'block' }}>
+              <Typography
+                component={'span'}
+                key={error}
+                sx={{ display: 'block' }}
+              >
                 {error}
               </Typography>
             ))}

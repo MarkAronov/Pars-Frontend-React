@@ -118,16 +118,16 @@ const MenuAppbar = () => {
                 to={`/user/${auth.user.username}`}
                 icon={<UserProfileIcon sizeChange={false} user={auth.user} />}
                 text={auth.user.username}
-                key={1}
+                key="UserProfileIcon"
               />,
-              <Divider key={2} />,
+              <Divider key="Divider 1" />,
               <MenuItemLink
                 to={`/settings`}
                 icon={<SettingsOutlinedIcon />}
                 text={'Settings'}
-                key={3}
+                key="SettingsOutlinedIcon"
               />,
-              <MenuItem onClick={handleLogOut} key={4}>
+              <MenuItem onClick={handleLogOut} key="LogoutOutlinedIcon">
                 <ListItemIcon>
                   <LogoutOutlinedIcon fontSize="small" />
                 </ListItemIcon>
@@ -139,13 +139,13 @@ const MenuAppbar = () => {
                 to={`/login`}
                 icon={<LoginOutlinedIcon />}
                 text={'Log In'}
-                key={1}
+                key="LoginOutlinedIcon"
               />,
               <MenuItemLink
                 to={`/signup`}
                 icon={<CreateOutlinedIcon />}
                 text={'Sign Up'}
-                key={2}
+                key="CreateOutlinedIcon"
               />,
             ]}
       </Menu>
