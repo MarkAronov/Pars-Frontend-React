@@ -22,7 +22,7 @@ import ParsLogo from '../atoms/CustomIcons/ParsLogo';
  *                       control the Header
  * @return {JSX.Element} returns a Header component
  */
-const Header = (props: any): JSX.Element => {
+const Header = (props: { sx: any; handleDrawer: any }): JSX.Element => {
   const theme = useTheme();
   const [moblieSearchBar, setMoblieSearchBar] = useState(false);
   const widthChange = useMediaQuery(theme.breakpoints.down('sm'));
@@ -88,7 +88,6 @@ const Header = (props: any): JSX.Element => {
   return (
     <AppBar
       sx={{
-        position: 'sticky',
         height: '48px',
         justifyContent: 'space-between',
         overflowX: 'auto',

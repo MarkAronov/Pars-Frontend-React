@@ -8,10 +8,10 @@ import Drawers from '../atoms/Drawers';
 
 /**
  * Warpping function that adds a header and a drawer to the page
- * @param {object} props contians the page
+ * @param {any} props contians the page
  * @return {JSX.Element} the specific page
  */
-const ContainerPage = (props: { page: JSX.Element }): JSX.Element => {
+const ContainerPage = (props: { page: any }): JSX.Element => {
   const [drawerState, setdrawerState] = useState(false);
   const handleDrawer = () => {
     setdrawerState(!drawerState);
@@ -25,7 +25,7 @@ const ContainerPage = (props: { page: JSX.Element }): JSX.Element => {
         minHeight: '100vh',
       }}
     >
-      <Header handleDrawer={handleDrawer} />
+      <Header sx={{ position: 'sticky' }} handleDrawer={handleDrawer} />
       <Drawers drawerState={drawerState} handleDrawer={handleDrawer} />
       <Box
         component="main"

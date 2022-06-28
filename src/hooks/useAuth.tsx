@@ -14,7 +14,9 @@ const useProvideAuth = (): {
   const [userToken, setUserToken] = useState<string | null>(
     localStorage.getItem('token')
   );
-  const [user, setUser] = useState<UserType | null>(null);
+  const [user, setUser] = useState<any>(
+    JSON.parse(localStorage.getItem('user')!)
+  );
 
   const setData = (user: UserType | null, token = userToken) => {
     setUserToken(token!);
