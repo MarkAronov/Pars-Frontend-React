@@ -142,20 +142,23 @@ const useProvideAuth = (): {
         default:
           return;
       }
-    } catch (err: any) {
-      if (err.response) {
-        if (err.response.status === 400) {
-          return err.response.data;
-        } else if (err.response.status === 401 || err.response.status === 500) {
+    } catch (error: any) {
+      if (error.response) {
+        if (error.response.status === 400) {
+          return error.response.data;
+        } else if (
+          error.response.status === 401 ||
+          error.response.status === 500
+        ) {
           setData(null, null);
           return null;
-        } else if (err.response.status === 404) {
+        } else if (error.response.status === 404) {
           if (action.userName === user?.username) {
             setData(null, null);
           }
           return null;
         } else {
-          return err.response;
+          return error.response;
         }
       }
     }

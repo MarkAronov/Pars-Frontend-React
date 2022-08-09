@@ -141,7 +141,7 @@ const SignUp = () => {
       for (const key of Object.keys(results)) {
         if (results[key].length !== 0) {
           const msgArr: any = [];
-          results[key].forEach((res) => msgArr.push(res[1]));
+          results[key].forEach((res) => msgArr.push(res[0]));
           setErrors((errors) => ({
             ...errors,
             [key]: {
