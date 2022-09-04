@@ -21,7 +21,7 @@ const TextInputPre = (props: {
   value: string;
   handleChange: any;
   error: boolean;
-  errorTextList: Array<string>;
+  errorTextList: string[];
   disabled: boolean;
   multiline?: boolean;
 }) => {

@@ -42,7 +42,9 @@ const ViewMediaDialog = (props) => {
       setIsUserSelf(
         auth?.user !== null && auth?.user?.username === user?.username
       );
-      setDoesUserHaveMedia(user[mediaType] !== undefined);
+      setDoesUserHaveMedia(
+        user[mediaType] !== undefined && user[mediaType] !== null
+      );
       // eslint-disable-next-line max-len
       setImageToDisplay(
         `${process.env.REACT_APP_BACKEND_URL}/users/${user.username}/${mediaType}#` +
@@ -70,7 +72,7 @@ const ViewMediaDialog = (props) => {
       type: 'deleteUserProfileMedia',
       mediaType,
     });
-    if (results !== undefined) {
+    if (results) {
     }
     setSnackbarOpen(true);
     setLoading(false);
@@ -99,7 +101,7 @@ const ViewMediaDialog = (props) => {
       mediaType,
       mediaFile,
     });
-    if (results !== undefined) {
+    if (results) {
       setSelectedImage(false);
       setSnackbarOpen(true);
       user[mediaType] = results;

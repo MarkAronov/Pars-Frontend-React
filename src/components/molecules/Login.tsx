@@ -15,7 +15,7 @@ import { emailChecker } from '../../utils/checkers';
 const Login = () => {
   const theme = useTheme();
   const auth = useAuth();
-  const formKeys: Array<Array<string>> = [
+  const formKeys: string[][] = [
     ['email', 'Email'],
     ['password', 'Password'],
   ];
@@ -111,7 +111,7 @@ const Login = () => {
     });
     setHasDataLoaded(true);
 
-    if (results !== null && results !== undefined) {
+    if (results) {
       for (const key of Object.keys(results)) {
         if (results[key].length !== 0) {
           const msgArr: any = [];

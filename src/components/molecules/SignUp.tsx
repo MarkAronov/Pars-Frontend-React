@@ -137,7 +137,7 @@ const SignUp = () => {
     });
     setHasDataLoaded(true);
 
-    if (results !== null && results !== undefined) {
+    if (results) {
       for (const key of Object.keys(results)) {
         if (results[key].length !== 0) {
           const msgArr: any = [];

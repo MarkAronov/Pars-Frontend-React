@@ -102,8 +102,8 @@ const registerValidSW = (swUrl: any, config: any) => {
         };
       };
     })
-    .catch((error) => {
-      console.error('Error during service worker registration:', error);
+    .catch((err) => {
+      console.error('Error during service worker registration:', err);
     });
 };
 

@@ -1,11 +1,11 @@
 import validator from 'validator';
 
 // FUNCTIONS
-export const filterDupes = (arr: Array<string> = []) => {
+export const filterDupes = (arr: string[] = []) => {
   const map = new Map();
-  let filtered: Array<string> = [];
+  let filtered: string[] = [];
   for (const a of arr) {
-    if (map.get(a) === undefined) {
+    if (!map.get(a)) {
       map.set(a, true);
       filtered = filtered.concat(a);
     }
@@ -14,7 +14,7 @@ export const filterDupes = (arr: Array<string> = []) => {
 };
 
 export const usernameChecker = (str = '', dupeStr = '') => {
-  const nameErrors: Array<String> = [];
+  const nameErrors: string[] = [];
   if (str === dupeStr) {
     return ['Username is being currently used, try another.'];
   }
@@ -31,7 +31,7 @@ export const usernameChecker = (str = '', dupeStr = '') => {
 };
 
 export const emailChecker = (str = '', dupeStr = '', type = '') => {
-  const emailErrors: Array<string> = [];
+  const emailErrors: string[] = [];
   if (str === dupeStr) {
     if (type === 'signup') {
       return ['Email is being currently used, try another.'];
@@ -50,7 +50,7 @@ export const emailChecker = (str = '', dupeStr = '', type = '') => {
 };
 
 export const passwordChecker = (str = '') => {
-  const passwordErrors: Array<string> = [];
+  const passwordErrors: string[] = [];
   const lowercase = str.match(/[a-z]/);
   const uppercase = str.match(/[A-Z]/);
   const numbers = str.match(/[0-9]/);
@@ -80,7 +80,7 @@ export const entropy = (str: string) => {
 };
 
 export const displayNameChecker = (str = '') => {
-  const displayNameErrors: Array<string> = [];
+  const displayNameErrors: string[] = [];
   if (str.length > 128) {
     displayNameErrors.push('Display Name is longer than 128 characters.');
   }
@@ -88,7 +88,7 @@ export const displayNameChecker = (str = '') => {
 };
 
 export const bioChecker = (str = '') => {
-  const bioErrors: Array<string> = [];
+  const bioErrors: string[] = [];
   if (str.length > 400) {
     bioErrors.push('Bio is longer than 400 characters');
   }
