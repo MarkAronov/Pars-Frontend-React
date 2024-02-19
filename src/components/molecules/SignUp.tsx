@@ -127,27 +127,32 @@ const SignUp = () => {
 
   const signUpHandle = async () => {
     setHasDataLoaded(false);
-    const results = await auth?.dispatch({
-      type: 'signUp',
-      params: {
+    const formData: any = new FormData();
+    formData.append(
+      'content',
+      JSON.stringify({
         username: data.username,
         email: data.email,
         password: data.password,
-      },
+      })
+    );
+    const results = await auth?.dispatch({
+      type: 'signUp',
+      formData,
     });
     setHasDataLoaded(true);
 
     if (results) {
       for (const key of Object.keys(results)) {
-        if (results[key].length !== 0) {
+        if (results[key].length) {
           const msgArr: any = [];
-          results[key].forEach((res) => msgArr.push(res[0]));
-          setErrors((errors) => ({
-            ...errors,
+          results[key].forEach((res: any) => msgArr.push(res));
+          setErrors((err) => ({
+            ...err,
             [key]: {
               state: true,
               message: msgArr,
-              data: data[key],
+              data: key === 'password' ? data[key] : data,
             },
           }));
         }

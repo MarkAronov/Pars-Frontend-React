@@ -147,20 +147,10 @@ const StartPage = (props: {
           >
             <ParsLogo
               sx={{
-                margin: theme.spacing(5, 1),
+                margin: theme.spacing(5, 0, 3),
               }}
             />
-            <Typography component="h1" variant="h5">
-              See what’s going on at our party right now!
-            </Typography>
-
-            <Typography component="h1" variant="h6">
-              Join the information superhighway party NOW!
-            </Typography>
-
             <Grid
-              container
-              spacing={3}
               sx={{
                 margin: theme.spacing(2, 0, 8),
               }}

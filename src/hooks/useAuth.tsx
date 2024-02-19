@@ -15,7 +15,7 @@ const useProvideAuth = (): {
     localStorage.getItem('token')
   );
   const [user, setUser] = useState<any>(
-    JSON.parse(localStorage.getItem('user')!)
+    userToken ? dispatch('getUserData') : null
   );
 
   const setData = (user: UserType | null, token = userToken) => {
@@ -23,10 +23,8 @@ const useProvideAuth = (): {
     setUser(user!);
     if (user! && token!) {
       localStorage.setItem('token', token!);
-      localStorage.setItem('user', JSON.stringify(user!));
     } else {
       localStorage.removeItem('token');
-      localStorage.removeItem('user');
     }
   };
 
@@ -62,12 +60,9 @@ const useProvideAuth = (): {
           setData(user);
           return;
         case 'setUserProfileMedia':
-          const formData = new FormData();
-
-          formData.append(action?.mediaType!, action?.mediaFile!);
           const userProfileMediaData = await axios.post<any>(
             `${process.env.REACT_APP_BACKEND_URL}/users/me/${action.mediaType}`,
-            formData,
+            action?.formData!,
             {
               headers: {
                 'Access-Control-Allow-Origin': '*',
@@ -77,6 +72,19 @@ const useProvideAuth = (): {
             }
           );
           return userProfileMediaData.data;
+        case 'getUserData':
+          const getUserData = await axios.patch<any>(
+            `${process.env.REACT_APP_BACKEND_URL}/users/me/${action.updateType}`,
+            action.params,
+            {
+              headers: {
+                'Access-Control-Allow-Origin': '*',
+                Authorization: 'Bearer ' + userToken,
+              },
+            }
+          );
+          setData(getUserData.data);
+          return;
         case 'updateUserData':
           const UserProfileData = await axios.patch<any>(
             `${process.env.REACT_APP_BACKEND_URL}/users/me/${action.updateType}`,
@@ -91,12 +99,14 @@ const useProvideAuth = (): {
           setData(UserProfileData.data);
           return;
         case 'login':
+          console.log(action?.formData!);
           const loginData = await axios.post<any>(
             `${process.env.REACT_APP_BACKEND_URL}/users/login`,
-            action.params,
+            action?.formData!,
             {
               headers: {
                 'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'multipart/form-data',
               },
             }
           );
@@ -118,27 +128,18 @@ const useProvideAuth = (): {
         case 'signUp':
           const signUpData = await axios.post<any>(
             `${process.env.REACT_APP_BACKEND_URL}/users`,
-            action.params,
+            action?.formData!,
             {
               headers: {
                 'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'multipart/form-data',
               },
             }
           );
           setData(signUpData.data.user, signUpData.data.token);
           return;
-        // findType used to set what components do we
-        // want from the user at a given moment
-        case 'findUser':
-          const foundUser = await axios.get(
-            `${process.env.REACT_APP_BACKEND_URL}/users/${action.username}`,
-            {
-              headers: {
-                'Access-Control-Allow-Origin': '*',
-              },
-            }
-          );
-          return foundUser.data;
+        case 'find':
+          return null;
         default:
           return;
       }

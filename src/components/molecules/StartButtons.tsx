@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
  * @return {JSX.Element} returns a signbuttons component
  */
 const StartButtons = () => (
-  <>
+  <Grid container spacing={3}>
     <Grid item xs={12} sm={12}>
       <Button
         id="login"
@@ -35,7 +35,7 @@ const StartButtons = () => (
         Sign Up
       </Button>
     </Grid>
-  </>
+  </Grid>
 );
 
 export default StartButtons;

@@ -96,10 +96,11 @@ const ViewMediaDialog = (props) => {
   const handleUploadFile = async (event) => {
     event.stopPropagation();
     setLoading(true);
+    const formData = new FormData();
+    formData.append(mediaType, mediaFile);
     const results = await auth?.dispatch({
       type: 'setUserProfileMedia',
-      mediaType,
-      mediaFile,
+      formData,
     });
     if (results) {
       setSelectedImage(false);

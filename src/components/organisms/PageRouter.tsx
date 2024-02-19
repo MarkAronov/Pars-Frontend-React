@@ -9,7 +9,7 @@ import {
 
 import ContainerPage from './ContainerPage';
 
-import AboutUsPage from './Pages/AboutUsPage';
+import AboutPage from './Pages/AboutPage';
 import ErrorPage from './Pages/ErrorPage';
 import ExplorePage from './Pages/ExplorePage';
 import HomePage from './Pages/HomePage';
@@ -42,8 +42,8 @@ const PageRouter = () => {
         <Route exact path="/">
           {auth?.userToken ? <Redirect to="/home" /> : <Redirect to="/start" />}
         </Route>
-        <Route path="/aboutus">
-          <AboutUsPage />
+        <Route path="/about">
+          <AboutPage />
         </Route>
         <Route path="/home">
           <ContainerPage page={<HomePage />} />

@@ -29,8 +29,8 @@ const Login = () => {
   //   )
   // );
   const [data, setData] = useState({
-    email: 'asd@dd.com',
-    password: 'Asd123453sasd',
+    email: 'bdb@ddd.com',
+    password: 'bbDFFDF232',
   });
   const [errors, setErrors] = useState<any>(
     formKeys.reduce<any>(
@@ -63,20 +63,20 @@ const Login = () => {
   useEffect(() => {
     setDisabledLogin(true);
     formKeys.forEach((key) => {
-      setErrors((errors) => ({
-        ...errors,
+      setErrors((err: any) => ({
+        ...err,
         [key[0]]: {
-          ...errors[key[0]],
+          ...err[key[0]],
           state: false,
         },
       }));
     });
     const timeout = setTimeout(() => {
       formKeys.forEach((key) => {
-        setErrors((errors) => ({
-          ...errors,
+        setErrors((err: any) => ({
+          ...err,
           [key[0]]: {
-            ...errors[key[0]],
+            ...err[key[0]],
             state: errorMap[key[0]].state,
             message: errorMap[key[0]].message,
           },
@@ -100,28 +100,32 @@ const Login = () => {
 
   const handleLogin = async () => {
     setHasDataLoaded(false);
-    const results = await auth?.dispatch({
-      type: 'login',
-      params: {
+    const formData: any = new FormData();
+    formData.append(
+      'content',
+      JSON.stringify({
         email: data.email,
         password: data.password,
-      },
-      user: null,
-      token: null,
+      })
+    );
+    const results = await auth?.dispatch({
+      type: 'login',
+      formData,
     });
     setHasDataLoaded(true);
 
+    console.log(results);
     if (results) {
       for (const key of Object.keys(results)) {
-        if (results[key].length !== 0) {
+        if (results[key].length) {
           const msgArr: any = [];
-          results[key].forEach((res: any) => msgArr.push(res[0]));
-          setErrors((errors) => ({
-            ...errors,
+          results[key].forEach((res: any) => msgArr.push(res));
+          setErrors((err) => ({
+            ...err,
             [key]: {
               state: true,
               message: msgArr,
-              data: data[key],
+              data: key === 'password' ? data[key] : data,
             },
           }));
         }

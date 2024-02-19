@@ -270,10 +270,10 @@ UserCardPre.propTypes = {
 };
 UserCardPre.displayName = `User's Page Pre`;
 
-const UserCard = memo(UserCardPre, (prevProps, nextProps) => {
-  console.log('test');
-  return prevProps.user === nextProps.user;
-});
+const UserCard = memo(
+  UserCardPre,
+  (prevProps, nextProps) => prevProps.user === nextProps.user
+);
 
 UserCard.displayName = `User's Page`;
 

@@ -88,14 +88,9 @@ const Header = (props: { sx: any; handleDrawer: any }): JSX.Element => {
   return (
     <AppBar
       sx={{
-        height: '48px',
         justifyContent: 'space-between',
         overflowX: 'auto',
         zIndex: (theme) => theme.zIndex.appBar,
-        backgroundColor:
-          theme.palette.mode === 'dark'
-            ? theme.palette.grey[1100]
-            : theme.palette.grey[50],
       }}
     >
       <Toolbar sx={{ backgroundColor: 'inherit' }} variant="dense">

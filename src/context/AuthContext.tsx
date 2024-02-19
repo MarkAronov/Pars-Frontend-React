@@ -23,6 +23,7 @@ export type DispatchTypes = {
   updateType?: any;
   params?: any;
   userName?: string;
+  formData?: any;
 };
 
 export type UserAuth = {
