@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 // eslint-disable-next-line no-unused-vars
 import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 
 import { AuthContext, UserType, DispatchTypes } from 'context/AuthContext';
 
@@ -28,6 +29,25 @@ const useProvideAuth = (): {
     }
   };
 
+  const msgConfig = (
+    headers: Record<string, string> = {},
+    responseType?: string
+  ) => {
+    const config: AxiosRequestConfig = {
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        Authorization: 'Bearer ' + userToken,
+        ...headers,
+      },
+    };
+
+    if (responseType) {
+      config.responseType = responseType as AxiosRequestConfig['responseType'];
+    }
+
+    return config;
+  };
+
   const dispatch = async (action: DispatchTypes) => {
     try {
       switch (action.type) {
@@ -38,23 +58,13 @@ const useProvideAuth = (): {
           const userMedia = await axios.get<any>(
             `${process.env.REACT_APP_BACKEND_URL}/users/
           ${action.username}/${action.mediaType}`,
-            {
-              responseType: 'arraybuffer',
-              headers: {
-                'Access-Control-Allow-Origin': '*',
-              },
-            }
+            msgConfig({}, 'arraybuffer')
           );
           return Buffer.from(userMedia.data).toString('base64');
         case 'deleteUserProfileMedia':
           await axios.delete(
             `${process.env.REACT_APP_BACKEND_URL}/users/me/${action.mediaType}`,
-            {
-              headers: {
-                'Access-Control-Allow-Origin': '*',
-                Authorization: 'Bearer ' + userToken,
-              },
-            }
+            msgConfig()
           );
           user![action.mediaType!] = null;
           setData(user);
@@ -63,52 +73,30 @@ const useProvideAuth = (): {
           const userProfileMediaData = await axios.post<any>(
             `${process.env.REACT_APP_BACKEND_URL}/users/me/${action.mediaType}`,
             action?.formData!,
-            {
-              headers: {
-                'Access-Control-Allow-Origin': '*',
-                Authorization: 'Bearer ' + userToken,
-                'Content-Type': 'multipart/form-data',
-              },
-            }
+            msgConfig({ 'Content-Type': 'multipart/form-data' })
           );
           return userProfileMediaData.data;
         case 'getUserData':
           const getUserData = await axios.patch<any>(
             `${process.env.REACT_APP_BACKEND_URL}/users/me/${action.updateType}`,
             action.params,
-            {
-              headers: {
-                'Access-Control-Allow-Origin': '*',
-                Authorization: 'Bearer ' + userToken,
-              },
-            }
+            msgConfig()
           );
           setData(getUserData.data);
-          return;
+          return getUserData.data;
         case 'updateUserData':
           const UserProfileData = await axios.patch<any>(
             `${process.env.REACT_APP_BACKEND_URL}/users/me/${action.updateType}`,
             action.params,
-            {
-              headers: {
-                'Access-Control-Allow-Origin': '*',
-                Authorization: 'Bearer ' + userToken,
-              },
-            }
+            msgConfig()
           );
           setData(UserProfileData.data);
-          return;
+          return UserProfileData.data;
         case 'login':
-          console.log(action?.formData!);
           const loginData = await axios.post<any>(
             `${process.env.REACT_APP_BACKEND_URL}/users/login`,
             action?.formData!,
-            {
-              headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Content-Type': 'multipart/form-data',
-              },
-            }
+            msgConfig()
           );
           setData(loginData.data.user, loginData.data.token);
           return;
@@ -116,12 +104,7 @@ const useProvideAuth = (): {
           await axios.post(
             `${process.env.REACT_APP_BACKEND_URL}/users/logout`,
             {},
-            {
-              headers: {
-                'Access-Control-Allow-Origin': '*',
-                Authorization: 'Bearer ' + userToken,
-              },
-            }
+            msgConfig()
           );
           setData(null, null);
           return;
@@ -129,17 +112,11 @@ const useProvideAuth = (): {
           const signUpData = await axios.post<any>(
             `${process.env.REACT_APP_BACKEND_URL}/users`,
             action?.formData!,
-            {
-              headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Content-Type': 'multipart/form-data',
-              },
-            }
+            msgConfig({ 'Content-Type': 'multipart/form-data' })
           );
           setData(signUpData.data.user, signUpData.data.token);
           return;
-        case 'find':
-          return null;
+
         default:
           return;
       }

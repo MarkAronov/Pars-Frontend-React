@@ -69,7 +69,7 @@ const PageRouter = () => {
             <Redirect to="/start" />
           )}
         </Route>
-        <Route path="/user/:username">
+        <Route path="/user/u/:username">
           <ContainerPage page={<UserRoute />} />
         </Route>
         <Route path="/start">

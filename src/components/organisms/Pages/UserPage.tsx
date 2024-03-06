@@ -24,6 +24,7 @@ const UserPage = (props) => {
   const { username } = props;
   const [user, setUser] = useState<any>(null);
   const [tabValue, setTabValue] = useState<any>(0);
+
   const userFinder = useAsync(auth?.dispatch, false, {
     type: 'findUser',
     username,
@@ -105,56 +106,48 @@ const UserPage = (props) => {
             'Got a new bike!',
             'Wish me luck :)',
             'https://images.pexels.com/photos/100582/pexels-photo-100582.jpeg',
-            auth?.user,
           ],
           [
             2,
             'Got a new bike!',
             'Wish me luck :)',
             'https://images.pexels.com/photos/100582/pexels-photo-100582.jpeg',
-            auth?.user,
           ],
           [
             8,
             'Got a new bike!',
             'Wish me luck :)',
             'https://images.pexels.com/photos/100582/pexels-photo-100582.jpeg',
-            auth?.user,
           ],
           [
             3,
             'Got a new bike!',
             'Wish me luck :)',
             'https://images.pexels.com/photos/100582/pexels-photo-100582.jpeg',
-            auth?.user,
           ],
           [
             4,
             'Got a new bike!',
             'Wish me luck :)',
             'https://images.pexels.com/photos/100582/pexels-photo-100582.jpeg',
-            auth?.user,
           ],
           [
             5,
             'Got a new bike!',
             'Wish me luck :)',
             'https://images.pexels.com/photos/100582/pexels-photo-100582.jpeg',
-            auth?.user,
           ],
           [
             6,
             'Got a new bike!',
             'Wish me luck :)',
             'https://images.pexels.com/photos/100582/pexels-photo-100582.jpeg',
-            auth?.user,
           ],
           [
             7,
             'Got a new bike!',
             'Wish me luck :)',
             'https://images.pexels.com/photos/100582/pexels-photo-100582.jpeg',
-            auth?.user,
           ],
         ]}
       />
