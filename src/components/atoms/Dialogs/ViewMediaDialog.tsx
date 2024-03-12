@@ -47,7 +47,7 @@ const ViewMediaDialog = (props) => {
       );
       // eslint-disable-next-line max-len
       setImageToDisplay(
-        `${process.env.REACT_APP_BACKEND_URL}/users/${user.username}/${mediaType}#` +
+        `${process.env.REACT_APP_BACKEND_URL}/media/${mediaType}s/${user[mediaType]}#` +
           new Date().getTime()
       );
       if (!open) {

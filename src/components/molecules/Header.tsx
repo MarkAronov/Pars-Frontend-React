@@ -12,8 +12,8 @@ import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
 import { useTheme } from '@mui/material/styles';
 
 import SearchBar from '../atoms/TextInputs/SearchBar';
-import NotificationsAppbar from '../atoms/AppbarItems/NotificationsAppbar';
-import MenuAppbar from '../atoms/AppbarItems/MenuAppbar';
+import NotificationsAppBar from '../atoms/AppBarItems/NotificationsAppBar';
+import MenuAppBar from '../atoms/AppBarItems/MenuAppBar';
 import ParsLogo from '../atoms/CustomIcons/ParsLogo';
 
 /**
@@ -24,18 +24,18 @@ import ParsLogo from '../atoms/CustomIcons/ParsLogo';
  */
 const Header = (props: { sx: any; handleDrawer: any }): JSX.Element => {
   const theme = useTheme();
-  const [moblieSearchBar, setMoblieSearchBar] = useState(false);
+  const [mobileSearchBar, setMobileSearchBar] = useState(false);
   const widthChange = useMediaQuery(theme.breakpoints.down('sm'));
 
   useEffect(() => {
-    if (!widthChange && moblieSearchBar) {
-      setMoblieSearchBar(!moblieSearchBar);
+    if (!widthChange && mobileSearchBar) {
+      setMobileSearchBar(!mobileSearchBar);
     }
-  }, [widthChange, moblieSearchBar]);
+  }, [widthChange, mobileSearchBar]);
 
   const LeftSection = () => (
     <>
-      <Box sx={{ display: moblieSearchBar && widthChange ? 'none' : 'flex' }}>
+      <Box sx={{ display: mobileSearchBar && widthChange ? 'none' : 'flex' }}>
         <IconButton
           size="large"
           edge="start"
@@ -70,16 +70,16 @@ const Header = (props: { sx: any; handleDrawer: any }): JSX.Element => {
     <>
       <Box
         sx={{
-          display: moblieSearchBar && widthChange ? 'none' : 'flex',
+          display: mobileSearchBar && widthChange ? 'none' : 'flex',
           flexGrow: 1,
           [theme.breakpoints.down('sm')]: {
             flexGrow: 0,
           },
         }}
       />
-      <Box sx={{ display: moblieSearchBar && widthChange ? 'none' : 'flex' }}>
-        <NotificationsAppbar />
-        <MenuAppbar />
+      <Box sx={{ display: mobileSearchBar && widthChange ? 'none' : 'flex' }}>
+        <NotificationsAppBar />
+        <MenuAppBar />
       </Box>
     </>
   ));
@@ -96,8 +96,8 @@ const Header = (props: { sx: any; handleDrawer: any }): JSX.Element => {
       <Toolbar sx={{ backgroundColor: 'inherit' }} variant="dense">
         <LeftSection />
         <SearchBar
-          moblieSearchBar={moblieSearchBar}
-          setMoblieSearchBar={setMoblieSearchBar}
+          mobileSearchBar={mobileSearchBar}
+          setMobileSearchBar={setMobileSearchBar}
         />
         <RightSection />
       </Toolbar>

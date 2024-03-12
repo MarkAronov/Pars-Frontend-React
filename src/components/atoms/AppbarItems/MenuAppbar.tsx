@@ -22,10 +22,10 @@ import { useAuth } from '../../../hooks/useAuth';
 import UserProfileIcon from '../CustomIcons/UserProfileIcon';
 
 /**
- * The MenuAppbar component
- * @return {JSX.Element} returns a MenuAppbar component
+ * The MenuAppBar component
+ * @return {JSX.Element} returns a MenuAppBar component
  */
-const MenuAppbar = (): JSX.Element => {
+const MenuAppBar = (): JSX.Element => {
   const auth = useAuth();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -127,7 +127,7 @@ const MenuAppbar = (): JSX.Element => {
         {auth && auth.user
           ? [
               <MenuItemLink
-                to={`/user/${auth.user.username}`}
+                to={`/user/u/${auth.user.username}`}
                 icon={<UserProfileIcon sizeChange={false} user={auth.user} />}
                 text={auth.user.username}
                 key="UserProfileIcon"
@@ -165,4 +165,4 @@ const MenuAppbar = (): JSX.Element => {
   );
 };
 
-export default MenuAppbar;
+export default MenuAppBar;

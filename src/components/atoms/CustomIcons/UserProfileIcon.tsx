@@ -22,7 +22,7 @@ const UserProfile = (props: {
 
   if (user) {
     userAvatar =
-      `${process.env.REACT_APP_BACKEND_URL}/users/${user.username}/avatar#` +
+      `${process.env.REACT_APP_BACKEND_URL}/media/avatars/${user.avatar}#` +
       Date.now();
     userNameLetter = user.displayName[0];
   } else {

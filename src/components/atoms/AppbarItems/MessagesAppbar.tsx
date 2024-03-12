@@ -12,10 +12,10 @@ import {
 import MessageOutlinedIcon from '@mui/icons-material/MessageOutlined';
 
 /**
- * The MessagesAppbar component
- * @return {JSX.Element} returns a MessagesAppbar component
+ * The MessagesAppBar component
+ * @return {JSX.Element} returns a MessagesAppBar component
  */
-const MessagesAppbar = (): JSX.Element => {
+const MessagesAppBar = (): JSX.Element => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -71,4 +71,4 @@ const MessagesAppbar = (): JSX.Element => {
   );
 };
 
-export default MessagesAppbar;
+export default MessagesAppBar;

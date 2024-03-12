@@ -1,9 +1,10 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import axios, { AxiosRequestConfig } from 'axios';
 
 import { AuthContext, UserType, DispatchTypes } from 'context/AuthContext';
+import { useAsync } from './useAsync';
 
 const useProvideAuth = (): {
   userToken: string | null;
@@ -26,27 +27,25 @@ const useProvideAuth = (): {
     }
   };
 
-  const msgConfig = (
-    headers: Record<string, string> = {},
-    responseType?: string | null,
-    params?: any | null
+  const axiosConfig = (
+    method: AxiosRequestConfig['method'],
+    url: AxiosRequestConfig['url'],
+    data?: AxiosRequestConfig['data'],
+    headers: AxiosRequestConfig['headers'] = {},
+    responseType?: AxiosRequestConfig['responseType']
   ) => {
     const config: AxiosRequestConfig = {
+      method: method,
+      maxBodyLength: Infinity,
+      url: `${process.env.REACT_APP_BACKEND_URL}${url}`,
       headers: {
         'Access-Control-Allow-Origin': '*',
         Authorization: 'Bearer ' + userToken,
         ...headers,
       },
+      responseType: responseType,
+      data: data,
     };
-
-    if (responseType) {
-      config.responseType = responseType as AxiosRequestConfig['responseType'];
-    }
-
-    if (params) {
-      config.params = params as AxiosRequestConfig['params'];
-    }
-
     return config;
   };
 
@@ -59,45 +58,82 @@ const useProvideAuth = (): {
       return;
     },
     signUp: async (action) => {
-      const signUpData = await axios.post<any>(
-        `${process.env.REACT_APP_BACKEND_URL}/users`,
-        action?.formData!,
-        msgConfig({ 'Content-Type': 'multipart/form-data' })
+      const signUpData = await axios.request<any>(
+        axiosConfig('post', `/users`, action?.formData!, {
+          'Content-Type': 'multipart/form-data',
+        })
       );
       setData(signUpData.data.user, signUpData.data.token);
       return;
     },
     logIn: async (action) => {
-      const loginData = await axios.post<any>(
-        `${process.env.REACT_APP_BACKEND_URL}/users/login`,
-        action?.formData!,
-        msgConfig()
+      const loginData = await axios.request<any>(
+        axiosConfig('post', `/users/login`, action?.formData!)
       );
       setData(loginData.data.user, loginData.data.token);
       return { user: loginData.data.user, token: loginData.data.token };
     },
     logOut: async () => {
-      await axios.post(
-        `${process.env.REACT_APP_BACKEND_URL}/users/logout`,
-        {},
-        msgConfig()
-      );
+      await axios.request<Request>(axiosConfig('post', `/users/logout`));
+      setData(null, null);
+      return;
+    },
+    logOutAll: async () => {
+      await axios.request<Request>(axiosConfig('post', `/users/logoutall`));
       setData(null, null);
       return;
     },
     getSelf: async (action) => {
-      const selfData = await axios.get<any>(
-        `${process.env.REACT_APP_BACKEND_URL}/users/self`,
-        msgConfig({}, null, action?.formData!)
+      const selfData = await axios.request<Request>(
+        axiosConfig('get', `/users/self`, action?.formData!)
       );
       return selfData.data;
     },
     getUser: async (action) => {
-      const selfData = await axios.get<any>(
-        `${process.env.REACT_APP_BACKEND_URL}/users/u/${action.userName}`,
-        msgConfig({}, null, action?.formData!)
+      const userData = await axios.request<Request>(
+        axiosConfig('get', `/users/u/${action.userName}`, action?.formData!)
       );
-      return selfData.data;
+      return userData.data;
+    },
+    getUsers: async (action) => {
+      const usersData = await axios.request<Request>(
+        axiosConfig('get', `/users`, action?.formData!)
+      );
+      return usersData.data;
+    },
+    updatePassword: async (action) => {
+      await axios.request<any>(
+        axiosConfig('post', `/users/self/password`, action?.formData!)
+      );
+      return;
+    },
+    updateImportant: async (action) => {
+      const importantData = await axios.request<any>(
+        axiosConfig('post', `/users/self/important`, action?.formData!)
+      );
+      setData(importantData.data);
+      return;
+    },
+    updateRegular: async (action) => {
+      const regularData = await axios.request<any>(
+        axiosConfig('post', `/users/self/regular`, action?.formData!, {
+          'Content-Type': 'multipart/form-data',
+        })
+      );
+      setData(regularData.data);
+      return;
+    },
+    deleteSelf: async () => {
+      await axios.request<Request>(axiosConfig('delete', `/users/self`));
+      setData(null, null);
+      return;
+    },
+    deletePartial: async (action) => {
+      await axios.request<Request>(
+        axiosConfig('delete', `/users/self/partial`, action?.formData!)
+      );
+      setData(null, null);
+      return;
     },
   };
 
@@ -107,40 +143,9 @@ const useProvideAuth = (): {
       //     const userMedia = await axios.get<any>(
       //       `${process.env.REACT_APP_BACKEND_URL}/users/
       //     ${action.username}/${action.mediaType}`,
-      //       msgConfig({}, 'arraybuffer')
+      //       axiosConfig({}, 'arraybuffer')
       //     );
       //     return Buffer.from(userMedia.data).toString('base64');
-      //   case 'deleteUserProfileMedia':
-      //     await axios.delete(
-      //       `${process.env.REACT_APP_BACKEND_URL}/users/me/${action.mediaType}`,
-      //       msgConfig()
-      //     );
-      //     user![action.mediaType!] = null;
-      //     setData(user);
-      //     return;
-      //   case 'setUserProfileMedia':
-      //     const userProfileMediaData = await axios.post<any>(
-      //       `${process.env.REACT_APP_BACKEND_URL}/users/me/${action.mediaType}`,
-      //       action?.formData!,
-      //       msgConfig({ 'Content-Type': 'multipart/form-data' })
-      //     );
-      //     return userProfileMediaData.data;
-      //   case 'getUserData':
-      //     const getUserData = await axios.patch<any>(
-      //       `${process.env.REACT_APP_BACKEND_URL}/users/me/${action.updateType}`,
-      //       action.params,
-      //       msgConfig()
-      //     );
-      //     setData(getUserData.data);
-      //     return getUserData.data;
-      //   case 'updateUserData':
-      //     const UserProfileData = await axios.patch<any>(
-      //       `${process.env.REACT_APP_BACKEND_URL}/users/me/${action.updateType}`,
-      //       action.params,
-      //       msgConfig()
-      //     );
-      //     setData(UserProfileData.data);
-      //     return UserProfileData.data;
 
       const actionHandler = actionHandlers[action.type];
       if (actionHandler) {
@@ -164,6 +169,20 @@ const useProvideAuth = (): {
       }
     }
   };
+
+  const selfFinder = useAsync(dispatch, false, {
+    type: 'getSelf',
+  });
+
+  useEffect(() => {
+    if (user === null && userToken) {
+      if (selfFinder.status === 'idle') selfFinder.execute();
+      else if (selfFinder.status === 'success') setUser(selfFinder.value);
+      else if (selfFinder.status === 'error') setUser(null);
+    }
+    return () => setUser(selfFinder.value);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, userToken]);
 
   return { userToken, user, setData, dispatch };
 };

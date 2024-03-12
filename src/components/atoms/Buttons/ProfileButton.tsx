@@ -30,7 +30,7 @@ const ProfileButton = (props) => {
   const auth = useAuth();
   const { userLoaded, user, username } = props;
   const [updatingInterest, setUpdatingInterest] = useState(false);
-  const [isUserInsterested, setIsUserInsterested] = useState(false);
+  const [isUserInterested, setIsUserInsterested] = useState(false);
   const [showProfileDialog, setShowProfileDialog] = useState(false);
 
   const handleUserProfileDialog = () => {
@@ -43,7 +43,7 @@ const ProfileButton = (props) => {
       setTimeout(resolve, 2000);
     });
     setUpdatingInterest(false);
-    setIsUserInsterested(!isUserInsterested);
+    setIsUserInsterested(!isUserInterested);
   };
 
   const ButtonType = () => {
@@ -147,7 +147,7 @@ const ProfileButton = (props) => {
             <LoadingButton
               onClick={handleInterest}
               endIcon={
-                isUserInsterested ? (
+                isUserInterested ? (
                   <CheckOutlinedIcon />
                 ) : (
                   <InterestsOutlinedIcon />
@@ -156,9 +156,9 @@ const ProfileButton = (props) => {
               disabled={!userLoaded}
               loading={updatingInterest}
               loadingPosition="end"
-              variant={isUserInsterested ? 'outlined' : 'contained'}
+              variant={isUserInterested ? 'outlined' : 'contained'}
             >
-              {isUserInsterested ? 'Interested' : 'Interest'}
+              {isUserInterested ? 'Interested' : 'Interest'}
             </LoadingButton>
           );
         }

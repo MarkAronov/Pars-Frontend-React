@@ -12,10 +12,10 @@ import {
 import { NotificationsNoneOutlined as NotificationsNoneOutlinedIcon } from '@mui/icons-material/';
 
 /**
- * The NotificationsAppbar component
- * @return {JSX.Element} returns a NotificationsAppbar component
+ * The NotificationsAppBar component
+ * @return {JSX.Element} returns a NotificationsAppBar component
  */
-const NotificationsAppbar = () => {
+const NotificationsAppBar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -72,4 +72,4 @@ const NotificationsAppbar = () => {
   );
 };
 
-export default NotificationsAppbar;
+export default NotificationsAppBar;

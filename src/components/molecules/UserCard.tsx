@@ -90,7 +90,7 @@ const UserCardPre = (props: {
                 }}
                 src={
                   // eslint-disable-next-line max-len
-                  `${process.env.REACT_APP_BACKEND_URL}/users/${user.username}/backgroundImage#` +
+                  `${process.env.REACT_APP_BACKEND_URL}/media/backgroundImages/${user.backgroundImage}#` +
                   new Date().getTime()
                 }
                 alt={''}

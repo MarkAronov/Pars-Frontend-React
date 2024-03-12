@@ -135,8 +135,8 @@ const SearchBar = (props) => {
 };
 
 SearchBar.propTypes = {
-  moblieSearchBar: PropTypes.bool.isRequired,
-  setMoblieSearchBar: PropTypes.func.isRequired,
+  mobileSearchBar: PropTypes.bool.isRequired,
+  setMobileSearchBar: PropTypes.func.isRequired,
 };
 
 export default SearchBar;
