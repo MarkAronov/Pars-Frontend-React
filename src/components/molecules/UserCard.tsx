@@ -272,7 +272,8 @@ UserCardPre.displayName = `User's Page Pre`;
 
 const UserCard = memo(
   UserCardPre,
-  (prevProps, nextProps) => prevProps.user.username === nextProps.user.username
+  (prevProps, nextProps) =>
+    prevProps?.user?.username === nextProps?.user?.username
 );
 
 UserCard.displayName = `User's Page`;

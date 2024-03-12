@@ -20,8 +20,7 @@ const UserProfile = (props: {
   let userAvatar: any;
   let userNameLetter: any;
 
-  if (user !== null) {
-    // eslint-disable-next-line max-len
+  if (user) {
     userAvatar =
       `${process.env.REACT_APP_BACKEND_URL}/users/${user.username}/avatar#` +
       Date.now();
@@ -56,7 +55,7 @@ UserProfile.propTypes = {
 
 const UserProfileIcon = memo(
   UserProfile,
-  (prevProps, nextProps) => prevProps.user?.avatar === nextProps.user?.avatar
+  (prevProps, nextProps) => prevProps?.user?.avatar === nextProps?.user?.avatar
 );
 UserProfileIcon.displayName = 'User Profile Icon';
 

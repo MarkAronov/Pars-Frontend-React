@@ -26,8 +26,8 @@ const UserPage = (props) => {
   const [tabValue, setTabValue] = useState<any>(0);
 
   const userFinder = useAsync(auth?.dispatch, false, {
-    type: 'findUser',
-    username,
+    type: 'getUser',
+    userName: username,
   });
   const theme = useTheme();
 
