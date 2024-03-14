@@ -24,6 +24,7 @@ export type DispatchTypes = {
   params?: any;
   userName?: string;
   formData?: any;
+  postID?: any;
 };
 
 export type UserAuth = {

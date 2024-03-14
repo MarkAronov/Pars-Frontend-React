@@ -30,7 +30,7 @@ const Login = () => {
   // );
   const [data, setData] = useState({
     email: 'bdb@ddd.com',
-    password: 'bbDFFDF232',
+    password: 'bbDFFDF2s55',
   });
   const [errors, setErrors] = useState<any>(
     formKeys.reduce<any>(
@@ -109,17 +109,16 @@ const Login = () => {
       })
     );
     const results = await auth?.dispatch({
-      type: 'login',
+      type: 'logIn',
       formData,
     });
     setHasDataLoaded(true);
 
-    console.log(results);
-    if (results) {
-      for (const key of Object.keys(results)) {
-        if (results[key].length) {
+    if (results && results.status === 400) {
+      for (const key of Object.keys(results.data)) {
+        if (results.data[key].length) {
           const msgArr: any = [];
-          results[key].forEach((res: any) => msgArr.push(res));
+          results.data[key].forEach((res: any) => msgArr.push(res));
           setErrors((err) => ({
             ...err,
             [key]: {

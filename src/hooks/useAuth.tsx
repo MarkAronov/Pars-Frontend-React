@@ -16,7 +16,7 @@ const useProvideAuth = (): {
     localStorage.getItem('token')
   );
   const [user, setUser] = useState<any>(null);
-
+  console.log(user);
   const setData = (user: UserType | null, token = userToken) => {
     setUserToken(token!);
     setUser(user!);
@@ -64,98 +64,141 @@ const useProvideAuth = (): {
         })
       );
       setData(signUpData.data.user, signUpData.data.token);
-      return;
+      return signUpData;
     },
     logIn: async (action) => {
       const loginData = await axios.request<any>(
         axiosConfig('post', `/users/login`, action?.formData!)
       );
       setData(loginData.data.user, loginData.data.token);
-      return { user: loginData.data.user, token: loginData.data.token };
+      return loginData;
     },
     logOut: async () => {
-      await axios.request<Request>(axiosConfig('post', `/users/logout`));
+      const loggedOutData = await axios.request<Request>(
+        axiosConfig('post', `/users/logout`)
+      );
       setData(null, null);
-      return;
+      return loggedOutData;
     },
     logOutAll: async () => {
-      await axios.request<Request>(axiosConfig('post', `/users/logoutall`));
+      const loggedOutAllData = await axios.request<Request>(
+        axiosConfig('post', `/users/logoutall`)
+      );
       setData(null, null);
-      return;
+      return loggedOutAllData;
     },
     getSelf: async (action) => {
       const selfData = await axios.request<Request>(
         axiosConfig('get', `/users/self`, action?.formData!)
       );
-      return selfData.data;
-    },
-    getUser: async (action) => {
-      const userData = await axios.request<Request>(
-        axiosConfig('get', `/users/u/${action.userName}`, action?.formData!)
-      );
-      return userData.data;
+      return selfData;
     },
     getUsers: async (action) => {
       const usersData = await axios.request<Request>(
         axiosConfig('get', `/users`, action?.formData!)
       );
-      return usersData.data;
+      return usersData;
+    },
+    getUser: async (action) => {
+      const userData = await axios.request<Request>(
+        axiosConfig('get', `/users/u/${action.userName}`, action?.formData!)
+      );
+      return userData;
     },
     updatePassword: async (action) => {
-      await axios.request<any>(
-        axiosConfig('post', `/users/self/password`, action?.formData!)
+      const updatePasswordData = await axios.request<any>(
+        axiosConfig('patch', `/users/self/password`, action?.formData!)
       );
-      return;
+      return updatePasswordData;
     },
     updateImportant: async (action) => {
       const importantData = await axios.request<any>(
-        axiosConfig('post', `/users/self/important`, action?.formData!)
+        axiosConfig('patch', `/users/self/important`, action?.formData!)
       );
       setData(importantData.data);
-      return;
+      return importantData;
     },
     updateRegular: async (action) => {
       const regularData = await axios.request<any>(
-        axiosConfig('post', `/users/self/regular`, action?.formData!, {
+        axiosConfig('patch', `/users/self/regular`, action?.formData!, {
           'Content-Type': 'multipart/form-data',
         })
       );
       setData(regularData.data);
-      return;
+      return regularData;
     },
     deleteSelf: async () => {
-      await axios.request<Request>(axiosConfig('delete', `/users/self`));
-      setData(null, null);
-      return;
-    },
-    deletePartial: async (action) => {
-      await axios.request<Request>(
-        axiosConfig('delete', `/users/self/partial`, action?.formData!)
+      const deletedSelf = await axios.request<Request>(
+        axiosConfig('delete', `/users/self`)
       );
       setData(null, null);
-      return;
+      return deletedSelf;
+    },
+    deletePartial: async (action) => {
+      const deletedPartialData = await axios.request<Request>(
+        axiosConfig('delete', `/users/self/partial`, action?.formData!)
+      );
+      return deletedPartialData;
+    },
+    createPost: async (action) => {
+      const postData = await axios.request<any>(
+        axiosConfig('post', `/posts`, action?.formData!, {
+          'Content-Type': 'multipart/form-data',
+        })
+      );
+      return postData;
+    },
+    getPosts: async (action) => {
+      const postData = await axios.request<Request>(
+        axiosConfig('get', `/posts`, action?.formData!)
+      );
+      return postData;
+    },
+    getPost: async (action) => {
+      const postData = await axios.request<Request>(
+        axiosConfig('get', `/posts/${action.userName}`, action?.formData!)
+      );
+      return postData;
+    },
+    updatePost: async (action) => {
+      const updatedPostData = await axios.request<any>(
+        axiosConfig('patch', `/posts`, action?.formData!, {
+          'Content-Type': 'multipart/form-data',
+        })
+      );
+      return updatedPostData;
+    },
+    deletePost: async (action) => {
+      const deletedPostData = await axios.request<any>(
+        axiosConfig('delete', `/posts/${action?.postID}`)
+      );
+      return deletedPostData;
+    },
+    getMedia: async (action) => {
+      const mediaData = await axios.request<Request>(
+        axiosConfig(
+          'get',
+          `/media/${action.mediaType}/${action.mediaFile}`,
+          undefined,
+          undefined,
+          'arraybuffer'
+        )
+      );
+      const mediaBuffer: string = mediaData.data as unknown as string;
+      return Buffer.from(mediaBuffer).toString('base64');
     },
   };
 
   const dispatch = async (action: DispatchTypes) => {
     try {
-      //   case 'getUserProfileMedia':
-      //     const userMedia = await axios.get<any>(
-      //       `${process.env.REACT_APP_BACKEND_URL}/users/
-      //     ${action.username}/${action.mediaType}`,
-      //       axiosConfig({}, 'arraybuffer')
-      //     );
-      //     return Buffer.from(userMedia.data).toString('base64');
-
       const actionHandler = actionHandlers[action.type];
       if (actionHandler) {
         return await actionHandler(action);
       }
     } catch (err: any) {
       if (err.response) {
-        if (err.response.status === 400) {
-          return err.response.data;
-        } else if (err.response.status === 401 || err.response.status === 500) {
+        if (err.response.status === 401) {
+          //  || err.response.status === 500
           setData(null, null);
           return null;
         } else if (err.response.status === 404) {
@@ -177,12 +220,11 @@ const useProvideAuth = (): {
   useEffect(() => {
     if (user === null && userToken) {
       if (selfFinder.status === 'idle') selfFinder.execute();
-      else if (selfFinder.status === 'success') setUser(selfFinder.value);
+      else if (selfFinder.status === 'success') setUser(selfFinder.value?.data);
       else if (selfFinder.status === 'error') setUser(null);
     }
-    return () => setUser(selfFinder.value);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, userToken]);
+  }, [user, userToken, selfFinder]);
 
   return { userToken, user, setData, dispatch };
 };

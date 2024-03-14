@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
 
 export const useAsync = (asyncFunction, immediate = true, ...functionProps) => {
-  const [status, setStatus] = useState('idle');
-  const [value, setValue] = useState(null);
-  const [error, setError] = useState(null);
+  const [status, setStatus] = useState<any>('idle');
+  const [value, setValue] = useState<any>(null);
+  const [error, setError] = useState<any>(null);
   // The execute function wraps asyncFunction and
   // handles setting state for pending, value, and error.
   // useCallback ensures the below useEffect is not called

@@ -39,19 +39,9 @@ const MenuAppBar = (): JSX.Element => {
   };
 
   const handleLogOut = async () => {
-    if (auth) {
-      await auth.dispatch({
-        type: 'logout',
-        user: null,
-        token: null,
-        username: '',
-        mediaType: '',
-        mediaFile: '',
-        updateType: undefined,
-        params: undefined,
-        userName: '',
-      });
-    }
+    await auth?.dispatch({
+      type: 'logOut',
+    });
   };
 
   const MenuItemLink = (props: { icon: any; text: any; to: any }) => {

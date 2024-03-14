@@ -142,7 +142,7 @@ const SignUp = () => {
     });
     setHasDataLoaded(true);
 
-    if (results) {
+    if (results && results.status === 400) {
       for (const key of Object.keys(results)) {
         if (results[key].length) {
           const msgArr: any = [];

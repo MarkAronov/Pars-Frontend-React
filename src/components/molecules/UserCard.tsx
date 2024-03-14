@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useState, memo } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import PropTypes from 'prop-types';
 
 import { Grid, Box, Paper, Typography, Button, Skeleton } from '@mui/material';
@@ -10,23 +10,38 @@ import UserProfileIcon from '../atoms/CustomIcons/UserProfileIcon';
 import DynamicTypography from '../atoms/Typographies/DynamicTypography';
 import ProfileButton from '../atoms/Buttons/ProfileButton';
 import ViewMediaDialog from '../atoms/Dialogs/ViewMediaDialog';
-import { UserType } from 'context/AuthContext';
+import { useAsync } from '../../hooks/useAsync';
+import { useAuth } from 'hooks/useAuth';
 
 /**
  * The user's page
  * @param {object} props object file that contains the user's name
  * @return {JSX.Element} returns a user page
  */
-const UserCardPre = (props: {
-  username: string;
-  user: UserType;
-  userLoaded: boolean;
-}) => {
-  const { username, user, userLoaded } = props;
+const UserCardPre = (props: { username: string }) => {
+  const { username } = props;
+  const auth = useAuth();
+  const [user, setUser] = useState<any>(null);
   const [showMediaDialog, setShowMediaDialog] = useState(false);
   const [mediaDialogType, setMediaDialogType] = useState('');
 
   const theme = useTheme();
+
+  const userFinder = useAsync(auth?.dispatch, false, {
+    type: 'getUser',
+    userName: username,
+  });
+
+  const userLoaded = userFinder.status !== 'pending';
+
+  useEffect(() => {
+    if (user === null || username !== user?.username) {
+      if (userFinder.status === 'idle') userFinder.execute();
+      else if (userFinder.status === 'success') setUser(userFinder.value?.data);
+      else if (userFinder.status === 'error') setUser(null);
+    }
+    return () => setUser(userFinder.value?.data);
+  }, [user, username, auth?.user, userFinder]);
 
   const handleUserMediaDialog = () => {
     setShowMediaDialog(!showMediaDialog);
@@ -90,8 +105,10 @@ const UserCardPre = (props: {
                 }}
                 src={
                   // eslint-disable-next-line max-len
-                  `${process.env.REACT_APP_BACKEND_URL}/media/backgroundImages/${user.backgroundImage}#` +
-                  new Date().getTime()
+                  user.backgroundImage
+                    ? `${process.env.REACT_APP_BACKEND_URL}/media/backgroundImages/${user.backgroundImage}#` +
+                      new Date().getTime()
+                    : undefined
                 }
                 alt={''}
                 loading="lazy"
@@ -272,8 +289,7 @@ UserCardPre.displayName = `User's Page Pre`;
 
 const UserCard = memo(
   UserCardPre,
-  (prevProps, nextProps) =>
-    prevProps?.user?.username === nextProps?.user?.username
+  (prevProps, nextProps) => prevProps?.username === nextProps?.username
 );
 
 UserCard.displayName = `User's Page`;

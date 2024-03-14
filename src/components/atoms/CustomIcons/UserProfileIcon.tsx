@@ -21,9 +21,10 @@ const UserProfile = (props: {
   let userNameLetter: any;
 
   if (user) {
-    userAvatar =
-      `${process.env.REACT_APP_BACKEND_URL}/media/avatars/${user.avatar}#` +
-      Date.now();
+    userAvatar = user.avatar
+      ? `${process.env.REACT_APP_BACKEND_URL}/media/avatars/${user.avatar}#` +
+        Date.now()
+      : null;
     userNameLetter = user.displayName[0];
   } else {
     userAvatar = null;
