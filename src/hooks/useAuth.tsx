@@ -20,7 +20,6 @@ const useProvideAuth = (): {
 		localStorage.getItem("token"),
 	);
 	const [user, setUser] = useState<any>(null);
-	console.log(user);
 	const setData = (user: UserType | null, token = userToken) => {
 		setUserToken(token!);
 		setUser(user!);

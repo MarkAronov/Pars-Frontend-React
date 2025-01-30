@@ -18,11 +18,11 @@ import SettingsPage from "./Pages/SettingsPage";
 import StartPage from "./Pages/StartPage";
 import UserPage from "./Pages/UserPage";
 
-import Login from "@/molecules/Login";
-import SignUp from "@/molecules/SignUp";
-import StartButtons from "@/molecules/StartButtons";
+import Login from "../molecules/Login";
+import SignUp from "../molecules/SignUp";
+import StartButtons from "../molecules/StartButtons";
 
-import { useAuth } from "@/@/hooks/useAuth";
+import { useAuth } from "../../hooks/useAuth";
 
 /**
  * Routing function, used for routing the app according to a given url

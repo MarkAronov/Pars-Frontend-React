@@ -213,7 +213,6 @@ UserProfileEditDialogPre.displayName = 'User Profile Edit Dialog Pre memo';
 const UserProfileEditDialog = React.memo(
   UserProfileEditDialogPre,
   (prev, curr) => {
-    console.log(prev, curr);
     return false;
   }
 );
